@@ -1,0 +1,202 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Writing numeric data to text file</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-04-29">
+      <meta name="m-file" content="wrNumFile"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Writing numeric data to text file</h1>
+         <!--introduction-->
+         <p>The simplest format for data is text files. These files are frequently also called ASCII files (ASCII -- pronounced aski --
+            stands for American Standard Code for Information Interchange, a standard for numerically representing alphabets developed
+            in the 1960s). There are more than one way to save data to a text file, depends on what kind of data we have, and what kind
+            of output format we want.
+         </p>
+         <p><i>(This tutorial is not required for this lab, since you need to save the object ID also. But this might be useful for you in
+               the future.)</i></p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">'save'</a></li>
+               <li><a href="#5">'dlmwrite'</a></li>
+            </ul>
+         </div>
+         <h2>'save'<a name="1"></a></h2>
+         <p>Basically, function <b><tt>save</tt></b> saves workspace variables to file (but only numeric variables!). For example, we have the <tt>1x3</tt> <tt>double</tt> arrays <b><tt>waveK</tt></b> and <b><tt>velK</tt></b>, and we want to save them into a file <b><tt>data.txt</tt></b>. The syntax is simple:
+         </p><pre class="codeinput">save <span class="string">data.txt</span> <span class="string">waveK</span> <span class="string">velK</span> <span class="string">-ascii</span>
+</pre><p>but don't forget to include <b><tt>-ascii</tt></b> as the <tt>format</tt> argument, which will save the numbers in 8-digit ASCII format.
+         </p>
+         <p>This file looks like this:</p><pre class="codeinput">type <span class="string">data.txt</span>
+</pre><pre class="codeoutput">
+   4.0300000e+03   4.0800000e+03   3.9000000e+03
+   7.3456370e+03   1.1158858e+04   2.5687384e+03
+
+</pre><p>which has <b><tt>waveK</tt></b> and <b><tt>velK</tt></b> in rows, not columns; normally we would like each row to represent each object.
+         </p>
+         <p>Therefore, we need to combine our data to a matrix (and do transpose if necessary) before we save them to file. Recall your
+            knowledge of arrays and vectors, and make the combined data array (note the transpose!):
+         </p><pre class="codeinput">m = [avgV; waveK; velK; waveH; velH]'
+</pre><pre class="codeoutput">
+m =
+
+   1.0e+04 *
+
+    0.7132    0.4030    0.7346    0.4060    0.6918
+    1.0550    0.4080    1.1159    0.4100    0.9941
+    0.2097    0.3900    0.2569    0.3990    0.1626
+
+</pre><p>Then we save the data: (let's use the same file name to show you that unless you include the argument <b><tt>-append</tt></b>, the original content is erased everytime you use <b><tt>save</tt></b>)
+         </p><pre class="codeinput">save <span class="string">data.txt</span> <span class="string">m</span> <span class="string">-ascii</span>
+type <span class="string">data.txt</span>
+</pre><pre class="codeoutput">
+   7.1316134e+03   4.0300000e+03   7.3456370e+03   4.0600000e+03   6.9175899e+03
+   1.0550133e+04   4.0800000e+03   1.1158858e+04   4.1000000e+03   9.9414085e+03
+   2.0973228e+03   3.9000000e+03   2.5687384e+03   3.9900000e+03   1.6259073e+03
+
+</pre><h2>'dlmwrite'<a name="5"></a></h2>
+         <p>Though <b><tt>save</tt></b> is the simplest way to save numeric data, it's less flexible. One example is that <b><tt>save</tt></b> can only generate tab-delimited file. However, for CLEA to read, we need comma-separated file, which is not supported by
+            <b><tt>save</tt></b>. An alternative way is to use <b><tt>dlmwrite</tt></b> (try typing <b><tt>help dlmwrite</tt></b> in the Command Line to find the syntax):
+         </p><pre class="codeinput">dlmwrite(<span class="string">'data2.txt'</span>, m, <span class="string">'delimiter'</span>, <span class="string">','</span>, <span class="string">'precision'</span>, <span class="string">'%E'</span>)
+</pre><p>The attribute <b><tt>delimiter</tt></b> and the following value (<b><tt>','</tt></b> here) defines the delimiter string to be used in separating matrix elements, and <b><tt>precision</tt></b> gives the numeric precision, which can be specified by the number of siginificant digits or a C-style format string starting
+            in <b><tt>%</tt></b>, such as <b><tt>%10.5f</tt></b>. The conversion character <b><tt>%E</tt></b> we used here means exponential notation, using a uppercase <b>E</b> as in <b>3.1415E+00</b>.
+         </p>
+         <p>Now we have the comma-separated file:</p><pre class="codeinput">type <span class="string">mydata2.txt</span>
+</pre><pre class="codeoutput">
+7.131613E+03,4.030000E+03,7.345637E+03,4.060000E+03,6.917590E+03
+1.055013E+04,4.080000E+03,1.115886E+04,4.100000E+03,9.941408E+03
+2.097323E+03,3.900000E+03,2.568738E+03,3.990000E+03,1.625907E+03
+
+</pre><p>Other possible values of <b><tt>delimiter</tt></b> include <b><tt>' '</tt></b> (space) or <b><tt>'\t'</tt></b> (tab).
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Writing numeric data to text file
+% The simplest format for data is text files. These files are frequently
+% also called ASCII files (ASCII REPLACE_WITH_DASH_DASH pronounced aski REPLACE_WITH_DASH_DASH stands for American
+% Standard Code for Information Interchange, a standard for numerically 
+% representing alphabets developed in the 1960s). There are more than one
+% way to save data to a text file, depends on what kind of data we have,
+% and what kind of output format we want.
+%
+% _(This tutorial is not required for this lab, since you need to save the
+% object ID also. But this might be useful for you in the future.)_
+%% 'save'
+% Basically, function *|save|* saves workspace variables to file (but only
+% numeric variables!). For example, we have the |1x3| |double| arrays
+% *|waveK|* and *|velK|*, and we want to save them into a file
+% *|data.txt|*. The syntax is simple:
+save data.txt waveK velK -ascii
+%%
+% but don't forget to include *|-ascii|* as the |format| argument, which
+% will save the numbers in 8-digit ASCII format. 
+%
+% This file looks like this:
+type data.txt
+%%
+% which has *|waveK|* and *|velK|* in rows, not columns; normally we would
+% like each row to represent each object. 
+%
+% Therefore, we need to combine our data to a matrix (and do transpose if 
+% necessary) before we save them to file. Recall your knowledge of arrays 
+% and vectors, and make the combined data array (note the transpose!):
+m = [avgV; waveK; velK; waveH; velH]'
+%%
+% Then we save the data: (let's use the same file name to show you that
+% unless you include the argument *|-append|*, the original content is
+% erased everytime you use *|save|*)
+save data.txt m -ascii
+type data.txt
+%% 'dlmwrite'
+% Though *|save|* is the simplest way to save numeric data, it's less
+% flexible. One example is that *|save|* can only generate tab-delimited
+% file. However, for CLEA to read, we need comma-separated file, which is
+% not supported by *|save|*. An alternative way is to use *|dlmwrite|* (try
+% typing *|help dlmwrite|* in the Command Line to find the syntax):
+dlmwrite('data2.txt', m, 'delimiter', ',', 'precision', '%E')
+%%
+% The attribute *|delimiter|* and the following value (*|','|* here)
+% defines the delimiter string to be used in separating matrix elements, 
+% and *|precision|* gives the numeric precision, which can be specified by 
+% the number of siginificant digits or a C-style format string starting in 
+% *|%|*, such as *|%10.5f|*. The conversion character *|%E|* we used here 
+% means exponential notation, using a uppercase *E* as in *3.1415E+00*.
+% 
+% Now we have the comma-separated file:
+type mydata2.txt
+%%
+% Other possible values of *|delimiter|* include *|' '|* (space) or *|'\t'|*
+% (tab).
+##### SOURCE END #####
+-->
+   </body>
+</html>

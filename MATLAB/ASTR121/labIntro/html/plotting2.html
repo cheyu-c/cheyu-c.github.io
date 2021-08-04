@@ -1,0 +1,214 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>More about plotting</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-17">
+      <meta name="m-file" content="plotting2"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>More about plotting</h1>
+         <!--introduction--><pre>A.J. Melhus, 4-18-10;
+Revised by C. Chen, 2-17-12</pre>
+         <!--/introduction--><h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Multiple Plots, way 1</a></li>
+               <li><a href="#3">Multiple Plots, way 2</a></li>
+               <li><a href="#9">Reversing axes</a></li>
+            </ul>
+         </div>
+         <h2>Multiple Plots, way 1<a name="1"></a></h2>
+         <p>Use multiple arguments within one plot command:</p>
+         <p>Syntax:</p>
+         <p><b><tt>plot(x_1,y_1,'aesthetic_1', ..., x_n, y_n, 'aesthetic_n')</tt></b></p>
+         <p>For example:</p><pre class="codeinput">t = linspace(0,2*pi);
+plot(t, sinc(t), <span class="string">'r.'</span>, t, (cos(t)).^2, t, (sin(t)).^2+(cos(t)).^2, <span class="string">'ko'</span>)
+</pre><img vspace="5" hspace="5" src="plotting2_01.png" alt=""> <p>This command plots <b><tt>sinc(t)</tt></b> (red dotted line), <b><tt>cos^2(t)</tt></b> (default blue solid line), and <b><tt>sin^2+cos^2(t)</tt></b> (black circles) all on the same plot.
+         </p>
+         <h2>Multiple Plots, way 2<a name="3"></a></h2>
+         <p>Use hold on/off command:</p>
+         <p>You can use the <b><tt>hold</tt></b> command to make adjustments to the current figure without erasing objects or information.
+         </p>
+         <p><i>(<b><tt>hold</tt></b> is a more logical way of plotting multiple objects at once, and is not as crammed.)</i></p>
+         <p>As in the previous example:</p><pre class="codeinput">t = linspace(0,2*pi);
+</pre><p>Let's plot <b><tt>sinc(t)</tt></b> first, using red dotted line:
+         </p><pre class="codeinput">v1 = sinc(t);
+plot(t,v1,<span class="string">'r.'</span>)
+</pre><img vspace="5" hspace="5" src="plotting2_02.png" alt=""> <p>Now, we use <b><tt>hold</tt></b> to toggle figure to allow more figure actions
+         </p><pre class="codeinput">hold <span class="string">on</span>;
+</pre><p><i>(By default, <b><tt>hold</tt></b> is <b><tt>off</tt></b>, so the original plot is erased when we call <b><tt>plot</tt></b> command.)</i></p>
+         <p>We can then continue on other lines:</p><pre class="codeinput">v2 = (cos(t)).^2;
+plot(t,v2)
+</pre><img vspace="5" hspace="5" src="plotting2_04.png" alt=""> <p><i>(If <b><tt>aesthetic</tt></b> is not specified, MATLAB will use the default setting: blue solid line.)</i></p><pre class="codeinput">v3 = (sin(t)).^2 + (cos(t)).^2;
+plot(t,v3,<span class="string">'ko'</span>)
+</pre><img vspace="5" hspace="5" src="plotting2_05.png" alt=""> <p>We can release figure toggle by typing</p><pre class="codeinput">hold <span class="string">off</span>;
+</pre> <h2>Reversing axes<a name="9"></a></h2>
+         <p>Reversing axes is often useful in astronomy: think about the magnitude scale, where brighter is more negative.</p>
+         <p>Note that, there are two ways to change the axis direction: <b><tt>set(gca, ...)</tt></b> and <b><tt>set(axes, ...)</tt></b>. When using <b><tt>set(gca, ...)</tt></b> we are modifying the current figure we just drew, so always use <b><tt>set(gca, ...)</tt></b> AFTER you use <b><tt>plot(...)</tt></b>:
+         </p><pre class="codeinput">figure(3); clf;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+set(gca,<span class="string">'YDir'</span>,<span class="string">'rev'</span>);
+</pre><img vspace="5" hspace="5" src="plotting2_07.png" alt=""> <p>However, when using <b><tt>set(axes, ...)</tt></b> we are setting up the graphic environment for the new figure we are going to draw, and it must be called BEFORE the <b><tt>plot</tt></b> command. Also, you'll need to call <b><tt>hold</tt></b> so your <b><tt>plot</tt></b> command won't clean up your <b><tt>set(axes, ...)</tt></b> settings:
+         </p><pre class="codeinput">figure(3); clf;
+set(axes,<span class="string">'YDir'</span>,<span class="string">'rev'</span>);
+hold <span class="string">on</span>;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+</pre><img vspace="5" hspace="5" src="plotting2_08.png" alt=""> <p>Sometimes it's more complicated to use <b><tt>set(axes, ...)</tt></b> than using <b><tt>set(gca, ...)</tt></b>, especially when you are using <b><tt>loglog</tt></b> command instead of <b><tt>plot</tt></b>, because you'll need to include the log-scale setting in your <b><tt>set(axes, ...)</tt></b> command:
+         </p><pre class="codeinput">set(axes, <span class="string">'XScale'</span>, <span class="string">'log'</span>, <span class="string">'YScale'</span>, <span class="string">'log'</span>, <span class="string">'XDir'</span>, <span class="string">'rev'</span>)
+</pre><p>Therefore, though <b><tt>set(axes, ...)</tt></b> provides more degrees of freedom to set up the axis system, we recommend you to use <b><tt>set(gca, ...)</tt></b> in all labs.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%  More about plotting
+%  A.J. Melhus, 4-18-10; 
+%  Revised by C. Chen, 2-17-12
+%% Multiple Plots, way 1
+% Use multiple arguments within one plot command:
+%
+% Syntax:
+%
+% *|plot(x_1,y_1,'aesthetic_1', ..., x_n, y_n, 'aesthetic_n')|*
+%
+% For example:
+t = linspace(0,2*pi);
+plot(t, sinc(t), 'r.', t, (cos(t)).^2, t, (sin(t)).^2+(cos(t)).^2, 'ko')    
+%% 
+% This command plots *|sinc(t)|* (red dotted line), *|cos^2(t)|* (default 
+% blue solid line), and *|sin^2+cos^2(t)|* (black circles) all on the same 
+% plot.
+%% Multiple Plots, way 2
+% Use hold on/off command:
+%
+% You can use the *|hold|* command to make adjustments to the current figure 
+% without erasing objects or information.
+%
+% _(*|hold|* is a more logical way of plotting multiple objects at once, and is 
+% not as crammed.)_
+%
+% As in the previous example:
+t = linspace(0,2*pi);
+%%
+% Let's plot *|sinc(t)|* first, using red dotted line:
+v1 = sinc(t);
+plot(t,v1,'r.')
+%%
+% Now, we use *|hold|* to toggle figure to allow more figure actions
+hold on;
+%%
+% _(By default, *|hold|* is *|off|*, so the original plot is erased when we
+% call *|plot|* command.)_
+%
+% We can then continue on other lines:
+v2 = (cos(t)).^2;
+plot(t,v2)
+%%
+% _(If *|aesthetic|* is not specified, MATLAB will use the default setting:
+% blue solid line.)_
+v3 = (sin(t)).^2 + (cos(t)).^2;
+plot(t,v3,'ko')
+%%
+% We can release figure toggle by typing
+hold off;
+%% Reversing axes
+% Reversing axes is often useful in astronomy: think about the magnitude
+% scale, where brighter is more negative.
+%
+% Note that, there are two ways to change the axis direction: *|set(gca,
+% ...)|* and *|set(axes, ...)|*. When using *|set(gca, ...)|* we are
+% modifying the current figure we just drew, so always use *|set(gca,
+% ...)|* AFTER you use *|plot(...)|*:
+figure(3); clf;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+set(gca,'YDir','rev');
+%%
+% However, when using *|set(axes, ...)|* we are setting up the graphic
+% environment for the new figure we are going to draw, and it must be
+% called BEFORE the *|plot|* command. Also, you'll need to call *|hold|* so
+% your *|plot|* command won't clean up your *|set(axes, ...)|* settings:
+figure(3); clf;
+set(axes,'YDir','rev');
+hold on;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+%%
+% Sometimes it's more complicated to use *|set(axes, ...)|* than using 
+% *|set(gca, ...)|*, especially when you are using *|loglog|* command 
+% instead of *|plot|*, because you'll need to include the log-scale setting 
+% in your *|set(axes, ...)|* command:
+set(axes, 'XScale', 'log', 'YScale', 'log', 'XDir', 'rev')
+%%
+% Therefore, though *|set(axes, ...)|* provides more degrees of freedom to
+% set up the axis system, we recommend you to use *|set(gca, ...)|* in all
+% labs.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

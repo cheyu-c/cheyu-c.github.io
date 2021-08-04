@@ -1,0 +1,226 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>How to plot Surface Plots</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-05-03">
+      <meta name="m-file" content="SurfacePlots"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>How to plot Surface Plots</h1>
+         <introduction>
+            <p>JTK 2010.5.3</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">The Function</a></li>
+               <li><a href="#2">Generating the X,Y Grid</a></li>
+               <li><a href="#3">Generating the Z Data</a></li>
+               <li><a href="#4">Generating the Surface Plot</a></li>
+               <li><a href="#5">Improving the Resolution of the Surface Plot</a></li>
+               <li><a href="#6">(PRO TIP) Changing the Surface Plot Color</a></li>
+               <li><a href="#7">(PRO TIP) Changing The "Edge" Properties</a></li>
+               <li><a href="#8">(PRO TIP) Changing the Plot Axes</a></li>
+            </ul>
+         </div>
+         <h2>The Function<a name="1"></a></h2>
+         <p>For our example function, we'll be plotting z = x^2 + y^2.  This is essentially a two dimensional parabola.</p>
+         <h2>Generating the X,Y Grid<a name="2"></a></h2>
+         <p>The first thing to do is to generate an X,Y grid for our plot.  Think of this grid as the equivalent of the latitude/longitude
+            on Earth - and that we'll be later be plotting something (say topographic elevation) for each point on this grid.
+         </p><pre class="codeinput">x = -4:1:4;             <span class="comment">% The range of x values.</span>
+y = -4:1:4;             <span class="comment">% The range of y values.</span>
+[X,Y] = meshgrid (x,y); <span class="comment">% This generates the actual grid of x and y values.</span>
+</pre><h2>Generating the Z Data<a name="3"></a></h2>
+         <p>To generate the actual Z data, all we need to do is create a function relating "X" and "Y" (the variables from the meshgrid
+            --- not the ranges, 'x' and 'y').
+         </p><pre class="codeinput">Z=Y.^2+X.^2;            <span class="comment">% The function we're plotting.</span>
+<span class="comment">% Remember to use the correct vector notation for all operations (such as</span>
+<span class="comment">% using the '.^' operator to do piecewise powers).</span>
+</pre><h2>Generating the Surface Plot<a name="4"></a></h2>
+         <p>Next, all we need to do is to generate a surface plot!</p><pre class="codeinput">figure(1);              <span class="comment">% Generating a new window to plot in.</span>
+surf(X,Y,Z)             <span class="comment">% The surface plotting function.</span>
+</pre><img vspace="5" hspace="5" src="SurfacePlots_01.png"> <h2>Improving the Resolution of the Surface Plot<a name="5"></a></h2>
+         <p>To increase the resolution of the surface plot, all we need to do is increase the number of x and y values plotted:</p><pre class="codeinput">figure(2);                  <span class="comment">% Generating a new window to plot in.</span>
+x1 = -4:.1:4;               <span class="comment">% The range of x values.</span>
+y1 = -4:.1:4;               <span class="comment">% The range of y values.</span>
+[X1,Y1] = meshgrid (x1,y1); <span class="comment">% This generates the actual grid of x and y values.</span>
+Z1=Y1.^2+X1.^2;             <span class="comment">% The function we're plotting.</span>
+surf(X1,Y1,Z1)              <span class="comment">% The surface plotting function.</span>
+</pre><img vspace="5" hspace="5" src="SurfacePlots_02.png"> <h2>(PRO TIP) Changing the Surface Plot Color<a name="6"></a></h2><pre class="codeinput"><span class="comment">%There are a wide array of different colormaps that you can select from,</span>
+<span class="comment">%just by examining the help file on "colormaps."  Below are two examples.</span>
+figure(3); surf(X1,Y1,Z1); colormap(bone)   <span class="comment">% Black/white colormap.</span>
+figure(4); surf(X1,Y1,Z1); colormap(hot)    <span class="comment">% Red/Yellow colormap.</span>
+</pre><img vspace="5" hspace="5" src="SurfacePlots_03.png"> <img vspace="5" hspace="5" src="SurfacePlots_04.png"> <h2>(PRO TIP) Changing The "Edge" Properties<a name="7"></a></h2>
+         <p>The "Edges" is the black mesh grid that overlays the 3D surface plot. You can easily change the color (or remove this mesh)
+            by adding a "EdgeColor" qualifier in the "Surf" command prompt.
+         </p><pre class="codeinput">figure(5); surf(X1,Y1,Z1,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>)
+shading <span class="string">interp</span>              <span class="comment">% This smooths out the colormap.</span>
+<span class="comment">% Likewise, you can select to have JUST the edges by using the "mesh"</span>
+<span class="comment">% plotting function rather than the "surf" function:</span>
+figure(6); mesh(X1,Y1,Z1);  <span class="comment">% Plotting a mesh plot.</span>
+</pre><img vspace="5" hspace="5" src="SurfacePlots_05.png"> <img vspace="5" hspace="5" src="SurfacePlots_06.png"> <h2>(PRO TIP) Changing the Plot Axes<a name="8"></a></h2>
+         <p>To plot custom axes, use the "axis" function:</p><pre class="codeinput">figure(7);
+hold <span class="string">on</span>
+axis([-4 4 -2 2 -5 30])
+surf(X1,Y1,Z1)
+hold <span class="string">off</span>
+<span class="comment">% The axis function is extremely useful, and allows you to do a variety of</span>
+<span class="comment">% things. To make the scaling of each axis equal, we again use the axis</span>
+<span class="comment">% function:</span>
+figure(8)
+hold <span class="string">on</span>
+axis([-4 4 -2 2 -5 30])
+axis <span class="string">equal</span>
+surf(X1,Y1,Z1,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>)
+hold <span class="string">off</span>
+<span class="comment">% To rotate the figure, you can simply use the "rotate3d" function to make</span>
+<span class="comment">% the plots interactive.  Once activated, you can then click and drag to</span>
+<span class="comment">% rotate the plot.</span>
+rotate3d <span class="string">on</span>
+</pre><img vspace="5" hspace="5" src="SurfacePlots_07.png"> <img vspace="5" hspace="5" src="SurfacePlots_08.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% How to plot Surface Plots
+% JTK 2010.5.3
+
+%% The Function
+% For our example function, we'll be plotting z = x^2 + y^2.  This is
+% essentially a two dimensional parabola.
+
+%% Generating the X,Y Grid
+% The first thing to do is to generate an X,Y grid for our plot.  Think of
+% this grid as the equivalent of the latitude/longitude on Earth - and that
+% we'll be later be plotting something (say topographic elevation) for each
+% point on this grid.
+x = -4:1:4;             % The range of x values.
+y = -4:1:4;             % The range of y values.  
+[X,Y] = meshgrid (x,y); % This generates the actual grid of x and y values.
+
+%% Generating the Z Data
+% To generate the actual Z data, all we need to do is create a function
+% relating "X" and "Y" (the variables from the meshgrid REPLACE_WITH_DASH_DASH- not the ranges,
+% 'x' and 'y').
+Z=Y.^2+X.^2;            % The function we're plotting.
+% Remember to use the correct vector notation for all operations (such as
+% using the '.^' operator to do piecewise powers).
+
+%% Generating the Surface Plot
+% Next, all we need to do is to generate a surface plot!
+figure(1);              % Generating a new window to plot in.
+surf(X,Y,Z)             % The surface plotting function.
+
+%% Improving the Resolution of the Surface Plot
+% To increase the resolution of the surface plot, all we need to do is
+% increase the number of x and y values plotted:
+figure(2);                  % Generating a new window to plot in.
+x1 = -4:.1:4;               % The range of x values.
+y1 = -4:.1:4;               % The range of y values.  
+[X1,Y1] = meshgrid (x1,y1); % This generates the actual grid of x and y values.
+Z1=Y1.^2+X1.^2;             % The function we're plotting.
+surf(X1,Y1,Z1)              % The surface plotting function.
+
+%% (PRO TIP) Changing the Surface Plot Color 
+%There are a wide array of different colormaps that you can select from,
+%just by examining the help file on "colormaps."  Below are two examples.
+figure(3); surf(X1,Y1,Z1); colormap(bone)   % Black/white colormap.
+figure(4); surf(X1,Y1,Z1); colormap(hot)    % Red/Yellow colormap.
+
+%% (PRO TIP) Changing The "Edge" Properties
+% The "Edges" is the black mesh grid that overlays the 3D surface plot.
+% You can easily change the color (or remove this mesh) by adding a
+% "EdgeColor" qualifier in the "Surf" command prompt.
+figure(5); surf(X1,Y1,Z1,'EdgeColor','none')
+shading interp              % This smooths out the colormap.
+% Likewise, you can select to have JUST the edges by using the "mesh"
+% plotting function rather than the "surf" function:
+figure(6); mesh(X1,Y1,Z1);  % Plotting a mesh plot.
+
+%% (PRO TIP) Changing the Plot Axes
+% To plot custom axes, use the "axis" function:
+figure(7);
+hold on
+axis([-4 4 -2 2 -5 30])
+surf(X1,Y1,Z1)
+hold off
+% The axis function is extremely useful, and allows you to do a variety of
+% things. To make the scaling of each axis equal, we again use the axis
+% function:
+figure(8)
+hold on
+axis([-4 4 -2 2 -5 30])
+axis equal
+surf(X1,Y1,Z1,'EdgeColor','none')
+hold off
+% To rotate the figure, you can simply use the "rotate3d" function to make
+% the plots interactive.  Once activated, you can then click and drag to
+% rotate the plot.
+rotate3d on
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\pagestyle{plain}
+\usepackage{epsf}
+\usepackage{epsfig}
+\usepackage{graphics}      % standard graphics specifications
+\usepackage{graphicx} 
+\usepackage[margin=2.3cm]{geometry}
+%\usepackage[top=1.8cm, bottom=1.8cm, right=2.2cm, left=2.2cm]{geometry}
+\linespread{1.2}
+\usepackage{hyperref}
+
+%\textheight 22cm
+%\textwidth  16cm
+%\hoffset= -0.6in 
+%\voffset= -0.5in   
+%\setlength{\parindent}{0cm}
+%\setlength{\parskip}{10pt plus 2pt minus 2pt}
+%\pagenumbering{roman} 
+%\setcounter{page}{-9}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bd}{\begin{displaymath}}
+\newcommand{\ed}{\end{displaymath}}
+\begin{document}
+
+\title{Write, Run, and Publish Script M-Files}
+\date{}
+\maketitle
+
+\section{Create m-files}
+\begin{enumerate}
+\item Open Matlab. Notice the sections of the window: editor, command line, history, data window, etc.
+
+\item Create a new folder and change the MATLAB current directory to the folder you created.
+
+%\item Follow the instructions on \href{http://www-users.math.umd.edu/~jow/206/tutorial/ScriptMFile_1.shtml}{Script M-Files} to create your own script M-file:
+\item There are three ways to open a new m-file:\\
+(1) Find and click this icon \includegraphics{newMfile.jpg}\\
+(2) Go to File $-$ New $-$ Blank M-File\\
+(3) Type \fbox{edit \textit{filename}.m} in the Command Window%; note that for function m-files, \textit{filename} must match the name of the function you are going to write in this m-file.
+\end{enumerate}
+
+%\section{Write function m-files}
+%\begin{enumerate}
+%\item In the blank M-file you just opened in the editor:
+%\begin{itemize}
+%\item Type \fbox{function f = myFunc(x, y)} as the first line. If your file name is, e.g. "lab4func.m", type \fbox{function f = lab4func(x, y)} instead. \textbf{The function name has to match the file name.} By including this first line in the M-file, you are telling MATLAB that this M-file is a user-specified function. A function file is not executable by itself; it can only be called in other commands.
+%\item Then choose a function, e.g. $f(x, y) = x^2 + y$, type \fbox{f = x.*x + y } as the content of the M-file.
+%\end{itemize}
+%\item Save your M-file; if you chose method (1) or (2) to open your blank M-file, now you'll need to give your M-file a name which matches your function name.
+%\end{enumerate}
+%Note that you should use \fbox{.*} instead of \fbox{*} because we want the function input \fbox{x} and \fbox{y} to be vectors, and the dot-operator \fbox{.} is meant to repeat operations on the members of the vector. See \href{http://www.astro.umd.edu/~cychen/MATLAB/ASTR121/labIntro/html/VecOpr.html#4}{Basic Operations: Dot-Operators} for more details.
+
+\section{Write script m-files}
+\begin{enumerate}
+\item Now create another blank M-file to read and plot the function you just wrote:
+\begin{itemize}
+\item In this file, you need to \\
+(a) generate a vector $x$, e.g. \fbox{x = linspace(-1, 1, 200);} \\
+(b) generate a number $y$, e.g. \fbox{y = 5;}\\
+(c) generate a vector $out$ to be a function of $x$ and $y$, e.g. \fbox{out = x.*x + y;}\\
+(d) make a plot of $out$ vs. $x$, e.g. \fbox{plot(x, out)}
+\item You can also add documentation for your plot using \fbox{xlabel}, \fbox{ylabel}, \fbox{title}, or \fbox{legend}.
+\end{itemize}
+\item Save this file. This time, name your M-file something like ``myPlot.m" or ``myScript.m", whatever you want, but NOT ``plot.m" since ``plot" is already a MATLAB internal function.
+
+\end{enumerate}
+
+\section{Run script m-files}
+\begin{itemize}
+\item There are three ways to test your script M-file:\\
+(1) Type \fbox{myPlot} or \fbox{myScript} (whatever your filename is) at the command line\\
+(2) Go to Cell $-$ Evaluate Current Cell\\
+(3) Find and click this icon \includegraphics{runMfile.jpg} on the Toolbar in the Editor window
+\item Do you see a figure window popping up?
+\end{itemize}
+
+%\item If you can't get through Steps 3$-$5, don't worry. Go to the \href{http://www.astro.umd.edu/~cychen/MATLAB/ASTR121/LabBB/}{Lab04} website and download two files: $<$functionExample.m$>$ and $<$plotExample.m$>$. Save them into the folder you created on the desktop. Open each of these files into the editor in MATLAB and read through them. Pay close attention to the comment made at the end of each line telling what that command instructs MATLAB to do. Then run $<$plotExample.m$>$ by typing \fbox{plotExample} in the Command window or click \includegraphics{runMfile.jpg} in the Editor window. What do you see?
+%\item Run $<$lab1plot.m$>$ by typing ``lab1plot" at the command line. Note that you may have to change the matlab current directory to the folder you created in order for matlab to find those files when you execute this command at the prompt.
+
+%\item Now, try a few of the commands inside these matlab function files out for yourself at the command line. See $<$simpleCommands.html$>$ for guidance.
+
+%\item Now try making adjustments to these files and run them again with the same command as before. Note any differences. What change did you make and what effect did it have? I suggest simple changes each time, so that you can tell exactly what the change was. (We call this changing one parameter at a time in physics and it's useful in many areas including programming!) Note that you will need to save the file after each change you make before it will take effect when you run the function file at the command line.
+
+%\item Now let's turn the heat up. Open the Editor window with your function M-file and choose a new function to define in this function file. Examples: $\sin()$, $\cos()$, $\exp()$, $1/x$, etc. Save and run your script M-file. (\textit{Note:} you may need the dot-operator for some arithmetic operations. On the other hand, some MATLAB internal functions (like $\sin()$, $\cos()$, $\log()$) are vectorized, which means they operate automatically over each member of an array without the need for an explicit loop.)
+
+\section{Publish script m-files}
+\textit{MATLAB Product Documentation:} MATLAB software enables you to publish your MATLAB code quickly, so you can describe and share your code with others, even if they do not have MATLAB software. You can publish in various formats, including HTML, XML, and LaTeX. \textit{(Typically, the default output file format is HTML)}\\
+
+There are two ways to publish your script M-file:
+\begin{itemize}
+\item Go to File $-$ Publish \textit{filename}.m
+\item Find and click this icon \includegraphics{pubMfile.jpg} on the Toolbar in the Editor window
+\end{itemize}
+
+Both the MATLAB code in your script M-file and the results of running the code (e.g., output to the Command Window, figures created or modified by the code) will be included in the published file. Therefore, this is convenient for handing in your lab assignments!
+\end{document}

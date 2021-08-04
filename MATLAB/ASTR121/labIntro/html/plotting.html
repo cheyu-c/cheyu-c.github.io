@@ -1,0 +1,266 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting in Matlab</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-17">
+      <meta name="m-file" content="plotting"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting in Matlab</h1>
+         <!--introduction--><pre>A.J. Melhus, 4-18-10;
+Revised by C. Chen, 2-17-12</pre>
+         <!--/introduction--><h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Using ezplot command</a></li>
+               <li><a href="#5">Using plot command</a></li>
+               <li><a href="#9">Using linspace command</a></li>
+               <li><a href="#11">Plot aesthetics</a></li>
+               <li><a href="#12">title and labels</a></li>
+            </ul>
+         </div>
+         <h2>Using ezplot command<a name="1"></a></h2>
+         <p>Use <b><tt>ezplot</tt></b> if you have a simple function and want a plot very quickly.
+         </p>
+         <p>Syntax: <b><tt>ezplot(f)</tt></b></p>
+         <p>- plots a function <b><tt>f</tt></b> over default domain <b><tt>[-2pi, 2pi]</tt></b> - <b><tt>f</tt></b> can be symbolic, vector, or string - automatically displays title <b><tt>f</tt></b> and independent variable <b><tt>x</tt></b> on figure
+         </p>
+         <p>Or, you can also use <b><tt>ezplot(f, [xmin,xmax])</tt></b> to plot a function <b><tt>f</tt></b> over the given domain <b><tt>[xmin, xmax]</tt></b></p>
+         <p>To try, clear figure space first:</p><pre class="codeinput">figure(1); clf;
+</pre><p>Let's plot <b><tt>y = x^2</tt></b> over <b><tt>[-2pi, 2pi]</tt></b>:
+         </p><pre class="codeinput">ezplot(<span class="string">'x^2'</span>)
+</pre><img vspace="5" hspace="5" src="plotting_01.png" alt=""> <p>Or we can plot <b><tt>f = cos(x) + 1</tt></b> over <b><tt>[0, 2pi]</tt></b></p><pre class="codeinput">f = <span class="string">'cos(x)+1'</span>
+</pre><pre class="codeoutput">
+f =
+
+cos(x)+1
+
+</pre><p><i>(Note that this command is different with the command <b><tt>f = cos(x)+1</tt></b>. You can try to figure out what's the difference!)</i></p><pre class="codeinput">ezplot(f, [0, 2*pi])
+</pre><img vspace="5" hspace="5" src="plotting_02.png" alt=""> <h2>Using plot command<a name="5"></a></h2>
+         <p><b><tt>plot</tt></b> is a much more robust plotting tool. The basic syntax is <b><tt>plot(x,y)</tt></b>:
+         </p>
+         <p>- <b><tt>x</tt></b> and <b><tt>y</tt></b> are vectors containing the data you wish to plot - <b><tt>x</tt></b> and <b><tt>y</tt></b> must be of same length and type
+         </p>
+         <p>To try, we should set up <b><tt>x</tt></b> and <b><tt>y</tt></b> first. Let's define a vector from <b><tt>0</tt></b> to <b><tt>2pi</tt></b>, using the default stepsize of 1:
+         </p><pre class="codeinput">x1 = 0:2*pi
+</pre><pre class="codeoutput">
+x1 =
+
+     0     1     2     3     4     5     6
+
+</pre><p>Then we can assign values to <b><tt>y1</tt></b> based on <b><tt>x1</tt></b>:
+         </p><pre class="codeinput">y1 = sin(x1)
+</pre><pre class="codeoutput">
+y1 =
+
+         0    0.8415    0.9093    0.1411   -0.7568   -0.9589   -0.2794
+
+</pre><p><i>(See what's the difference between this command and <b><tt>y1 = 'sin(x1)'</tt></b>?)</i></p>
+         <p>Then we can plot the sine function:</p><pre class="codeinput">plot(x1,y1)
+</pre><img vspace="5" hspace="5" src="plotting_03.png" alt=""> <p>THIS PLOT LOOKS BAD because <b><tt>x1</tt></b> only contains 7 points (we need more points to make a smooth graph).
+         </p>
+         <h2>Using linspace command<a name="9"></a></h2>
+         <p>Let's use <b><tt>linspace</tt></b> to make a much more smooth graph by creating a vector from <b><tt>0</tt></b> to <b><tt>2pi</tt></b> containing 100 linearly spaced points:
+         </p><pre class="codeinput">x2 = linspace(0, 2*pi);
+y2 = sin(x2);
+plot(x2,y2)
+</pre><img vspace="5" hspace="5" src="plotting_04.png" alt=""> <p>THIS PLOT LOOKS GOOD because <b><tt>x2</tt></b> contains many more points, creating a smoother graph.
+         </p>
+         <h2>Plot aesthetics<a name="11"></a></h2>
+         <p><i>(taken/edited from <a href="http://www.engin.umich.edu/group/ctm/extras/plot.html">http://www.engin.umich.edu/group/ctm/extras/plot.html</a> )</i></p>
+         <p>The color and point marker can be changed on a plot by adding a third parameter (in single quotes) to the plot command: <b><tt>plot(x,y, 'aesthetic')</tt></b></p>
+         <p>- <b><tt>aesthetic</tt></b> consists of one to three characters which specify a color and/or point marker type - color and point marker types include:
+         </p>
+         <p><html> <table width="300" border="1"> <tr align="center"><td> y </td><td>  yellow  </td><td> .   </td><td>  point  </td></tr>
+            <tr align="center"><td> m </td><td>  magenta </td><td> o   </td><td>  circle </td></tr> <tr align="center"><td> c </td><td>
+            cyan    </td><td> x   </td><td>  x-mark </td></tr> <tr align="center"><td> r </td><td>  red     </td><td> +   </td><td>  plus
+            </td></tr> <tr align="center"><td> g </td><td>  green   </td><td> -   </td><td>  solid  </td></tr> <tr align="center"><td>
+            b </td><td>  blue    </td><td> *   </td><td>  star   </td></tr> <tr align="center"><td> w </td><td>  white   </td><td> : 
+            </td><td>  dotted </td></tr> <tr align="center"><td> k </td><td>  black   </td><td> -.  </td><td>  dashdot</td></tr> <tr align="center"><td>
+            </td><td> 	        </td><td> --  </td><td>  dashed </td></tr> </table> </html>
+         </p>
+         <p>For example, to plot <b><tt>y2</tt></b> as a red, dotted line instead of the default blue straight line, the command should be changed to:
+         </p><pre class="codeinput">plot(x2,y2, <span class="string">'r:'</span>)
+</pre><img vspace="5" hspace="5" src="plotting_05.png" alt=""> <h2>title and labels<a name="12"></a></h2>
+         <p>Whenever you make a plot, don't forget to properly label the x- and y-axis by using <b><tt>xlabel</tt></b> and <b><tt>ylabel</tt></b>:
+         </p><pre class="codeinput">plot(x2, y2)
+xlabel(<span class="string">'variable x'</span>)
+ylabel(<span class="string">'sin(x)'</span>)
+</pre><img vspace="5" hspace="5" src="plotting_06.png" alt=""> <p>Also, it's nice to give your plot a title so everyone can understand immediately what's the figure about:</p><pre class="codeinput">title(<span class="string">'sine function'</span>)
+</pre><img vspace="5" hspace="5" src="plotting_07.png" alt=""> <p>Note that the title and axis labels will be erased when you call <b><tt>plot</tt></b> again without using <b><tt>hold on</tt></b>.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%  Plotting in Matlab
+%  A.J. Melhus, 4-18-10; 
+%  Revised by C. Chen, 2-17-12
+%% Using ezplot command
+% Use *|ezplot|* if you have a simple function and want a plot very quickly.
+%
+% Syntax: *|ezplot(f)|*
+%
+% - plots a function *|f|* over default domain *|[-2pi, 2pi]|*
+% - *|f|* can be symbolic, vector, or string
+% - automatically displays title *|f|* and independent variable *|x|* on
+% figure
+%  
+% Or, you can also use *|ezplot(f, [xmin,xmax])|* to plot a function *|f|* 
+% over the given domain *|[xmin, xmax]|*
+%  
+% To try, clear figure space first:    
+figure(1); clf;
+%%
+% Let's plot *|y = x^2|* over *|[-2pi, 2pi]|*:
+ezplot('x^2')
+%%
+% Or we can plot *|f = cos(x) + 1|* over *|[0, 2pi]|*
+f = 'cos(x)+1'
+%%
+% _(Note that this command is different with the command *|f = cos(x)+1|*.
+% You can try to figure out what's the difference!)_
+ezplot(f, [0, 2*pi])
+%% Using plot command          
+% *|plot|* is a much more robust plotting tool. The basic syntax is 
+% *|plot(x,y)|*:
+%
+% - *|x|* and *|y|* are vectors containing the data you wish to plot
+% - *|x|* and *|y|* must be of same length and type
+%
+% To try, we should set up *|x|* and *|y|* first. Let's define a vector
+% from *|0|* to *|2pi|*, using the default stepsize of 1:
+x1 = 0:2*pi
+%%
+% Then we can assign values to *|y1|* based on *|x1|*:
+y1 = sin(x1)
+%%
+% _(See what's the difference between this command and *|y1 =
+% 'sin(x1)'|*?)_
+%
+% Then we can plot the sine function:
+plot(x1,y1)
+%% 
+% THIS PLOT LOOKS BAD because *|x1|* only contains 7 points (we need more 
+% points to make a smooth graph).  
+%% Using linspace command
+% Let's use *|linspace|* to make a much more smooth graph by creating a
+% vector from *|0|* to *|2pi|* containing 100 linearly spaced points:
+x2 = linspace(0, 2*pi);
+y2 = sin(x2);
+plot(x2,y2)
+%%
+% THIS PLOT LOOKS GOOD because *|x2|* contains many more points, creating a 
+% smoother graph.
+%% Plot aesthetics  
+% _(taken/edited from
+% http://www.engin.umich.edu/group/ctm/extras/plot.html )_
+%
+% The color and point marker can be changed on a plot by adding a third 
+% parameter (in single quotes) to the plot command: 
+% *|plot(x,y, 'aesthetic')|*
+%
+% - *|aesthetic|* consists of one to three characters which specify a color 
+% and/or point marker type
+% - color and point marker types include:
+%
+% <html>
+% <table width="300" border="1">
+% <tr align="center"><td> y </td><td>  yellow  </td><td> .   </td><td>  point  </td></tr>
+% <tr align="center"><td> m </td><td>  magenta </td><td> o   </td><td>  circle </td></tr>
+% <tr align="center"><td> c </td><td>  cyan    </td><td> x   </td><td>  x-mark </td></tr>
+% <tr align="center"><td> r </td><td>  red     </td><td> +   </td><td>  plus   </td></tr>
+% <tr align="center"><td> g </td><td>  green   </td><td> -   </td><td>  solid  </td></tr>
+% <tr align="center"><td> b </td><td>  blue    </td><td> *   </td><td>  star   </td></tr>
+% <tr align="center"><td> w </td><td>  white   </td><td> :   </td><td>  dotted </td></tr>
+% <tr align="center"><td> k </td><td>  black   </td><td> -.  </td><td>  dashdot</td></tr>
+% <tr align="center"><td>   </td><td> 	        </td><td> REPLACE_WITH_DASH_DASH  </td><td>  dashed </td></tr>
+% </table>
+% </html>
+%
+% For example, to plot *|y2|* as a red, dotted line instead of the default 
+% blue straight line, the command should be changed to:
+plot(x2,y2, 'r:')
+%% title and labels
+% Whenever you make a plot, don't forget to properly label the x- and
+% y-axis by using *|xlabel|* and *|ylabel|*:
+plot(x2, y2)
+xlabel('variable x')
+ylabel('sin(x)')
+%%
+% Also, it's nice to give your plot a title so everyone can understand
+% immediately what's the figure about:
+title('sine function')
+%%
+% Note that the title and axis labels will be erased when you call *|plot|*
+% again without using *|hold on|*.
+##### SOURCE END #####
+-->
+   </body>
+</html>

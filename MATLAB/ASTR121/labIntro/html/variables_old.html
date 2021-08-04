@@ -1,0 +1,236 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Variables and Arithmetic Operators</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-22">
+      <meta name="m-file" content="variables"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Variables and Arithmetic Operators</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Using Variables</a></li>
+               <li><a href="#4">Arithmetic Operators</a></li>
+               <li><a href="#7">Variables in Calculation</a></li>
+               <li><a href="#9">Clearing variables</a></li>
+               <li><a href="#13">Keep in mind...</a></li>
+            </ul>
+         </div>
+         <h2>Using Variables<a name="1"></a></h2>
+         <p>In MATLAB, when you type</p><pre class="codeinput">myVar = 3.7;
+</pre><p>in the command window, it means the variable <b><tt>myVar</tt></b> is assigned the value <b><tt>1</tt></b>. You can obtain the values of your variables by typing their names:
+         </p><pre class="codeinput">myVar
+</pre><pre class="codeoutput">
+myVar =
+
+    3.7000
+
+</pre><p>Variable names must begin with a letter, followed by letters, numbers or underscores. MATLAB recognizes only the first 31
+            characters of a variable name.
+         </p>
+         <h2>Arithmetic Operators<a name="4"></a></h2>
+         <p>Basic arithmetic operations in MATLAB include six operations:</p>
+         <p><html> <table width="250" border="1"> <tr><td>addition</td><td align="center">+</td></tr> <tr><td>subtraction</td><td align="center">-</td></tr>
+            <tr><td>multiplication</td><td align="center">*</td></tr> <tr><td>division</td><td align="center">/ or \</td></tr> <tr><td>exponentiation</td><td
+            align="center">^</td></tr> </table> </html>
+         </p>
+         <p>Note that the right division (<b><tt>/</tt></b>) and the left division (<b><tt>\</tt></b>) do not produce the same results:
+         </p><pre class="codeinput">rd = 2/5
+</pre><pre class="codeoutput">
+rd =
+
+    0.4000
+
+</pre><pre class="codeinput">ld = 2\5
+</pre><pre class="codeoutput">
+ld =
+
+    2.5000
+
+</pre><h2>Variables in Calculation<a name="7"></a></h2>
+         <p>When you assign a value to a variable, it can be used in numerical calculations. For example:</p><pre class="codeinput">x = 2;
+y = x^2;
+z = y^3;
+</pre><p>then you'll have <b><tt>z</tt></b> as 2^6 = 64:
+         </p><pre class="codeinput">z
+</pre><pre class="codeoutput">
+z =
+
+    64
+
+</pre><h2>Clearing variables<a name="9"></a></h2>
+         <p>The MATLAB internal function <b><tt>clear</tt></b> will remove all variables you assigned.
+         </p><pre class="codeinput">x
+</pre><pre class="codeoutput">
+x =
+
+     2
+
+</pre><pre class="codeinput">clear
+</pre><pre class="codeinput">x
+</pre><pre class="codeoutput">Error using ==&gt; evalin
+Undefined function or variable 'x'.
+</pre><p>This is useful when you want to restart your work. In addition, it is a good idea to include <b><tt>clear</tt></b> as the first line in your script M-files (you'll learn more about this later).
+         </p>
+         <h2>Keep in mind...<a name="13"></a></h2>
+         <p>Be careful -- you should NOT use the MATLAB internal functions as the names of your variables. You will lose that function
+            by doing so. For example, MATLAB provide the trigonometric function sine:
+         </p><pre class="codeinput">sin(pi)
+</pre><p><i>(Note that the constant <b><tt>pi</tt></b> is saved in MATLAB by default.)</i></p>
+         <p>However, if you accidentally make <b><tt>sin</tt></b> a variable by typing
+         </p><pre class="codeinput">sin = 0.9452;
+</pre><p>Then you will get error message next time when you want to calculate the trigonometric function sine:</p><pre class="codeinput">sin(pi)
+</pre><p>That sucks, right? So you must be careful. Well, at least you can use the command <b><tt>clear</tt></b> to erase it:
+         </p><pre class="codeinput">clear <span class="string">sin</span>
+</pre><p>This will only remove the assigned value of <b><tt>sin</tt></b>; other variables will remain unaffected.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Variables and Arithmetic Operators
+%% Using Variables
+% In MATLAB, when you type
+myVar = 3.7;
+%%
+% in the command window, it means the variable *|myVar|* is assigned the value
+% *|1|*. You can obtain the values of your variables by typing their names:
+myVar
+%%
+% Variable names must begin with a letter, followed by letters, numbers or
+% underscores. MATLAB recognizes only the first 31 characters of a variable
+% name.
+%% Arithmetic Operators
+% Basic arithmetic operations in MATLAB include six operations: 
+%
+% <html>
+% <table width="250" border="1">
+% <tr><td>addition</td><td align="center">+</td></tr>
+% <tr><td>subtraction</td><td align="center">-</td></tr>
+% <tr><td>multiplication</td><td align="center">*</td></tr>
+% <tr><td>division</td><td align="center">/ or \</td></tr>
+% <tr><td>exponentiation</td><td align="center">^</td></tr>
+% </table>
+% </html>
+%%
+% Note that the right division (*|/|*)
+% and the left division (*|\|*) do not produce the same results:
+rd = 2/5
+%%
+ld = 2\5
+%% Variables in Calculation
+% When you assign a value to a variable, it can be used in numerical
+% calculations. For example:
+x = 2;
+y = x^2;
+z = y^3;
+%%
+% then you'll have *|z|* as 2^6 = 64:
+z
+%% Clearing variables
+% The MATLAB internal function *|clear|* will remove all variables you
+% assigned.
+x
+%%
+clear
+%%
+x
+%%
+% This is useful when you want to restart your work. In addition, it is a
+% good idea to include *|clear|* as the first line in your script M-files
+% (you'll learn more about this later).
+%% Keep in mind...
+% Be careful REPLACE_WITH_DASH_DASH you should NOT use the MATLAB internal functions as the 
+% names of your variables. You will lose that function by doing so. For 
+% example, MATLAB provide the trigonometric function sine:
+sin(pi)
+%%
+% _(Note that the constant *|pi|* is saved in MATLAB by default.)_
+%
+% However, if you accidentally make *|sin|* a variable by typing
+sin = 0.9452;
+%%
+% Then you will get error message next time when you want to calculate the
+% trigonometric function sine:
+sin(pi)
+%%
+% That sucks, right? So you must be careful. Well, at least you can use the
+% command *|clear|* to erase it:
+clear sin
+%%
+% This will only remove the assigned value of *|sin|*; other variables will
+% remain unaffected.
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

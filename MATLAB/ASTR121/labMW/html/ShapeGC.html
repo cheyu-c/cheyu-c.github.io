@@ -1,0 +1,230 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Shape of the Milky Way, Reloaded</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-12">
+      <meta name="m-file" content="ShapeGC"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Shape of the Milky Way, Reloaded</h1>
+         <!--introduction-->
+         <p><i>This is a reference for you to see if you did everything correctly, what should be on your screen. Note that some commands
+               in this page are blocked (using <b><tt>...</tt></b>) for you to figure out by yourself.</i></p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Read and organize the data</a></li>
+               <li><a href="#5">Distrubution of the clusters</a></li>
+               <li><a href="#6">Shape of the Milky Way</a></li>
+               <li><a href="#9">3-D distribution</a></li>
+            </ul>
+         </div>
+         <h2>Read and organize the data<a name="1"></a></h2>
+         <p>Now we load an analagous table of data for globular clusters and plot them in the same plane projections as we did for the
+            open clusters.
+         </p>
+         <p>Load the data and save them to a variable, e.g., <b><tt>galGC</tt></b>:
+         </p><pre class="codeinput">galGC = ... ;
+</pre><p>Use the skill you learned from Part I to find out the RA and DEC of those globular clusters:</p><pre class="codeinput">RAGC = galGC(:,1) + ... ;
+pmDec = sign( ... );
+fixpm = find( ... );
+decGC = ( ... ).*pmDec;
+</pre><p>Change from degrees to radians:</p><pre class="codeinput">lonGC = ... ;
+latGC = ... ;
+</pre><p>This time distance is tabulated in kpc, so we must multiply by <img src="ShapeGC_eq90800.png" alt="$10^3$"> to convert from polar (galactic) to cartesian coordinates (<img src="ShapeGC_eq43551.png" alt="$x$">, <img src="ShapeGC_eq44020.png" alt="$y$">, <img src="ShapeGC_eq88768.png" alt="$z$">):
+         </p><pre class="codeinput">xgc = 1000.* ... ;
+ygc = ... ;
+zgc = ... ;
+</pre><h2>Distrubution of the clusters<a name="5"></a></h2>
+         <p>Now you can overplot the RA and DEC for the open clusters on this plot:</p><pre class="codeinput">figure(1); clf; hold <span class="string">on</span>;
+plot(RA,dec, ... )
+plot(RAGC,decGC, ... )
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeGC_01.png" alt=""> 
+<h2>Shape of the Milky Way<a name="6"></a></h2>
+         <p>Let's plot the projections of the open clusters in blue, and the globular clusters in red:</p><pre class="codeinput">figure(6); clf
+plot( ... , <span class="string">'b.'</span>)
+... ...
+plot( ... , <span class="string">'r.'</span>)
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeGC_02.png" alt=""> <pre class="codeinput">figure(7); clf
+plot( ... )
+... ...
+figure(8); clf
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeGC_03.png" alt=""><img vspace="5" hspace="5" src="ShapeGC_04.png" alt=""> <h2>3-D distribution<a name="9"></a></h2>
+         <p>Or, you can use <b><tt>plot3</tt></b> function to make a 3-D plot showing the distribution of open clusters in the space:
+         </p><pre class="codeinput">figure(9); clf
+plot3( ... )
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeGC_05.png" alt=""> <p>Then use the <b>Rotate 3D</b> icon <img src="3Drotate.jpg" alt=""> to change the angle of view:
+         </p><img vspace="5" hspace="5" src="ShapeGC04rotate.png" alt="">
+         <p>It is clear that globular clusters are not bound to the plane of the galaxy and trace the dark matter potential well better
+            than open clusters. This picture is also consistent with our knowledge that globular clusters are often much older than open
+            clusters, which much more often form in star-forming regions in the dense planes of galaxies.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Shape of the Milky Way, Reloaded
+% _This is a reference for you to see if you did everything correctly, what
+% should be on your screen. Note that some commands in this page are
+% blocked (using *|...|*) for you to figure out by yourself._
+%% Read and organize the data
+% Now we load an analagous table of data for globular clusters and plot 
+% them in the same plane projections as we did for the open clusters.
+%
+% Load the data and save them to a variable, e.g., *|galGC|*:
+galGC = load('mwgc_relevant.txt');
+%%
+% Use the skill you learned from Part I to find out the RA and DEC of those
+% globular clusters:
+RAGC = galGC(:,1) + galGC(:,2)/60 + galGC(:,3)/3600;
+pmDec = sign(galGC(:,4));
+fixpm = find(pmDec==0);
+decGC = (abs(galGC(:,4)) + galGC(:,5)/60 + galGC(:,6)/3600).*pmDec;
+%%
+% Change from degrees to radians:
+lonGC = galGC(:,7).*2*pi/360.0;
+latGC = galGC(:,8).*2*pi/360.0;
+%%
+% This time distance is tabulated in kpc, so we must multiply by $10^3$ to 
+% convert from polar (galactic) to cartesian coordinates ($x$, $y$, $z$):
+xgc = 1000.*galGC(:,9).*cos(latGC).*cos(lonGC); 
+ygc = 1000.*galGC(:,9).*cos(latGC).*sin(lonGC);
+zgc = 1000.*galGC(:,9).*sin(latGC);
+%% Distrubution of the clusters
+% Now you can overplot the RA and DEC for the open clusters on this plot:
+figure(1); clf; hold on;
+plot(RA,dec,'b.')
+plot(RAGC,decGC,'r.')
+title('distribution of the clusters')
+xlabel('RA (hrs)')
+ylabel('dec (degrees)')
+legend('OCs', 'GCs', 'Location', 'SouthEast')
+%% Shape of the Milky Way
+% Let's plot the projections of the open clusters in blue, and the globular 
+% clusters in red:
+figure(6); clf
+plot(xoc,yoc, 'b.')
+hold on
+plot(xgc,ygc, 'r.')
+xlabel('x (pc)')
+ylabel('y (pc)')
+title('x-y plane')
+axis square
+%%
+figure(7); clf
+plot(xoc,zoc, 'b.')
+hold on
+plot(xgc,zgc, 'r.')
+xlabel('x (pc)')
+ylabel('z (pc)')
+title('x-z plane')
+axis square
+%%
+figure(8); clf
+plot(yoc,zoc, 'b.')
+hold on
+plot(ygc,zgc, 'r.')
+xlabel('y (pc)')
+ylabel('z (pc)')
+title('y-z plane')
+axis square
+%% 3-D distribution
+% Or, you can use *|plot3|* function to make a 3-D plot showing the
+% distribution of open clusters in the space:
+figure(9); clf
+plot3(xoc, yoc, zoc, 'bo')
+hold on
+plot3(xgc, ygc, zgc, 'ro')
+grid on
+axis square
+xlabel('x (pc)')
+ylabel('y (pc)')
+zlabel('z (pc)')
+title('3-D distribution')
+%%
+% Then use the *Rotate 3D* icon to change the angle of view:
+%
+%%
+% It is clear that globular clusters are not bound to the plane of the
+% galaxy and trace the dark matter potential well better than open
+% clusters. This picture is also consistent with our knowledge that
+% globular clusters are often much older than open clusters, which much
+% more often form in star-forming regions in the dense planes of galaxies.
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
