@@ -1,0 +1,419 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>VectorInfo4-4-10</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-04-05">
+      <meta name="m-file" content="VectorInfo4-4-10"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Matlab Vector exercises</a></li>
+               <li><a href="#2">Defining vectors</a></li>
+               <li><a href="#3">Vector math</a></li>
+               <li><a href="#4">Vectors in functions</a></li>
+            </ul>
+         </div>
+         <h2>Matlab Vector exercises<a name="1"></a></h2><pre>A.J. Melhus  4/4/10</pre><pre class="codeinput"><span class="comment">% When performing mathematical operations in Matlab, the word "vector"</span>
+<span class="comment">% often comes up.  What exactly does "vector" mean to Matlab and why</span>
+<span class="comment">% use them?</span>
+
+<span class="comment">% A vector is simply a list of numbers.  In terms of linear algebra,</span>
+<span class="comment">% vectos are 1 dimensional matrices - either a single-row or single-column</span>
+<span class="comment">% matrix.  Vectors are important to Matlab because they are almost always</span>
+<span class="comment">% the quickest and most efficient method for getting an answer.</span>
+
+<span class="comment">% Matlab stands for "Matrix Laboratory," which means that Matlab is very</span>
+<span class="comment">% good at vector and matrix mathematics.</span>
+</pre><h2>Defining vectors<a name="2"></a></h2><pre>There are 3 basic ways to define a vector in Matlab:</pre><pre class="codeinput"><span class="comment">% 1. Manually enter every vector element, using</span>
+
+x = [3, 5, 7, 9]
+<span class="comment">% (see below for what MATLAB makes of this command)</span>
+
+<span class="comment">% This approach works for arrays of numbers too, with commas and/or</span>
+<span class="comment">% spaces to separate entries and semicolons to separate rows:</span>
+
+x = [0, 1, 2; 3, 4, 5]
+
+<span class="comment">% 2. Use colon notation.  This method allows you to quickly generate</span>
+<span class="comment">% series vectors with a pre-defined or user-specified element width.</span>
+
+<span class="comment">% Syntax:</span>
+<span class="comment">%     xstart:dx:xend</span>
+        <span class="comment">% xstart is the first value of your vector</span>
+        <span class="comment">% dx (optional) is the step width, the difference between two</span>
+        <span class="comment">%    consecutive entries</span>
+        <span class="comment">% xend is the last value of your vector</span>
+
+<span class="comment">% A simple example showing that the default increment is 1</span>
+y1 = 1:5
+
+<span class="comment">% there are more entries here because the step size, dy, is smaller</span>
+y2 = 1:0.5:5
+
+<span class="comment">% 3. Use a built-in function to create vectors of specified size - zeros,</span>
+<span class="comment">% ones, linspace, logspace.  These functions are helpful because they let</span>
+<span class="comment">% you decide how many entries you want in the vector, and do the rest for</span>
+<span class="comment">%y ou.</span>
+
+<span class="comment">% The most useful for basic plotting is linspace.</span>
+  <span class="comment">%Syntax:</span>
+  <span class="comment">% linspace(xstart, xend, num_entries)</span>
+  <span class="comment">% num_entries is the number of entries (or size) in your vector</span>
+
+<span class="comment">% Here a vector from 0 to 3.8, with 10 equally-spaced entries:</span>
+y3 = linspace(0,3.8, 10)
+
+<span class="comment">% Initialize an array and fill with zeros</span>
+y4 = zeros(3)
+</pre><pre class="codeoutput">
+x =
+
+     3     5     7     9
+
+
+x =
+
+     0     1     2
+     3     4     5
+
+
+y1 =
+
+     1     2     3     4     5
+
+
+y2 =
+
+    1.0000    1.5000    2.0000    2.5000    3.0000    3.5000    4.0000    4.5000    5.0000
+
+
+y3 =
+
+         0    0.4222    0.8444    1.2667    1.6889    2.1111    2.5333    2.9556    3.3778    3.8000
+
+
+y4 =
+
+     0     0     0
+     0     0     0
+     0     0     0
+
+</pre><h2>Vector math<a name="3"></a></h2>
+         <p>When doing vector mathematics, it is useful to understand how MATLAB performs operations with vectors.  The important distinction
+            here is the use of the dot, .  This tells MATLAB to perform mathematical operations element-by-element, instead of normal
+            linear algebra. Another important notation is the apostrophe, '.  This tells Matlab to transpose the vector - change it from
+            a row vector to a column vector or vice-versa.  It is easiest if you do the following simple examples for yourself:
+         </p><pre class="codeinput"><span class="comment">% Make a couple of example vectors</span>
+a = 1:5;
+b = 6:10;
+<span class="comment">% The semicolon at the end keeps them from printing on the screen</span>
+<span class="comment">% with the name "ans," short for answer.  You can see the values just</span>
+<span class="comment">% by typing the variable name at the prompt, like:</span>
+a
+
+<span class="comment">% Now on to manipulations</span>
+<span class="comment">% Addition (or subtraction) is automatically element-by-element</span>
+a + b
+
+<span class="comment">% Multiplication (and division) are trickier: they can go</span>
+<span class="comment">% element-by-element or as vector operations.</span>
+
+<span class="comment">% The dot before the multiplicaiton symbol makes the multiplication</span>
+<span class="comment">% (in this case, or any operation in general) work element-by-element.</span>
+ a.*b
+<span class="comment">% Mulitplying without the dot here leaves MATLAB confused, because it's</span>
+<span class="comment">% thinking how to multiply two vectors rather than element-by-element</span>
+<span class="comment">%    a*b</span>
+<span class="comment">% would give an error message.</span>
+
+<span class="comment">% If you know about vector dot products, MATLAB will happily produce those,</span>
+<span class="comment">% but first the vector dimensions must agree.  To do that, make b into a</span>
+<span class="comment">% column vector</span>
+b'
+<span class="comment">% Then a*b' works, and gives the dot product:</span>
+a*b'
+<span class="comment">% Since the dot product is commutative, a*b' = b*a', as</span>
+b*a'
+
+<span class="comment">% For any of these operations to work, the vectors must have the same</span>
+<span class="comment">% lengths.  Define a new vector c, which has more entries than a or b:</span>
+    c = 0:5
+<span class="comment">% Now</span>
+<span class="comment">%   a.*c</span>
+<span class="comment">% produces an error.</span>
+</pre><pre class="codeoutput">
+a =
+
+     1     2     3     4     5
+
+
+ans =
+
+     7     9    11    13    15
+
+
+ans =
+
+     6    14    24    36    50
+
+
+ans =
+
+     6
+     7
+     8
+     9
+    10
+
+
+ans =
+
+   130
+
+
+ans =
+
+   130
+
+
+c =
+
+     0     1     2     3     4     5
+
+</pre><h2>Vectors in functions<a name="4"></a></h2>
+         <p>When making functions and equations more complicated in nature, it is important to keep these rules in mind, to ensure Matlab
+            is doing what you want it to.
+         </p><pre class="codeinput"><span class="comment">% This works:</span>
+  x = 1:4
+  (x+1)./x
+<span class="comment">% but</span>
+   (x+1)/x
+<span class="comment">% without the dot will only work if x is a single number, but not a vector</span>
+<span class="comment">% -- you only get one number back (can you work out what it's done to get</span>
+<span class="comment">% the answer here?).</span>
+
+<span class="comment">% Fortunately, MATLAB's built-in functions like sqrt() or sin() know this</span>
+<span class="comment">% and will work on vectors:</span>
+sin(x)
+</pre><pre class="codeoutput">
+x =
+
+     1     2     3     4
+
+
+ans =
+
+    2.0000    1.5000    1.3333    1.2500
+
+
+ans =
+
+    1.3333
+
+
+ans =
+
+    0.8415    0.9093    0.1411   -0.7568
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%  Matlab Vector exercises
+%  A.J. Melhus  4/4/10
+
+% When performing mathematical operations in Matlab, the word "vector" 
+% often comes up.  What exactly does "vector" mean to Matlab and why 
+% use them?
+
+% A vector is simply a list of numbers.  In terms of linear algebra, 
+% vectos are 1 dimensional matrices - either a single-row or single-column 
+% matrix.  Vectors are important to Matlab because they are almost always 
+% the quickest and most efficient method for getting an answer.
+    
+% Matlab stands for "Matrix Laboratory," which means that Matlab is very 
+% good at vector and matrix mathematics.
+
+%% Defining vectors
+%  There are 3 basic ways to define a vector in Matlab:
+
+% 1. Manually enter every vector element, using 
+
+x = [3, 5, 7, 9]
+% (see below for what MATLAB makes of this command)
+
+% This approach works for arrays of numbers too, with commas and/or 
+% spaces to separate entries and semicolons to separate rows:
+
+x = [0, 1, 2; 3, 4, 5]
+
+% 2. Use colon notation.  This method allows you to quickly generate 
+% series vectors with a pre-defined or user-specified element width.
+    
+% Syntax:
+%     xstart:dx:xend 
+        % xstart is the first value of your vector
+        % dx (optional) is the step width, the difference between two 
+        %    consecutive entries
+        % xend is the last value of your vector
+
+% A simple example showing that the default increment is 1
+y1 = 1:5 
+
+% there are more entries here because the step size, dy, is smaller
+y2 = 1:0.5:5  
+ 
+% 3. Use a built-in function to create vectors of specified size - zeros, 
+% ones, linspace, logspace.  These functions are helpful because they let 
+% you decide how many entries you want in the vector, and do the rest for 
+%y ou.
+
+% The most useful for basic plotting is linspace.
+  %Syntax:
+  % linspace(xstart, xend, num_entries)
+  % num_entries is the number of entries (or size) in your vector
+  
+% Here a vector from 0 to 3.8, with 10 equally-spaced entries:
+y3 = linspace(0,3.8, 10)   
+
+% Initialize an array and fill with zeros
+y4 = zeros(3)
+
+ 
+ 
+%% Vector math
+% When doing vector mathematics, it is useful to understand how MATLAB 
+% performs operations with vectors.  The important distinction here is 
+% the use of the dot, .  This tells MATLAB to perform mathematical 
+% operations element-by-element, instead of normal linear algebra.  
+% Another important notation is the apostrophe, '.  This tells Matlab 
+% to transpose the vector - change it from a row vector to a column 
+% vector or vice-versa.  It is easiest if you do the following simple 
+% examples for yourself:
+     
+% Make a couple of example vectors
+a = 1:5;
+b = 6:10;
+% The semicolon at the end keeps them from printing on the screen 
+% with the name "ans," short for answer.  You can see the values just 
+% by typing the variable name at the prompt, like:
+a
+
+% Now on to manipulations
+% Addition (or subtraction) is automatically element-by-element
+a + b
+
+% Multiplication (and division) are trickier: they can go
+% element-by-element or as vector operations.
+
+% The dot before the multiplicaiton symbol makes the multiplication 
+% (in this case, or any operation in general) work element-by-element.
+ a.*b  
+% Mulitplying without the dot here leaves MATLAB confused, because it's
+% thinking how to multiply two vectors rather than element-by-element
+%    a*b
+% would give an error message. 
+
+% If you know about vector dot products, MATLAB will happily produce those,
+% but first the vector dimensions must agree.  To do that, make b into a
+% column vector
+b'
+% Then a*b' works, and gives the dot product:
+a*b'
+% Since the dot product is commutative, a*b' = b*a', as
+b*a'
+
+% For any of these operations to work, the vectors must have the same
+% lengths.  Define a new vector c, which has more entries than a or b:
+    c = 0:5
+% Now
+%   a.*c 
+% produces an error.
+
+%% Vectors in functions
+% When making functions and equations more complicated in nature, it is 
+% important to keep these rules in mind, to ensure Matlab is doing what 
+% you want it to.
+
+% This works:
+  x = 1:4
+  (x+1)./x
+% but 
+   (x+1)/x
+% without the dot will only work if x is a single number, but not a vector
+% REPLACE_WITH_DASH_DASH you only get one number back (can you work out what it's done to get 
+% the answer here?).
+
+% Fortunately, MATLAB's built-in functions like sqrt() or sin() know this
+% and will work on vectors:
+sin(x)
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

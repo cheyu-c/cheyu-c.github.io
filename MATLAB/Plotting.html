@@ -1,0 +1,335 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting in Matlab (REVISED)</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-04-26">
+      <meta name="m-file" content="Plotting 4-18-10"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting in Matlab (REVISED)</h1>
+         <introduction><pre>A.J. Melhus, 4-18-10</pre></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Using ezplot command</a></li>
+               <li><a href="#2">Using plot command</a></li>
+               <li><a href="#4">Plot aesthetics</a></li>
+               <li><a href="#5">Multiple Plots, 2 ways</a></li>
+               <li><a href="#7">Reversing axes</a></li>
+            </ul>
+         </div>
+         <h2>Using ezplot command<a name="1"></a></h2><pre class="codeinput"><span class="comment">% Use ezplot if you have a simple function and want a plot very quickly</span>
+
+<span class="comment">% Syntax:</span>
+<span class="comment">%  ezplot(f)</span>
+<span class="comment">% -  plots a function f over default domain [-2pi, 2pi]</span>
+<span class="comment">% - f can be symbolic, vector, or string</span>
+<span class="comment">% - displays title 'f' and independent variable 'x' on figure</span>
+
+<span class="comment">%  explot(f, [xmin,xmax])</span>
+<span class="comment">% - plots a function f over the given domain [xmin, xmax]</span>
+
+<span class="comment">% To try:</span>
+
+clf <span class="comment">% clear figure space</span>
+ezplot(<span class="string">'x^2'</span>)    <span class="comment">% plots y = x^2 over [-2pi, 2pi]</span>
+
+f = <span class="string">'cos(x)+1'</span>;
+ezplot(f, [0, 2*pi])    <span class="comment">% plots f = cos(x) + 1 over [0, 2pi]</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_01.png"> <h2>Using plot command<a name="2"></a></h2>
+         <p>plot is a much more robust plotting tool</p><pre class="codeinput"><span class="comment">% Basic syntax:</span>
+<span class="comment">%  plot(x,y)</span>
+<span class="comment">% - x and y are vectors containing the data you wish to plot</span>
+<span class="comment">% - x and y must be of same length and type</span>
+
+x1 = 0:2*pi;    <span class="comment">% a vector from 0 to 2pi, using the default step of 1</span>
+y1 = sin(x1);
+clf <span class="comment">% clear figure space</span>
+plot(x1,y1)
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_02.png"> <pre>THIS PLOT LOOKS BAD because x1 only contains 7 points (we need more
+points to make a smooth graph).</pre><pre class="codeinput"><span class="comment">%  Instead, use &lt;linspace&gt; to make a much more smooth graph:</span>
+
+x2 = linspace(0, 2*pi);    <span class="comment">% a vector from 0 to 2pi containing 100 linearly</span>
+                           <span class="comment">% spaced points</span>
+y2 = sin(x2);
+clf <span class="comment">% clear figure space</span>
+plot(x2,y2)
+<span class="comment">%  THIS PLOT LOOKS GOOD because x2 contains many more points, creating a</span>
+<span class="comment">% smoother graph</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_03.png"> <h2>Plot aesthetics<a name="4"></a></h2>
+         <p>(taken/edited from <a href="http://www.engin.umich.edu/group/ctm/extras/plot.html">http://www.engin.umich.edu/group/ctm/extras/plot.html</a>)
+         </p><pre class="codeinput"><span class="comment">% The color and point marker can be changed on a plot by adding a third</span>
+<span class="comment">% parameter (in single quotes) to the plot command.</span>
+<span class="comment">% Syntax:</span>
+<span class="comment">% plot(x,y, 'aesthetic')</span>
+<span class="comment">% - aesthetic consists of one to three characters which specify a color</span>
+<span class="comment">% and/or point marker type</span>
+<span class="comment">%</span>
+<span class="comment">% color and point marker types:</span>
+<span class="comment">%     y     yellow        .     point</span>
+<span class="comment">%     m     magenta       o     circle</span>
+<span class="comment">%     c     cyan          x     x-mark</span>
+<span class="comment">%     r     red           +     plus</span>
+<span class="comment">%     g     green         -     solid</span>
+<span class="comment">%     b     blue          *     star</span>
+<span class="comment">%     w     white         :     dotted</span>
+<span class="comment">%     k     black         -.    dashdot</span>
+<span class="comment">%  	                     --    dashed</span>
+
+<span class="comment">% For example, to plot y2 as a red, dotted line, the command should be</span>
+<span class="comment">% changed to:</span>
+
+clf <span class="comment">% clear figure space</span>
+plot(x2,y2, <span class="string">'r:'</span>)    <span class="comment">% plots a red dotted line, instead of the default</span>
+                     <span class="comment">% blue straight line</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_04.png"> <h2>Multiple Plots, 2 ways<a name="5"></a></h2><pre class="codeinput"><span class="comment">%  1.  Use multiple arguments within one plot command:</span>
+<span class="comment">%  Syntax:</span>
+<span class="comment">% plot(x,y,'aesthetic',...,x,y_n,'aesthetic')</span>
+
+<span class="comment">% For example:</span>
+t=linspace(0,2*pi);
+clf <span class="comment">% clear figure space</span>
+plot(t,sinc(t),<span class="string">'r.'</span>,t,(cos(t)).^2,t,(sin(t)).^2+(cos(t)).^2,<span class="string">'ko'</span>)
+<span class="comment">% plots sinc(t), cos^2(t), and sin^2+cos^2(t) all on the same plot, with</span>
+<span class="comment">% different point markers</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_05.png"> <pre class="codeinput"><span class="comment">%  2.  Use hold on/off command:</span>
+<span class="comment">% You can use the &lt;hold&gt; command to make adjustments to the current figure</span>
+<span class="comment">% without erasing objects or information.</span>
+<span class="comment">% hold is a more logical way of plotting multiple objects at once, and is</span>
+<span class="comment">% not as crammed.</span>
+
+<span class="comment">% For example:</span>
+t1 = linspace(0,2*pi);
+v1 = sinc(t1);
+clf <span class="comment">% clear figure space</span>
+hold <span class="string">on</span>    <span class="comment">% toggles figure to allow more figure actions</span>
+plot(t1,v1,<span class="string">'r.'</span>)    <span class="comment">% plots sinc(t) in red points</span>
+v2 = (cos(t1)).^2;
+plot(t1,v2,<span class="string">'k'</span>)    <span class="comment">% plots cos^2(t) in black</span>
+v3 = (sin(t1)).^2 + (cos(t1)).^2;
+plot(t1,v3,<span class="string">'g-.'</span>)   <span class="comment">% plots sin^2 + cos^2(t) in green dash-dot</span>
+hold <span class="string">off</span>    <span class="comment">% release figure toggle</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_06.png"> <h2>Reversing axes<a name="7"></a></h2>
+         <p>Reversing axes is often useful in astronomy: think about the magnitude scale, where brighter is more negative.</p><pre class="codeinput"><span class="comment">%  Reverse the plotted axes by using the set command:</span>
+<span class="comment">%          set(axes, 'XDir', 'reverse', 'YDir', 'reverse')</span>
+<span class="comment">% This reverses both the x-axis and y-axis (positive is now left and down,</span>
+<span class="comment">% negative is right and up)</span>
+<span class="comment">% - Use only 'XDir' to flip x-axis</span>
+<span class="comment">% - Use only 'YDir' to flip y-axis</span>
+
+clf <span class="comment">% clear figure space</span>
+set(axes, <span class="string">'XDir'</span>,<span class="string">'reverse'</span>, <span class="string">'YDir'</span>, <span class="string">'reverse'</span>)    <span class="comment">% Reverses both axes</span>
+hold <span class="string">on</span>    <span class="comment">% toggles figure to allow more figure actions</span>
+plot(t1,v1,<span class="string">'r.'</span>)    <span class="comment">% plots sinc(t) in red points</span>
+v2 = (cos(t1)).^2;
+plot(t1,v2,<span class="string">'k'</span>)    <span class="comment">% plots cos^2(t) in black</span>
+v3 = (sin(t1)).^2 + (cos(t1)).^2;
+plot(t1,v3,<span class="string">'g-.'</span>)   <span class="comment">% plots sin^2 + cos^2(t) in green dash-dot</span>
+hold <span class="string">off</span>    <span class="comment">% release figure toggle</span>
+</pre><img vspace="5" hspace="5" src="Plotting 4-18-10_07.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%  Plotting in Matlab (REVISED)
+%  A.J. Melhus, 4-18-10
+
+%% Using ezplot command
+
+% Use ezplot if you have a simple function and want a plot very quickly
+    
+% Syntax:
+%  ezplot(f)  
+% -  plots a function f over default domain [-2pi, 2pi]
+% - f can be symbolic, vector, or string
+% - displays title 'f' and independent variable 'x' on figure
+  
+%  explot(f, [xmin,xmax])
+% - plots a function f over the given domain [xmin, xmax]
+  
+% To try:
+    
+clf % clear figure space
+ezplot('x^2')    % plots y = x^2 over [-2pi, 2pi]
+    
+f = 'cos(x)+1';
+ezplot(f, [0, 2*pi])    % plots f = cos(x) + 1 over [0, 2pi]
+        
+        
+%% Using plot command          
+% plot is a much more robust plotting tool
+
+% Basic syntax:
+%  plot(x,y)
+% - x and y are vectors containing the data you wish to plot
+% - x and y must be of same length and type
+
+x1 = 0:2*pi;    % a vector from 0 to 2pi, using the default step of 1
+y1 = sin(x1);
+clf % clear figure space
+plot(x1,y1)
+
+%% 
+%  THIS PLOT LOOKS BAD because x1 only contains 7 points (we need more 
+% points to make a smooth graph).  
+
+%  Instead, use <linspace> to make a much more smooth graph:
+
+x2 = linspace(0, 2*pi);    % a vector from 0 to 2pi containing 100 linearly 
+                           % spaced points
+y2 = sin(x2);
+clf % clear figure space
+plot(x2,y2)
+%  THIS PLOT LOOKS GOOD because x2 contains many more points, creating a 
+% smoother graph
+
+
+%% Plot aesthetics  
+% (taken/edited from http://www.engin.umich.edu/group/ctm/extras/plot.html)
+
+% The color and point marker can be changed on a plot by adding a third 
+% parameter (in single quotes) to the plot command.
+% Syntax:
+% plot(x,y, 'aesthetic')
+% - aesthetic consists of one to three characters which specify a color 
+% and/or point marker type
+%
+% color and point marker types:
+%     y     yellow        .     point
+%     m     magenta       o     circle
+%     c     cyan          x     x-mark
+%     r     red           +     plus
+%     g     green         -     solid
+%     b     blue          *     star
+%     w     white         :     dotted
+%     k     black         -.    dashdot
+%  	                     REPLACE_WITH_DASH_DASH    dashed
+
+% For example, to plot y2 as a red, dotted line, the command should be 
+% changed to:
+  
+clf % clear figure space
+plot(x2,y2, 'r:')    % plots a red dotted line, instead of the default 
+                     % blue straight line
+  
+
+%%    Multiple Plots, 2 ways
+
+%  1.  Use multiple arguments within one plot command:
+%  Syntax:
+% plot(x,y,'aesthetic',...,x,y_n,'aesthetic')
+
+% For example:
+t=linspace(0,2*pi);
+clf % clear figure space
+plot(t,sinc(t),'r.',t,(cos(t)).^2,t,(sin(t)).^2+(cos(t)).^2,'ko')    
+% plots sinc(t), cos^2(t), and sin^2+cos^2(t) all on the same plot, with 
+% different point markers
+%%
+
+%  2.  Use hold on/off command:
+% You can use the <hold> command to make adjustments to the current figure 
+% without erasing objects or information.
+% hold is a more logical way of plotting multiple objects at once, and is 
+% not as crammed.
+
+% For example:
+t1 = linspace(0,2*pi);
+v1 = sinc(t1);
+clf % clear figure space
+hold on    % toggles figure to allow more figure actions
+plot(t1,v1,'r.')    % plots sinc(t) in red points
+v2 = (cos(t1)).^2;
+plot(t1,v2,'k')    % plots cos^2(t) in black
+v3 = (sin(t1)).^2 + (cos(t1)).^2;
+plot(t1,v3,'g-.')   % plots sin^2 + cos^2(t) in green dash-dot
+hold off    % release figure toggle
+
+%% Reversing axes
+% Reversing axes is often useful in astronomy: think about the magnitude
+% scale, where brighter is more negative.
+
+%  Reverse the plotted axes by using the set command:
+%          set(axes, 'XDir', 'reverse', 'YDir', 'reverse')    
+% This reverses both the x-axis and y-axis (positive is now left and down, 
+% negative is right and up)
+% - Use only 'XDir' to flip x-axis
+% - Use only 'YDir' to flip y-axis 
+
+clf % clear figure space
+set(axes, 'XDir','reverse', 'YDir', 'reverse')    % Reverses both axes 
+hold on    % toggles figure to allow more figure actions
+plot(t1,v1,'r.')    % plots sinc(t) in red points
+v2 = (cos(t1)).^2;
+plot(t1,v2,'k')    % plots cos^2(t) in black
+v3 = (sin(t1)).^2 + (cos(t1)).^2;
+plot(t1,v3,'g-.')   % plots sin^2 + cos^2(t) in green dash-dot
+hold off    % release figure toggle
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

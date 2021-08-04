@@ -1,0 +1,207 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>How to plot Surface Plots</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-05-03">
+      <meta name="m-file" content="ContourPlots"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>How to plot Surface Plots</h1>
+         <introduction>
+            <p>JTK 2010.5.3</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">The Function</a></li>
+               <li><a href="#2">Generating the X,Y Grid</a></li>
+               <li><a href="#3">Generating the Z Data</a></li>
+               <li><a href="#4">Generating the Surface Plot</a></li>
+               <li><a href="#5">Combining Contour and Surface Plots</a></li>
+               <li><a href="#6">Contour Plots ontop of Surface Plots ontop of Contour Plots... oh my!</a></li>
+            </ul>
+         </div>
+         <h2>The Function<a name="1"></a></h2>
+         <p>For our example function, we'll be plotting z = x^2 + y^2.  This is essentially a two dimensional parabola.</p>
+         <h2>Generating the X,Y Grid<a name="2"></a></h2>
+         <p>The first thing to do is to generate an X,Y grid for our plot.  Think of this grid as the equivalent of the latitude/longitude
+            on Earth - and that we'll be later be plotting something (say topographic elevation) for each point on this grid.
+         </p><pre class="codeinput">x = -4:.1:4;             <span class="comment">% The range of x values.</span>
+y = -4:.1:4;             <span class="comment">% The range of y values.</span>
+[X,Y] = meshgrid (x,y); <span class="comment">% This generates the actual grid of x and y values.</span>
+</pre><h2>Generating the Z Data<a name="3"></a></h2>
+         <p>To generate the actual Z data, all we need to do is create a function relating "X" and "Y" (the variables from the meshgrid
+            --- not the ranges, 'x' and 'y').
+         </p><pre class="codeinput">Z=Y.^2+X.^2;            <span class="comment">% The function we're plotting.</span>
+<span class="comment">% Remember to use the correct vector notation for all operations (such as</span>
+<span class="comment">% using the '.^' operator to do piecewise powers).</span>
+</pre><h2>Generating the Surface Plot<a name="4"></a></h2>
+         <p>Next, all we need to do is to generate a contour plot!</p><pre class="codeinput">figure(1);                 <span class="comment">% Generating a new window to plot in.</span>
+contour(X,Y,Z)             <span class="comment">% The surface plotting function.</span>
+<span class="comment">% Without any further qualifiers, MATLAB will automatically pick a scale</span>
+<span class="comment">% for the contours.  You can, however, tell MATLAB how many contours you'd</span>
+<span class="comment">% like:</span>
+figure(2);
+contour(X,Y,Z,20)
+</pre><img vspace="5" hspace="5" src="ContourPlots_01.png"> <img vspace="5" hspace="5" src="ContourPlots_02.png"> <h2>Combining Contour and Surface Plots<a name="5"></a></h2>
+         <p>(Please read the surface plot introduction before proceeding) To plot a contour plot ontop of a surface plot, all we do is
+            plot the surface plot, tell MATLAB to wait, and then use the "contour3" plotting routine to plot a 3D contour ontop of the
+            surface plot:
+         </p><pre class="codeinput">figure(3);
+surf(X,Y,Z,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>)
+hold <span class="string">on</span>
+contour3(X,Y,Z,20,<span class="string">'k'</span>)
+hold <span class="string">off</span>
+<span class="comment">% The color of the contour lines are by default a rainbow --- which will</span>
+<span class="comment">% make them blend into the underlying surface plot.  We specified the color</span>
+<span class="comment">% to be black with the 'k' qualifier in the contour3 routine.</span>
+</pre><img vspace="5" hspace="5" src="ContourPlots_03.png"> <h2>Contour Plots ontop of Surface Plots ontop of Contour Plots... oh my!<a name="6"></a></h2>
+         <p>A further nifty command is "meshc" which plots a mesh surface plot, and generates a contour plot beneath it on the X,Y plane.</p><pre class="codeinput">figure(4);
+meshc(X,Y,Z)
+<span class="comment">% We can make arbitrarily complicated plots by merely combining different</span>
+<span class="comment">% plotting functions and using the "hold" function from previous:</span>
+figure(5);
+shading <span class="string">interp</span>
+meshc(X,Y,Z);
+hold <span class="string">on</span>
+surf(X,Y,Z,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>)
+contour3(X,Y,Z,20,<span class="string">'k'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="ContourPlots_04.png"> <img vspace="5" hspace="5" src="ContourPlots_05.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% How to plot Surface Plots
+% JTK 2010.5.3
+
+%% The Function
+% For our example function, we'll be plotting z = x^2 + y^2.  This is
+% essentially a two dimensional parabola.
+
+%% Generating the X,Y Grid
+% The first thing to do is to generate an X,Y grid for our plot.  Think of
+% this grid as the equivalent of the latitude/longitude on Earth - and that
+% we'll be later be plotting something (say topographic elevation) for each
+% point on this grid.
+x = -4:.1:4;             % The range of x values.
+y = -4:.1:4;             % The range of y values.  
+[X,Y] = meshgrid (x,y); % This generates the actual grid of x and y values.
+
+%% Generating the Z Data
+% To generate the actual Z data, all we need to do is create a function
+% relating "X" and "Y" (the variables from the meshgrid REPLACE_WITH_DASH_DASH- not the ranges,
+% 'x' and 'y').
+Z=Y.^2+X.^2;            % The function we're plotting.
+% Remember to use the correct vector notation for all operations (such as
+% using the '.^' operator to do piecewise powers).
+
+%% Generating the Surface Plot
+% Next, all we need to do is to generate a contour plot!
+figure(1);                 % Generating a new window to plot in.
+contour(X,Y,Z)             % The surface plotting function.
+% Without any further qualifiers, MATLAB will automatically pick a scale
+% for the contours.  You can, however, tell MATLAB how many contours you'd
+% like:
+figure(2);
+contour(X,Y,Z,20)
+
+%% Combining Contour and Surface Plots
+% (Please read the surface plot introduction before proceeding)
+% To plot a contour plot ontop of a surface plot, all we do is plot the
+% surface plot, tell MATLAB to wait, and then use the "contour3" plotting
+% routine to plot a 3D contour ontop of the surface plot:
+figure(3);
+surf(X,Y,Z,'EdgeColor','none')
+hold on
+contour3(X,Y,Z,20,'k')
+hold off
+% The color of the contour lines are by default a rainbow REPLACE_WITH_DASH_DASH- which will
+% make them blend into the underlying surface plot.  We specified the color
+% to be black with the 'k' qualifier in the contour3 routine.
+
+%% Contour Plots ontop of Surface Plots ontop of Contour Plots... oh my!
+% A further nifty command is "meshc" which plots a mesh surface plot, and
+% generates a contour plot beneath it on the X,Y plane.
+figure(4);
+meshc(X,Y,Z)
+% We can make arbitrarily complicated plots by merely combining different
+% plotting functions and using the "hold" function from previous:
+figure(5);
+shading interp
+meshc(X,Y,Z);
+hold on
+surf(X,Y,Z,'EdgeColor','none')
+contour3(X,Y,Z,20,'k')
+hold off
+
+
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,248 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>intro matlab</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-04-26">
+      <meta name="m-file" content="intro matlab"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">2 important areas where first-time users forget/neglect to look:</a></li>
+               <li><a href="#3">Creating and using vectors</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="comment">%%Introductory MATLAB exercises</span>
+<span class="comment">% A.J. Melhus 3/7/10</span>
+
+<span class="comment">% Here are some exercises that are a helpful way of introducing Matlab to the</span>
+<span class="comment">% first-time student:</span>
+</pre><h2>2 important areas where first-time users forget/neglect to look:<a name="2"></a></h2><pre>The directory - this is the current computer directory where Matlab looks
+for code/files, should you call upon a created file.  This is especially
+important when using m-files for classes/homeworks.</pre><pre class="codeinput"><span class="comment">%  The workspace - this area looks very similar to an Excel GUI that many</span>
+<span class="comment">% people are used to.  The workspace lists the current matrices/vectors/data</span>
+<span class="comment">% that are stored in Matlab's working memory.  Picking through the workspace</span>
+<span class="comment">% is sometimes helpful when sorting out plotting problems - "why does my</span>
+<span class="comment">% plot look like a straight line?"</span>
+</pre><h2>Creating and using vectors<a name="3"></a></h2>
+         <p>1) Try typing:</p><pre class="codeinput">x = [1:50]  <span class="comment">% a huge (unnecessary) list of numbers!  (with default step 1)</span>
+</pre><pre class="codeoutput">
+x =
+
+  Columns 1 through 21 
+
+     1     2     3     4     5     6     7     8     9    10    11    12    13    14    15    16    17    18    19    20    21
+
+  Columns 22 through 42 
+
+    22    23    24    25    26    27    28    29    30    31    32    33    34    35    36    37    38    39    40    41    42
+
+  Columns 43 through 50 
+
+    43    44    45    46    47    48    49    50
+
+</pre><pre class="codeinput"><span class="comment">% As you can see, this command generates a huge list of numbers.  Suppress</span>
+<span class="comment">% command-line echo with the semicolon operator, ;</span>
+<span class="comment">% Instead, type:</span>
+x = [1:50];
+<span class="comment">% huge list is still there, just supressed.  To check? - open the workspace</span>
+<span class="comment">% entry for x by typing</span>
+x
+</pre><pre class="codeoutput">
+x =
+
+  Columns 1 through 21 
+
+     1     2     3     4     5     6     7     8     9    10    11    12    13    14    15    16    17    18    19    20    21
+
+  Columns 22 through 42 
+
+    22    23    24    25    26    27    28    29    30    31    32    33    34    35    36    37    38    39    40    41    42
+
+  Columns 43 through 50 
+
+    43    44    45    46    47    48    49    50
+
+</pre><pre class="codeinput"><span class="comment">%You can manually set the step between values:</span>
+x1 = [1:.5:50];
+<span class="comment">% this generates a row vector 1-50 with spacing 0.5 between each value</span>
+
+<span class="comment">% To create a vector with a SET number of entries, uses the &lt;linspace&gt;</span>
+<span class="comment">% command:</span>
+x2 = linspace(1,50,200);
+<span class="comment">% this creates a vector containing 200 entries, numbering 1 to 50 with equal</span>
+<span class="comment">% spacing between (linearly spaced entries).</span>
+
+
+<span class="comment">% 2) When performing arithmetic operations with vectors in Matlab, make sure</span>
+<span class="comment">% to put a period &lt;.&gt; after the vector in question.  Otherwise, you will</span>
+<span class="comment">% usually get error messages.  The period tells Matlab to perform that</span>
+<span class="comment">% command at every vector position:</span>
+
+    <span class="comment">% y = x^3 +x^2/(x^2 + 1)         NO, wrong format (try cut-and-pasting</span>
+    <span class="comment">%                                this expression to the command prompt)</span>
+      y = x.^3 + (x.^2)./(x.^2 + 1); <span class="comment">% YES, correct format</span>
+<span class="comment">% (note: you do not need to use the period with addition/subtraction)</span>
+
+
+<span class="comment">% 3) Matlab is very good at plotting, but you have to know how to tell it</span>
+<span class="comment">% what you want.</span>
+
+    x = linspace(0, 2*pi);
+    y1 = sin(x);
+    y2 = cos(x);
+    y3 = (cos(x)).^2;
+    clf       <span class="comment">% "clear figure"</span>
+    hold <span class="string">on</span>   <span class="comment">% allows more actions to in the plot/figure window</span>
+    plot(x, y1, <span class="string">'b--'</span>)  <span class="comment">% this says to plot y1 vs. x using a blue dashed line</span>
+    plot(x, y2, <span class="string">'ro'</span>)   <span class="comment">% plot with red circles</span>
+    plot(x, y3, <span class="string">'g-'</span>) <span class="comment">% plot with green straight line</span>
+    hold <span class="string">off</span>  <span class="comment">% release plot</span>
+
+    <span class="comment">% There are many other variations of plot subroutines, just type</span>
+    <span class="comment">% &lt;help plot&gt;</span>
+</pre><img vspace="5" hspace="5" src="intro matlab_01.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%Introductory MATLAB exercises
+% A.J. Melhus 3/7/10
+
+% Here are some exercises that are a helpful way of introducing Matlab to the 
+% first-time student:
+
+%% 2 important areas where first-time users forget/neglect to look:
+%  The directory - this is the current computer directory where Matlab looks 
+% for code/files, should you call upon a created file.  This is especially 
+% important when using m-files for classes/homeworks.
+    
+%  The workspace - this area looks very similar to an Excel GUI that many 
+% people are used to.  The workspace lists the current matrices/vectors/data 
+% that are stored in Matlab's working memory.  Picking through the workspace 
+% is sometimes helpful when sorting out plotting problems - "why does my 
+% plot look like a straight line?"
+    
+%% Creating and using vectors    
+% 1) Try typing: 
+x = [1:50]  % a huge (unnecessary) list of numbers!  (with default step 1)
+%% 
+
+% As you can see, this command generates a huge list of numbers.  Suppress 
+% command-line echo with the semicolon operator, ;
+% Instead, type: 
+x = [1:50];   
+% huge list is still there, just supressed.  To check? - open the workspace 
+% entry for x by typing
+x
+%%
+
+%You can manually set the step between values:  
+x1 = [1:.5:50]; 
+% this generates a row vector 1-50 with spacing 0.5 between each value
+    
+% To create a vector with a SET number of entries, uses the <linspace> 
+% command:
+x2 = linspace(1,50,200);   
+% this creates a vector containing 200 entries, numbering 1 to 50 with equal 
+% spacing between (linearly spaced entries).
+    
+    
+% 2) When performing arithmetic operations with vectors in Matlab, make sure 
+% to put a period <.> after the vector in question.  Otherwise, you will 
+% usually get error messages.  The period tells Matlab to perform that 
+% command at every vector position:
+    
+    % y = x^3 +x^2/(x^2 + 1)         NO, wrong format (try cut-and-pasting
+    %                                this expression to the command prompt)
+      y = x.^3 + (x.^2)./(x.^2 + 1); % YES, correct format 
+% (note: you do not need to use the period with addition/subtraction)
+    
+    
+% 3) Matlab is very good at plotting, but you have to know how to tell it 
+% what you want.
+    
+    x = linspace(0, 2*pi);
+    y1 = sin(x);
+    y2 = cos(x);
+    y3 = (cos(x)).^2;
+    clf       % "clear figure"
+    hold on   % allows more actions to in the plot/figure window
+    plot(x, y1, 'bREPLACE_WITH_DASH_DASH')  % this says to plot y1 vs. x using a blue dashed line
+    plot(x, y2, 'ro')   % plot with red circles
+    plot(x, y3, 'g-') % plot with green straight line
+    hold off  % release plot
+    
+    % There are many other variations of plot subroutines, just type 
+    % <help plot>
+    
+    
+    
+     
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,165 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Where to get HELP when using MATLAB</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-04-26">
+      <meta name="m-file" content="Help using Matlab, 4-18-10"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Where to get HELP when using MATLAB</h1>
+         <introduction><pre>A.J. Melhus, 4-18-10
+Four more places to get help when you are using MATLAB:</pre></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">MATLAB's help function</a></li>
+               <li><a href="#3">MATLAB on the internet</a></li>
+               <li><a href="#4">Ask an actual person</a></li>
+            </ul>
+         </div>
+         <h2>MATLAB's help function<a name="1"></a></h2><pre class="codeinput"><span class="comment">% 1.  Use the &lt;help&gt; command.</span>
+<span class="comment">%This brings up a basic list of features about the function or script</span>
+<span class="comment">% you are interested in, in the command window:</span>
+
+help <span class="string">cosh</span>    <span class="comment">% brings up a list of features of the cosh function</span>
+</pre><pre class="codeoutput"> COSH   Hyperbolic cosine.
+    COSH(X) is the hyperbolic cosine of the elements of X.
+ 
+    See also &lt;a href="matlab:help acosh"&gt;acosh&lt;/a&gt;.
+
+    Overloaded functions or methods (ones with the same name in other directories)
+       &lt;a href="matlab:help sym/cosh.m"&gt;help sym/cosh.m&lt;/a&gt;
+
+    Reference page in Help browser
+       &lt;a href="matlab:doc cosh"&gt;doc cosh&lt;/a&gt;
+
+
+
+</pre><pre class="codeinput"><span class="comment">% 2.  Use the HELP window.</span>
+<span class="comment">%  Click on the characteristic blue box to bring up Matlabs help and demo</span>
+<span class="comment">%  window.</span>
+<span class="comment">%  - search for terms</span>
+<span class="comment">%  - generally produces more results than &lt;help&gt; command line</span>
+<span class="comment">%  - most sections have demos (view syntax and setup for problems)</span>
+</pre><h2>MATLAB on the internet<a name="3"></a></h2><pre class="codeinput"><span class="comment">% 3. Use the internet.</span>
+<span class="comment">% - be wary of this method</span>
+<span class="comment">% - but it is sometimes best tool for quick, bare-bones info</span>
+<span class="comment">% - Google any Matlab-related question - someone probably has webpage</span>
+<span class="comment">%   about it</span>
+</pre><h2>Ask an actual person<a name="4"></a></h2><pre class="codeinput"><span class="comment">% 4. If you are on the Univ. of MD campus:</span>
+<span class="comment">% - Matlab tutors in Regents Drive Garage (PG-2) WAM lab</span>
+<span class="comment">% - tutors are pros and can help with most Matlab problems, if you know how</span>
+<span class="comment">%   to ask</span>
+<span class="comment">%  link:  http://www.math.umd.edu/undergraduate/resources/tutoringmatlab.html</span>
+<span class="comment">%  (you can also ask the OIT HelpDesk in CSS building about Matlab tutors)</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%%  Where to get HELP when using MATLAB
+%  A.J. Melhus, 4-18-10
+% Four more places to get help when you are using MATLAB:
+
+%%  MATLAB's help function
+
+% 1.  Use the <help> command.  
+%This brings up a basic list of features about the function or script 
+% you are interested in, in the command window:
+  
+help cosh    % brings up a list of features of the cosh function
+%%
+
+% 2.  Use the HELP window.  
+%  Click on the characteristic blue box to bring up Matlabs help and demo 
+%  window.  
+%  - search for terms
+%  - generally produces more results than <help> command line
+%  - most sections have demos (view syntax and setup for problems)
+  
+    
+%%  MATLAB on the internet
+
+% 3. Use the internet.  
+% - be wary of this method
+% - but it is sometimes best tool for quick, bare-bones info
+% - Google any Matlab-related question - someone probably has webpage 
+%   about it
+
+
+%%  Ask an actual person
+
+% 4. If you are on the Univ. of MD campus:
+% - Matlab tutors in Regents Drive Garage (PG-2) WAM lab  
+% - tutors are pros and can help with most Matlab problems, if you know how 
+%   to ask
+%  link:  http://www.math.umd.edu/undergraduate/resources/tutoringmatlab.html
+%  (you can also ask the OIT HelpDesk in CSS building about Matlab tutors)
+    
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

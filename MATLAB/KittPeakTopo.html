@@ -1,0 +1,225 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Topography of Kitt Peak (IN PROGRESS)</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-05-03">
+      <meta name="m-file" content="KittPeakTopo"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Topography of Kitt Peak (IN PROGRESS)</h1>
+         <introduction>
+            <p>JTK 2010.5.3</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Reading in the X,Y,Z data</a></li>
+               <li><a href="#2">Scatter Plot</a></li>
+               <li><a href="#3">Delaunay Triangulation</a></li>
+               <li><a href="#4">Plotting with TriSurf</a></li>
+               <li><a href="#5">Making our Topographic Map Nicer</a></li>
+            </ul>
+         </div>
+         <h2>Reading in the X,Y,Z data<a name="1"></a></h2>
+         <p>First, we need to locate the data file containing the requisite X,Y,Z data (KittPeakTopoData.txt), and read it into MATLAB.
+            In this case, since our data file is just three columns (of equal length), we can use the "load" function.
+         </p><pre class="codeinput">load <span class="string">KittPeakTopoData.txt</span>       <span class="comment">%Loading the data file</span>
+x = KittPeakTopoData(:,1);      <span class="comment">%Extracting the 1st column, for x data</span>
+y = KittPeakTopoData(:,2);      <span class="comment">%Extracting the 2nd column, for y data</span>
+z = KittPeakTopoData(:,3);      <span class="comment">%Extracting the 3rd column, for z data</span>
+<span class="comment">% If the extraction technique (i.e,. (:,2)) looks alien, review how MATLAB</span>
+<span class="comment">% handles matrices - since it's doing the exact same things here.</span>
+</pre><h2>Scatter Plot<a name="2"></a></h2>
+         <p>Now you can't just plug in a "surf(x,y,z)" command and immediately get a nice surface plot.  The reason for this is in the
+            formatting of our data. When doing surface plots or contour plots (see previous introductions), we're generating square arrays
+            of data.  Here we've just got a list of values.  To illustrate this, we can do a simple 3D scatter plot:
+         </p><pre class="codeinput">figure(1)
+plot3(x,y,z,<span class="string">'.-'</span>)       <span class="comment">% Plotting a scatter plot of data (as demonstration)</span>
+</pre><img vspace="5" hspace="5" src="KittPeakTopo_01.png"> <h2>Delaunay Triangulation<a name="3"></a></h2>
+         <p>Since it's clear from above that we need to rework the data, the way we can do this is to use "Delaunay Triangulation" ---
+            which will essentially build little triangles between all of the scatter plot points from the last step.
+         </p><pre class="codeinput">tri=delaunay(x,y);
+figure(2)
+plot(x,y,<span class="string">'.'</span>)           <span class="comment">% Plotting the data points (as demonstration)</span>
+<span class="comment">% And how many triangles can be constructed out of those data points?</span>
+[r,c]=size(tri);        <span class="comment">% Finding out the number of triangles from Delaunay</span>
+disp(r)
+</pre><pre class="codeoutput">    84
+
+</pre><img vspace="5" hspace="5" src="KittPeakTopo_02.png"> <h2>Plotting with TriSurf<a name="4"></a></h2>
+         <p>With all of these little constructed triangles, we can then actually start to create true topographic maps!</p><pre class="codeinput">figure(3)
+h=trisurf(tri,x,y,z);   <span class="comment">% Creating a 3d plot, out of meshed triangles.</span>
+axis <span class="string">vis3d</span>              <span class="comment">% This freezes the axis ratio of the plot -</span>
+                        <span class="comment">% preventing it from stretching to fill when</span>
+                        <span class="comment">% rotated.</span>
+</pre><img vspace="5" hspace="5" src="KittPeakTopo_03.png"> <h2>Making our Topographic Map Nicer<a name="5"></a></h2><pre class="codeinput">figure(4)               <span class="comment">% Opening a new figure</span>
+h=trisurf(tri,x,y,z);   <span class="comment">% Plotting the figure as before</span>
+
+<span class="comment">% Turning off the axis:</span>
+axis <span class="string">off</span>
+
+<span class="comment">% Setting the lighting position:</span>
+l = light(<span class="string">'position'</span>,[-50 -15 29])
+
+<span class="comment">% Setting the camera position:</span>
+set(gca,<span class="string">'CameraPosition'</span>,[208 -50 7687])
+
+<span class="comment">% Setting the lighting properties.  Phong just indicates a particular type</span>
+<span class="comment">% of lighting.  Other options are: flat, gouraud and none.</span>
+lighting <span class="string">phong</span>
+
+<span class="comment">% Setting the shading properties.  Interp will smooth out the colors - but</span>
+<span class="comment">% there are other options such as: flat and faceted.</span>
+shading <span class="string">interp</span>
+
+<span class="comment">% Generating a colorbar to act as a scale for what the different colors</span>
+<span class="comment">% shown mean.  "EastOutside" indicates the position of this scale.  Look at</span>
+<span class="comment">% the help function for "colorbar" to see other possible locations.</span>
+colorbar <span class="string">EastOutside</span>
+</pre><pre class="codeoutput">
+l =
+
+  636.0007
+
+</pre><img vspace="5" hspace="5" src="KittPeakTopo_04.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Topography of Kitt Peak (IN PROGRESS)
+% JTK 2010.5.3
+
+%% Reading in the X,Y,Z data
+% First, we need to locate the data file containing the requisite X,Y,Z
+% data (KittPeakTopoData.txt), and read it into MATLAB.  In this case,
+% since our data file is just three columns (of equal length), we can use
+% the "load" function.  
+load KittPeakTopoData.txt       %Loading the data file
+x = KittPeakTopoData(:,1);      %Extracting the 1st column, for x data
+y = KittPeakTopoData(:,2);      %Extracting the 2nd column, for y data
+z = KittPeakTopoData(:,3);      %Extracting the 3rd column, for z data
+% If the extraction technique (i.e,. (:,2)) looks alien, review how MATLAB
+% handles matrices - since it's doing the exact same things here.
+
+%% Scatter Plot
+% Now you can't just plug in a "surf(x,y,z)" command and immediately get a
+% nice surface plot.  The reason for this is in the formatting of our data.
+% When doing surface plots or contour plots (see previous introductions),
+% we're generating square arrays of data.  Here we've just got a list of
+% values.  To illustrate this, we can do a simple 3D scatter plot:
+figure(1)
+plot3(x,y,z,'.-')       % Plotting a scatter plot of data (as demonstration)
+
+%% Delaunay Triangulation
+% Since it's clear from above that we need to rework the data, the way we
+% can do this is to use "Delaunay Triangulation" REPLACE_WITH_DASH_DASH- which will essentially
+% build little triangles between all of the scatter plot points from the
+% last step.
+tri=delaunay(x,y);
+figure(2)
+plot(x,y,'.')           % Plotting the data points (as demonstration)
+% And how many triangles can be constructed out of those data points?
+[r,c]=size(tri);        % Finding out the number of triangles from Delaunay
+disp(r)
+
+%% Plotting with TriSurf
+% With all of these little constructed triangles, we can then actually
+% start to create true topographic maps!
+figure(3)
+h=trisurf(tri,x,y,z);   % Creating a 3d plot, out of meshed triangles.
+axis vis3d              % This freezes the axis ratio of the plot -
+                        % preventing it from stretching to fill when 
+                        % rotated.
+
+%% Making our Topographic Map Nicer
+figure(4)               % Opening a new figure
+h=trisurf(tri,x,y,z);   % Plotting the figure as before
+
+% Turning off the axis:
+axis off
+
+% Setting the lighting position:
+l = light('position',[-50 -15 29])
+
+% Setting the camera position:
+set(gca,'CameraPosition',[208 -50 7687])
+
+% Setting the lighting properties.  Phong just indicates a particular type
+% of lighting.  Other options are: flat, gouraud and none.
+lighting phong
+
+% Setting the shading properties.  Interp will smooth out the colors - but
+% there are other options such as: flat and faceted.
+shading interp                             
+
+% Generating a colorbar to act as a scale for what the different colors
+% shown mean.  "EastOutside" indicates the position of this scale.  Look at
+% the help function for "colorbar" to see other possible locations.
+colorbar EastOutside               
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

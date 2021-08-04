@@ -1,0 +1,148 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Example script for a simple single plot of a function</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-02-01">
+      <meta name="m-file" content="plotDemo"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Example script for a simple single plot of a function</h1>
+         <introduction>
+            <p>AH 2010.1.29</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Plot parameters</a></li>
+               <li><a href="#2">The function to plot</a></li>
+               <li><a href="#3">Make x and y data vectors</a></li>
+               <li><a href="#4">Make the plot, adding labels and a title</a></li>
+               <li><a href="#5">Adding more curves, points, and so on...</a></li>
+            </ul>
+         </div>
+         <h2>Plot parameters<a name="1"></a></h2><pre class="codeinput">xStart = -1;        <span class="comment">% starting x value</span>
+xEnd = 1;           <span class="comment">% ending x value</span>
+nPoints = 200;      <span class="comment">% number of points in plot</span>
+</pre><h2>The function to plot<a name="2"></a></h2>
+         <p>For this example, the function is called 'squareFn' and is defined in a separate file called <a href="squareFn.m">squareFn.m</a>.
+         </p>
+         <h2>Make x and y data vectors<a name="3"></a></h2><pre class="codeinput">x = linspace(xStart, xEnd, nPoints);   <span class="comment">% independent variable vector</span>
+y = squareFn(x);                       <span class="comment">% dependent variable</span>
+</pre><h2>Make the plot, adding labels and a title<a name="4"></a></h2><pre class="codeinput">clf                         <span class="comment">% clear the figure area, just in case</span>
+hold <span class="string">on</span>                     <span class="comment">% lock the plot to be able to add other parts</span>
+plot(x, y, <span class="string">'b'</span>)             <span class="comment">% plot y vs. x, with blue line</span>
+xlabel(<span class="string">'x variable'</span>)        <span class="comment">% x label</span>
+ylabel(<span class="string">'y variable'</span>)        <span class="comment">% y label</span>
+title(<span class="string">'Plot of squareFn'</span>)   <span class="comment">% title for plot</span>
+    <span class="comment">% add other elements to the plot here...</span>
+hold <span class="string">off</span>                    <span class="comment">% unlock plot</span>
+</pre><img vspace="5" hspace="5" src="plotDemo_01.png"> <h2>Adding more curves, points, and so on...<a name="5"></a></h2>
+         <p>The 'hold on' and 'hold off' lines above aren't necessary for this simple example, but are necessary to add more lines and
+            so on to an existing plot.  For instance, to add green crosses at points at x-coordinates w and y-coordinates z, add the command
+            plot(w, z, 'g+')  between the two holds. Use the help page for 'plot' to find options for points, lines, etc.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Example script for a simple single plot of a function
+% AH 2010.1.29
+
+%% Plot parameters
+xStart = -1;        % starting x value                    
+xEnd = 1;           % ending x value
+nPoints = 200;      % number of points in plot
+
+%% The function to plot
+% For this example, the function is called 'squareFn' and is defined 
+% in a separate file called <squareFn.m>.
+
+%% Make x and y data vectors
+x = linspace(xStart, xEnd, nPoints);   % independent variable vector
+y = squareFn(x);                       % dependent variable
+
+
+%% Make the plot, adding labels and a title
+clf                         % clear the figure area, just in case
+hold on                     % lock the plot to be able to add other parts
+plot(x, y, 'b')             % plot y vs. x, with blue line
+xlabel('x variable')        % x label
+ylabel('y variable')        % y label
+title('Plot of squareFn')   % title for plot
+    % add other elements to the plot here... 
+hold off                    % unlock plot
+
+%% Adding more curves, points, and so on...
+% The 'hold on' and 'hold off' lines above aren't necessary for this
+% simple example, but are necessary to add more lines and so on
+% to an existing plot.  For instance, to add green crosses at 
+% points at x-coordinates w and y-coordinates z, add the command 
+% plot(w, z, 'g+')  between the two holds.
+% Use the help page for 'plot' to find options for points, lines, etc.
+##### SOURCE END #####
+-->
+   </body>
+</html>
