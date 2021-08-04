@@ -1,0 +1,297 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Graphical Input</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-10-20">
+      <meta name="m-file" content="graphInput"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Graphical Input</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#4">Selecting points</a></li>
+               <li><a href="#7">Saving info</a></li>
+            </ul>
+         </div>
+         <p>Assuming that you have successfully read in data from files and figured out how to plot the specturm.</p>
+         <img vspace="5" hspace="5" src="graphInput_01.png"> <p>The primary feature in these plots is a doubling of the H-alpha absorption line. The H-alpha line, when at rest, has a wavelength
+            of 656.28 <tt>nm</tt>. However, Doppler effect tells us that the wavelengths of absorption or emission lines may vary, if the object is moving
+            relatively to the observer. Therefore, spectrum with two absorption features is a characteristic of binary systems -- their
+            different line-of-sight velocities cause the doubling of the H-alpha line. By measuring the wavelengths of the two absorption
+            lines can tell us the velocities of both components of this binary system.
+         </p>
+         <h2>Selecting points<a name="4"></a></h2>
+         <p>To measure the wavelengths of the absorption lines from the plot, we can use a handy function provided by MATLAB, <b><tt>ginput</tt></b>. After the image is showed, try type
+         </p><pre class="codeinput">ginput
+</pre><pre class="codeoutput">
+ans =
+
+   1.0e+03 *
+
+    6.5556    0.0009
+    6.5701    0.0008
+    6.5719    0.0007
+    6.5785    0.0009
+
+</pre><p>and then you can select points from the figure using the mouse for cursor positioning (just click your mouse button when the
+            cursor is on the point you want). After you select all points you want, press the <b>Return</b> key on your keyboard.
+         </p>
+         <p><i>Note: if you feel like the feature in the plot is too tiny, you can zoom in by using the Zoom tools on the figure toolbar
+               <b>before</b> you type</i> <b><tt>ginput</tt></b>. <i>You can't zoom in/out when you are in graphical input mode.</i></p>
+         <p>This returns the x- and y-coordinates of those points you have selected.</p>
+         <p>Or, just like this lab, you KNOW that you are only interested in two points. So you can type</p><pre class="codeinput">ginput(2)
+</pre><pre class="codeoutput">
+ans =
+
+   1.0e+03 *
+
+    6.5701    0.0008
+    6.5719    0.0007
+
+</pre><p>and the function is automatically terminated after two points are selected.</p>
+         <h2>Saving info<a name="7"></a></h2>
+         <p>If you want to save the coordinates for future use, you can save them in the vectors x and y:</p><pre class="codeinput">[x1, y1] = ginput
+</pre><pre class="codeoutput">
+x1 =
+
+   1.0e+03 *
+
+    6.5556
+    6.5701
+    6.5719
+    6.5785
+
+
+y1 =
+
+    0.9354
+    0.8126
+    0.6570
+    0.9436
+
+</pre><p>The coordinate of the first point you select will be <b><tt>(x(1), y(1))</tt></b>, the second will be <b><tt>(x(2), y(2))</tt></b>, and so on.
+         </p>
+         <p>This is useful in this lab, because you definitely want to save the x-coordinates (i.e. wavelengths) of both absorption lines
+            in each spectrum. However, if you simply use
+         </p><pre class="codeinput">[x2, y2] = ginput(2)
+</pre><pre class="codeoutput">
+x2 =
+
+   1.0e+03 *
+
+    6.5701
+    6.5719
+
+
+y2 =
+
+    0.8126
+    0.6570
+
+</pre><p>you'll find that you're screwed -- the velocity information (i.e. wavelength!) for "dip" #1 is stored in <b><tt>x(1)</tt></b>, <b><tt>x(3)</tt></b>, <b><tt>x(5)</tt></b>, ... and the velocity info for "dip" #2 is stored in <b><tt>x(2)</tt></b>, <b><tt>x(4)</tt></b>, <b><tt>x(6)</tt></b>, ....
+         </p>
+         <p>How are you going to calculate the rotation period if the data are mixed up?!</p>
+         <p>Therefore, you should recall your knowledge about matrices and arrays in MATLAB, and use some command like this:</p><pre class="codeinput">[x(1,:), y(1,:)] = ginput(2)
+</pre><pre class="codeoutput">
+x =
+
+   1.0e+03 *
+
+    6.5701    6.5719
+
+
+y =
+
+    0.8126    0.6570
+
+</pre><p>This returns the wavelength of the absorption line caused by component #1 in <b><tt>x(1,1)</tt></b> and the wavelength for component #2 in <b><tt>x(1,2)</tt></b>. You can apply the same procedure to other binary files:
+         </p><pre class="codeinput">load(<span class="string">'binary2.dat'</span>)
+plot(binary2(:,1), binary2(:,2))
+</pre><img vspace="5" hspace="5" src="graphInput_07.png"> <p>After the image is shown, use</p><pre class="codeinput">[x(2,:), y(2,:)] = ginput(2)
+</pre><pre class="codeoutput">
+x =
+
+   1.0e+03 *
+
+    6.5701    6.5719
+    6.5724    6.5687
+
+
+y =
+
+    0.8126    0.6670
+    0.8556    0.6591
+
+</pre> <p>to save the wavelength info in the second row of the array <b><tt>x</tt></b>.
+         </p>
+         <p><i>Note: Be careful of the order when you select the dips. You should always click on the ones corresponding to the same star
+               first.</i></p>
+         <p><i><b>Question: How do we know which "dip" corresponds to star #1 or #2?</b> (hint: consider the shape/depth of the dips!)</i></p>
+         <p>Finally, you will have a 7x2 array <b><tt>x</tt></b>; each column describes the motion of one component of the binary system at different time, and each row describes the motion
+            of the two components in the system at a specific time.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Graphical Input
+%%
+% Assuming that you have successfully read in data from files
+load('binary1.dat')
+%%
+% and figured out how to plot the specturm.
+plot(binary1(:,1), binary1(:,2))
+xlabel('wavelength (angstroms)')
+title('normalized flux')
+%%
+% The primary feature in these plots is a doubling of the H-alpha absorption 
+% line. The H-alpha line, when at rest, has a wavelength of 656.28 |nm|.
+% However, Doppler effect tells us that the wavelengths of absorption or 
+% emission lines may vary, if the object is moving relatively to the
+% observer. Therefore, spectrum with two absorption features is a 
+% characteristic of binary systems REPLACE_WITH_DASH_DASH their different line-of-sight
+% velocities cause the doubling of the H-alpha line. By measuring the
+% wavelengths of the two absorption lines can tell us the velocities of
+% both components of this binary system. 
+%% Selecting points
+% To measure the wavelengths of the absorption lines from the plot, we can
+% use a handy function provided by MATLAB, *|ginput|*. After the image is 
+% showed, try type
+ginput
+%%
+% and then you can select points from the figure using the mouse for cursor 
+% positioning (just click your mouse button when the cursor is on the point 
+% you want). After you select all points you want, press the *Return* key on 
+% your keyboard.
+% 
+% _Note: if you feel like the feature in the plot is too tiny, you can zoom
+% in by using the Zoom tools on the figure toolbar *before* you type_
+% *|ginput|*. _You can't zoom in/out when you are in graphical input mode._
+% 
+% This returns the x- and y-coordinates of those points you have selected.
+%
+% Or, just like this lab, you KNOW that you are only interested in two points. So
+% you can type
+ginput(2)
+%%
+% and the function is automatically terminated after two points are 
+% selected.
+%% Saving info
+% If you want to save the coordinates for future use, you can save them in
+% the vectors x and y:
+[x1, y1] = ginput
+%%
+% The coordinate of the first point you select will be *|(x(1), y(1))|*, the 
+% second will be *|(x(2), y(2))|*, and so on. 
+%
+% This is useful in this lab, because you definitely want to save the 
+% x-coordinates (i.e. wavelengths) of both absorption lines in each 
+% spectrum. However, if you simply use
+[x2, y2] = ginput(2)
+%%
+% you'll find that you're screwed REPLACE_WITH_DASH_DASH the velocity information (i.e.
+% wavelength!) for "dip" #1 is stored in *|x(1)|*, *|x(3)|*, *|x(5)|*,
+% ... and the velocity info for "dip" #2 is stored in *|x(2)|*,
+% *|x(4)|*, *|x(6)|*, .... 
+%
+% How are you going to calculate the rotation period if the data are mixed 
+% up?!
+%
+% Therefore, you should recall your knowledge about matrices and arrays in
+% MATLAB, and use some command like this:
+[x(1,:), y(1,:)] = ginput(2)
+%%
+% This returns the wavelength of the absorption line caused by component #1
+% in *|x(1,1)|* and the wavelength for component #2 in *|x(1,2)|*. You can
+% apply the same procedure to other binary files:
+load('binary2.dat')
+plot(binary2(:,1), binary2(:,2))
+%%
+% After the image is shown, use
+[x(2,:), y(2,:)] = ginput(2)
+%%
+% to save the wavelength info in the second row of the array *|x|*. 
+%
+% _Note: Be careful of the order when you select the dips. You should
+% always click on the ones corresponding to the same star first._
+%
+% _*Question: How do we know which "dip" corresponds to star #1 or #2?*
+% (hint: consider the shape/depth of the dips!)_
+%
+% Finally, you will have a 7x2 array *|x|*; each column describes the
+% motion of one component of the binary system at different time, and each
+% row describes the motion of the two components in the system at a
+% specific time.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

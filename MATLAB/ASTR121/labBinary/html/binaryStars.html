@@ -1,0 +1,128 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Binary Stars and Stellar Masses</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-10-05">
+      <meta name="m-file" content="binaryStars"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Binary Stars and Stellar Masses</h1>
+         <introduction>
+            <p>In this lab the student uses spectra taken at 7 times for a binary star system for which one can identify the Halpha absorption
+               line and obtain from it a radial velocity measurement. The student then uses measures of shifts in the absorption line wavelength
+               in order to determine the total mass of the binary system.
+            </p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Loading Data</a></li>
+            </ul>
+         </div>
+         <h2>Loading Data<a name="1"></a></h2>
+         <p>First we must load the 7 spectra from this spectroscopic binary containing the absorption lines which we will use to determine
+            orbital period.
+         </p><pre class="codeinput">load(<span class="string">'binary1.dat'</span>)
+</pre><p>Now there are seven matricies, binary1, etc, containing two columns: the first gives the wavelength in angstroms for the spectrum
+            and the second gives a normalized flux. Let's plot one of these spectra:
+         </p><pre class="codeinput">figure(1); clf
+plot(binary1(:,1), binary1(:,2),<span class="string">'.'</span>)
+xlabel(<span class="string">'wavelength (angstroms)'</span>)
+ylabel(<span class="string">'normalized flux'</span>)
+title(<span class="string">'HIalpha absorption spectrum in a binary system (epoch 1)'</span>)
+</pre><img vspace="5" hspace="5" src="binaryStars_01.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Binary Stars and Stellar Masses
+% In this lab the student uses spectra taken at 7 times for a binary star
+% system for which one can identify the Halpha absorption line and obtain
+% from it a radial velocity measurement. The student then uses measures of 
+% shifts in the absorption line wavelength in order to determine the total 
+% mass of the binary system.
+%% Loading Data
+% First we must load the 7 spectra from this spectroscopic binary 
+% containing the absorption lines which we will use to determine orbital 
+% period.
+load('binary1.dat')
+%%
+% Now there are seven matricies, binary1, etc, containing two columns: the
+% first gives the wavelength in angstroms for the spectrum and the second
+% gives a normalized flux. Let's plot one of these spectra:
+figure(1); clf
+plot(binary1(:,1), binary1(:,2),'.')
+xlabel('wavelength (angstroms)')
+ylabel('normalized flux')
+title('HIalpha absorption spectrum in a binary system (epoch 1)')
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

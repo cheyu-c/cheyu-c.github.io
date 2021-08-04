@@ -1,0 +1,193 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Calculation example</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-13">
+      <meta name="m-file" content="calMass"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Calculation example</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Maximum line-of-sight velocity together with the orbital period gives limit on orbital radius, and then the oribital period
+            and radius gives total mass.
+         </p>
+         <p>Consider your <b><tt>fit</tt></b> results. Note that the two stars must have the same orbiting period, so we take the average of <b><tt>vrfit1.b1</tt></b> and <b><tt>vrfit2.b1</tt></b>:
+         </p><pre class="codeinput">b = (vrfit1.b1+vrfit2.b1)/2;
+</pre><p>Now you can calculate the orbiting period of the binary system: (in days)</p><pre class="codeinput">T = (2*pi)/b
+</pre><pre class="codeoutput">
+T =
+
+    ...
+
+</pre><p>The amplitude <b><tt>a1</tt></b> in the sine function (the results you got by using <b><tt>fit</tt></b>) corresponds to the maximum orbital velocity of each star. This can be used to calculate the semi-major axis of each orbit
+            around the center of mass.
+         </p>
+         <p>Be careful on transforming the units:</p>
+         <p>kilometer in AU units</p><pre class="codeinput">km2au = 6.68e-9;
+</pre><p>second in year units</p><pre class="codeinput">s2yr = 3.17e-8;
+</pre><p>Recall that the oribital period is (in year)</p><pre class="codeinput">P = T/365
+</pre><pre class="codeoutput">
+P =
+
+    ...
+
+</pre><p>The semi-major axis <b><tt>a_shallow</tt></b> and <b><tt>a_deep</tt></b> are (in AU):
+         </p><pre class="codeinput">a_shallow = vrfit1.a1*(km2au/s2yr)*P / 2 / pi
+a_deep = vrfit2.a1*(km2au/s2yr)*P / 2 / pi
+</pre><pre class="codeoutput">
+a_shallow =
+
+    ...
+
+
+a_deep =
+
+    ...
+
+</pre><p><i>Note: What can <b><tt>a1</tt></b> tell you about which star corresponds to which (shallow or deep)?</i></p>
+         <p>Finally, the separation between the stars is</p><pre class="codeinput">a = a_shallow + a_deep;
+</pre><p>The total mass of the two stars: (in solar masses):</p><pre class="codeinput">M = a^3 / P^2
+</pre><pre class="codeoutput">
+M =
+
+    ...
+
+</pre><p>The fact that the velocity shifts of the lines are greater for one star than the other would imply unequal masses. Using the
+            definition of center of mass, we can find the masses of the two components: (in solar masses)
+         </p><pre class="codeinput">M_shallow = M*a_deep / (a_shallow + a_deep)
+M_deep = M*a_shallow / (a_shallow + a_deep)
+</pre><pre class="codeoutput">
+M_shallow =
+
+    ...
+
+
+M_deep =
+
+    ...
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Calculation example
+%%
+% Maximum line-of-sight velocity together with the orbital period gives
+% limit on orbital radius, and then the oribital period and radius gives 
+% total mass. 
+%
+% Consider your *|fit|* results. Note that the two stars must have the same
+% orbiting period, so we take the average of *|vrfit1.b1|* and
+% *|vrfit2.b1|*:
+b = (vrfit1.b1+vrfit2.b1)/2;
+%% 
+% Now you can calculate the orbiting period of the binary system: (in days)
+T = (2*pi)/b
+%%
+% The amplitude *|a1|* in the sine function (the results you got by using
+% *|fit|*) corresponds to the maximum orbital velocity of each star. This
+% can be used to calculate the semi-major axis of each orbit around the
+% center of mass.
+% 
+% Be careful on transforming the units:
+%
+% kilometer in AU units
+km2au = 6.68e-9;
+%%
+% second in year units
+s2yr = 3.17e-8;
+%%
+% Recall that the oribital period is (in year)
+P = T/365
+%%
+% The semi-major axis *|a_shallow|* and *|a_deep|* are (in AU):
+a_shallow = vrfit1.a1*(km2au/s2yr)*P / 2 / pi
+a_deep = vrfit2.a1*(km2au/s2yr)*P / 2 / pi
+%%
+% _Note: What can *|a1|* tell you about which star corresponds to which 
+% (shallow or deep)?_
+% 
+% Finally, the separation between the stars is
+a = a_shallow + a_deep;
+%%
+% The total mass of the two stars: (in solar masses):
+M = a^3 / P^2
+%%
+% The fact that the velocity shifts of the lines are greater for one star
+% than the other would imply unequal masses. Using the definition of center
+% of mass, we can find the masses of the two components: (in solar masses)
+M_shallow = M*a_deep / (a_shallow + a_deep)
+M_deep = M*a_shallow / (a_shallow + a_deep)
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

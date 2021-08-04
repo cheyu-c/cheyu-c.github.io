@@ -1,0 +1,197 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Understanding your data</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-01">
+      <meta name="m-file" content="DataAna"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Understanding your data</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Using MATLAB on data analysis</a></li>
+               <li><a href="#5">Summation and Average</a></li>
+               <li><a href="#8">Standard deviation</a></li>
+            </ul>
+         </div>
+         <p>Assuming you are measuring a quantity <img src="DataAna_eq43551.png" alt="$x$"> by <img src="DataAna_eq05153.png" alt="$N$"> times, each measurement is labeled by <img src="DataAna_eq06004.png" alt="$x_1$">, <img src="DataAna_eq16434.png" alt="$x_2$">, ..., <img src="DataAna_eq82736.png" alt="$x_N$">.
+         </p>
+         <h2>Using MATLAB on data analysis<a name="2"></a></h2>
+         <p>Though MATLAB provides a lot of handy functions for you to avoid typing complicated equations by hand, you still need to organize
+            your data in the way that MATLAB can read. The most convenient way is using vectors to store your measurements. For example,
+            remind yourself how to construct a vector <b><tt>x</tt></b> which contains five measurements of the quantity <img src="DataAna_eq43551.png" alt="$x$">:
+         </p><pre class="codeinput">x
+</pre><pre class="codeoutput">
+x =
+
+    9.5717   10.0570   10.3719    9.7136    9.9934
+
+</pre><p>where <img src="DataAna_eq78834.png" alt="$x_1 = 9.5717$">, <img src="DataAna_eq54825.png" alt="$x_2 = 10.0570$">, ....
+         </p>
+         <p>The total number of measurements is just the length of vector <b><tt>x</tt></b>:
+         </p><pre class="codeinput">length(x)
+</pre><pre class="codeoutput">
+ans =
+
+     5
+
+</pre><p>Therefore, <img src="DataAna_eq81157.png" alt="$N=5$"> in this example.
+         </p>
+         <h2>Summation and Average<a name="5"></a></h2>
+         <p>The best answer is then calculated by adding all values and dividing that sum by the number of measurements:</p>
+         <p><img src="DataAna_eq11067.png" alt="$\langle x \rangle = \frac{1}{N}\left(x_1 + x_2 + ... + x_N\right)$">,
+         </p>
+         <p>which is the same as the average value of x. In MATLAB, instead of typing <tt>x(1)+x(2)+...</tt>, you can use the internal function <b><tt>sum</tt></b>:
+         </p><pre class="codeinput">sum(x)
+</pre><pre class="codeoutput">
+ans =
+
+   49.7076
+
+</pre><p>and the average value is</p><pre class="codeinput">sum(x)/length(x)
+</pre><pre class="codeoutput">
+ans =
+
+    9.9415
+
+</pre><p>Actually, MATLAB provides another internal function <b><tt>mean</tt></b> to quickly calculate the mean value of a vector:
+         </p><pre class="codeinput">mean(x)
+</pre><pre class="codeoutput">
+ans =
+
+    9.9415
+
+</pre><h2>Standard deviation<a name="8"></a></h2>
+         <p>The standard deviation of your measurements basically tells you how well your data agree with each other and the mean:</p>
+         <p><img src="DataAna_eq05445.png" alt="$\sigma_x = \sqrt{ \sum _{i=1}^N \left(x_i - \langle x \rangle\right)^2 / \left(N-1\right)}$">.
+         </p>
+         <p>The smaller the value, the less error in your individual measurements. Despite the long equation, in MATLAB simply type</p><pre class="codeinput">std(x)
+</pre><pre class="codeoutput">
+ans =
+
+    0.3122
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Understanding your data
+%%
+% Assuming you are measuring a quantity $x$ by $N$ times, each measurement 
+% is labeled by $x_1$, $x_2$, ..., $x_N$. 
+%% Using MATLAB on data analysis
+% Though MATLAB provides a lot of handy functions for you to avoid typing
+% complicated equations by hand, you still need to organize your data in
+% the way that MATLAB can read. The most convenient way is using vectors to 
+% store your measurements. For example, remind yourself how to construct a
+% vector *|x|* which contains five measurements of the quantity $x$:
+x
+%%
+% where $x_1 = 9.5717$, $x_2 = 10.0570$, .... 
+%
+% The total number of measurements is just the length of vector *|x|*:
+length(x)
+%%
+% Therefore, $N=5$ in this example.
+%% Summation and Average
+% The best answer is then calculated by adding all values and dividing that
+% sum by the number of measurements:
+%
+% $\langle x \rangle = \frac{1}{N}\left(x_1 + x_2 + ... + x_N\right)$,
+%
+% which is the same as the average value of x. In MATLAB, instead of typing
+% |x(1)+x(2)+...|, you can use the internal function *|sum|*:
+sum(x)
+%%
+% and the average value is
+sum(x)/length(x)
+%%
+% Actually, MATLAB provides another internal function *|mean|* to quickly 
+% calculate the mean value of a vector:
+mean(x)
+%% Standard deviation
+% The standard deviation of your measurements basically tells you how well
+% your data agree with each other and the mean:
+%
+% $\sigma_x = \sqrt{ \sum _{i=1}^N \left(x_i - \langle x \rangle\right)^2 /
+% \left(N-1\right)}$.
+%
+% The smaller the value, the less error in your individual measurements.
+% Despite the long equation, in MATLAB simply type
+std(x)
+%%
+% 
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

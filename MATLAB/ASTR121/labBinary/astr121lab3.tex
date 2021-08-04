@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+
+\textheight 22cm
+\textwidth  16cm
+\hoffset= -0.6in 
+\voffset= -0.5in   
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{10pt plus 2pt minus 2pt}
+\pagenumbering{roman} 
+\setcounter{page}{-9}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bd}{\begin{displaymath}}
+\newcommand{\ed}{\end{displaymath}}
+\begin{document}
+
+\title{Astrophysics II: Laboratory 3}
+\author{\Large Binary Stars and Stellar Masses}
+\maketitle
+
+\setlength{\parindent}{0.2pt}
+\setlength{\parskip}{2ex} 
+
+\section{{\bf Objectives:}}
+
+\begin{itemize}
+\item Continue learning functionality of MATLAB.\\
+	- Visualize data.\\
+	- Use visualization in aid of fitting function to data.
+\item Use Spectroscopic measurements of a stellar absorption line to determine binary masses.\\
+\end{itemize}
+
+
+\section{{\bf Introduction}}
+	Our sun appears to be a rarity in space. Approximately two-thirds of all solar-type field stars are members of binary systems, and recent studies suggest that virtually all stars begin life as members of multiple systems. Consequently, many of the stars you see at night are actually binaries, comprised of two stars gravitationally bound in orbit with one another. These binary systems are important astrophysical laboratories because they allow us to deduce the properties of the constituent stars more accurately than we can with single stars. The physics that governs how stars orbit one another was developed by Newton and Kepler over three hundred years ago, and can be summarized by the equation
+\be
+	P^{2}=\frac{4\pi^{2}}{G(M_{P}+M_{S})}a^{3}
+\ee
+where P is the period of orbit, G is the gravitational constant, $M_{P}$ and $M_{S}$ are the masses of the primary and secondary stars respectively, and $a$ is the semi-major axes of the two orbits $a=a_{P}+a_{S}$. In mks units, $G = 6.67 \times 10^{-11}$ but these units are not the units of choice. If masses are measured in solar masses, distances in astronomical units, and periods in years, then the application of Newton's law to the Earth-Sun system gives $4\pi^{2}/G=1$.
+
+Binary stars fall into several categories, depending on their observed properties: optical doubles, visual binaries, composite spectrum binaries, astrometric binaries, spectroscopic binaries, and eclipsing binaries (photometric binaries). Here we focus on the case of spectroscopic binaries in the case where the spectrum from the binary system exhibits a doublet of the same HI absorption line.
+
+Your primary task in this lab is to measure the wavelength of the H$\alpha$ line vs time in a series of stellar spectra. This can be done simply by plotting the spectra in matlab and then calculating roughly by sight the shift in wavelength corresponding to doppler shift in the low velocity limit. We assume here that the components of the binary in question are assumed to follow circular orbits. This is not true for all binaries, but for the present system it is valid. This means that the orbital eccentricity is zero and that the orbital velocities are constant at all times.
+	
+\section{{\bf Procedure}}
+\begin{enumerate}
+\item Open MATLAB.
+\item Download the seven data files at www.astro.umd.edu/$\sim$mavara/lab3-121/ and save them into the MATLAB directory.
+\item Type the following commands at the matlab command line to load the data in each of these files into matlab:\\
+$<<$ load(`binary1.dat')\\
+$<<$ load(`binary2.dat')\\
+ 	etc.....
+\item Note that these data files each contain a matrix of two columns, the first signifying wavelength in angstroms and the second a normalized flux.
+\item Plot a few of these spectra to get a feel for what they're showing.
+\item The primary absorption feature in these plots is a doubling of the HI$\alpha$ line. Notice that there are two strong absorption features in each spectrum and they are of unequal depths. What does that different signify in a normalized spectrum?
+\item Use the equation
+\be 
+	\frac{\lambda_{0}}{\lambda}=\frac{v}{c}
+\ee
+to determine the corresponding radial velocities of both components of the binary system for each spectrum
+\item The Spectra, in order, were taken on the Julian Dates given in Table 1.
+\begin{table}[ht]
+\caption{Dates of Observations}
+\centering
+\begin{tabular}{c c}
+\hline \hline
+Filename & Julian Date\\ [0.5ex]
+\hline 
+binary1.dat & 2441578.831 \\
+binary2.dat & 2441579.581 \\
+binary3.dat & 2441580.742 \\
+binary4.dat & 2441581.943 \\
+binary5.dat & 2441582.670 \\
+binary6.dat & 2441582.982 \\
+binary7.dat & 2441583.960 \\
+\hline
+\end{tabular}
+\end{table}
+\item Plot the radial velocity from the absorption feature of each contributing star vs date, plotting both sets of data on the same plot.
+\item Estimate the period, amplitude, etc, and plot a sin function over the data to confirm your estimations.
+\item Note: In general, primary refers to the brighter or more massive star in a binary system.
+\item Use our assumptions about this particular stellar binary system and the velocities to measure the semi-major axis of the orbit.
+\item Use the simplified (units of stellar mass, etc.) version of Equation 1 to calculate the combined mass.
+\item What are the masses of the two components in solar masses?\\
+	(Recall, from the definition of center of mass, $a_{S}M_{S} = a_{P}M_{P}$. Your measurement demonstrates the importance of studying binary stars. Virtually everything we know about stellar masses comes from analyzing their motions.)
+\end{enumerate}
+
+\section{{\bf Questions}}
+{\it Now let's think about the usefulness of what we've learned.}
+
+What is the primary problem with the measurements of masses of the primary and secondary we obtained?
+
+How might we go about solving this problem?
+
+What additional information about the binary system have we acquired with the spectroscopic information?
+
+Can we be sure that the primary absorption features in the spectrum represent the same line? What else can particular lines tell us?
+
+What would the spectrum of a triple system look like?
+\\
+\\
+\\
+
+
+
+* Note that this lab has borrowed heavily from Dr. Christopher Palma's Lab 4 of Astro 293, spring 2003.
+http://www.astro.psu.edu/$\sim$cpalma/astro293/
+\end{document}
+

@@ -1,0 +1,137 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>fittest</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-27">
+      <meta name="m-file" content="fittest"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content"><pre class="codeinput">clear;
+
+bin1lambda = [6571,6573,6570,6571,6573,6572,6569];
+bin2lambda = [6572,6569,6572,6571,6568,6569,6573];
+t = [78.831,79.581,80.742,81.943,82.670,82.982,83.960];
+
+ydev1 = 0.5*(max(bin1lambda)+min(bin1lambda));
+t0 = t - t(1);
+lam1 = bin1lambda - ydev1;
+lamfit1 = fit(t0', lam1', <span class="string">'sin1'</span>);
+
+a1 = 1.862;
+b1 = 2.102;
+c1 = -0.1043;
+
+tforsin = linspace(t(1),t(7),300);
+yfit1 = a1*sin(b1*tforsin+c1) + ydev1;
+
+hold <span class="string">off</span>;
+figure(1);
+plot(t,bin1lambda,<span class="string">'.r'</span>)
+hold <span class="string">on</span>
+plot(t,bin2lambda,<span class="string">'.b'</span>)
+ylabel(<span class="string">'wavelength (angstroms)'</span>)
+xlabel(<span class="string">'time (days, with arbitrary reference point)'</span>)
+
+plot(tforsin, yfit1, <span class="string">'g'</span>);
+</pre><img vspace="5" hspace="5" src="fittest_01.png"> <img vspace="5" hspace="5" src="fittest_02.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+clear;
+
+bin1lambda = [6571,6573,6570,6571,6573,6572,6569];
+bin2lambda = [6572,6569,6572,6571,6568,6569,6573];
+t = [78.831,79.581,80.742,81.943,82.670,82.982,83.960];
+
+ydev1 = 0.5*(max(bin1lambda)+min(bin1lambda));
+t0 = t - t(1);
+lam1 = bin1lambda - ydev1;
+lamfit1 = fit(t0', lam1', 'sin1');
+
+a1 = 1.862;
+b1 = 2.102;
+c1 = -0.1043;
+
+tforsin = linspace(t(1),t(7),300);
+yfit1 = a1*sin(b1*tforsin+c1) + ydev1;
+
+hold off;
+figure(1);
+plot(t,bin1lambda,'.r')
+hold on
+plot(t,bin2lambda,'.b')
+ylabel('wavelength (angstroms)')
+xlabel('time (days, with arbitrary reference point)')
+
+plot(tforsin, yfit1, 'g');
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

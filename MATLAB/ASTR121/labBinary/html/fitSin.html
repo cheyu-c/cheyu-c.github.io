@@ -1,0 +1,265 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Fitting model to data</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-13">
+      <meta name="m-file" content="fitSin"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Fitting model to data</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Assuming now you have values read from plots in two arrays (relative strength of features signifies which star is which)</p><pre class="codeinput">bin1lambda = [...];
+bin2lambda = [...];
+</pre><p>and have them transfered to corresponding radial velocities using the Doppler equation:</p><pre class="codeinput">vr1 = 2.99792*1e5* (bin1lambda - ... ;
+vr2 = ... ;
+</pre><p>We also know the tracking of Julian date (subtracted off constant of time) from the handout:</p><pre class="codeinput">t = [78.831,79.581,80.742,81.943,82.670,82.982,83.960];
+</pre><p>We can plot these data out to see how they look like:</p><pre class="codeinput">figure(1)
+clf;
+plot(t,vr1,<span class="string">'.r'</span>)
+</pre> <p>Don't forget to use <b><tt>hold</tt></b> to retain the current plot:
+         </p><pre class="codeinput">hold <span class="string">on</span>
+plot(t,vr2,<span class="string">'.b'</span>)
+</pre> <p>You can also add labels to remind yourself:</p><pre class="codeinput">ylabel(<span class="string">'radial velocity (km/s)'</span>)
+xlabel(<span class="string">'time (days, with arbitrary reference point)'</span>)
+</pre><img vspace="5" hspace="5" src="fitSin_03.png" alt=""> <p>Now let's think about fitting these data into equations. MATLAB has this handy function <b><tt>fit</tt></b> to do all the hard work for you, but you need to "guess" what kind of equation your data look like. You can find more details
+            by typing:
+         </p><pre class="codeinput">help <span class="string">fit</span>
+</pre><pre class="codeoutput"> FIT Fit a curve or surface to data.
+ 
+    FO = FIT(X, Y, FT) is a fit object that encapsulates the result of fitting
+    the model specified by the fittype FT to the data X, Y.
+    
+    ... ...
+    
+</pre><p>The simplest periodic formula is sinusoid. To see what kind of fitting model can be used in <b><tt>fit</tt></b>, try
+         </p><pre class="codeinput">cflibhelp <span class="string">sin</span>
+</pre><pre class="codeoutput">
+  SUM OF SINE FUNCTIONS
+
+        MODELNAME             EQUATION
+
+          sin1                 Y = a1*sin(b1*x+c1)
+          sin2                 Y = a1*sin(b1*x+c1)+a2*sin(b2*x+c2)
+          sin3                 Y = a1*sin(b1*x+c1)+...+a3*sin(b3*x+c3)
+          ...
+          sin8                 Y = a1*sin(b1*x+c1)+...+a8*sin(b8*x+c8)
+
+</pre><p>For the binary star system, the movement of the stars must be a simple, first-order sinusoid, theoretically. So we choose
+            <b><tt>sin1</tt></b> as our model.
+         </p>
+         <p>However, since <b><tt>sin1</tt></b> is the simplest model, it automatically assumes that <b><tt>Y</tt></b> is oscillating around zero, or <b>Y(MAX)=-Y(min)</b>. Therefore, our data must be shifted first before we apply the <b><tt>fit</tt></b> function. This is also the "offset" of the system; i.e. the two stars should have the same value of offset (think about it!).
+            We use data from spectrum 4:
+         </p><pre class="codeinput">ydev = vr1(4);
+</pre><p>It doesn't matter if you want to use <b><tt>vr2(4)</tt></b> instead of <b><tt>vr1(4)</tt></b>; they are the same (you can use this to validate your data).
+         </p>
+         <p>Finally we have two data sets with zero median Y-value:</p><pre class="codeinput">vr1n = vr1 - ydev;
+vr2n = vr2 - ydev;
+</pre><p>Now we can apply the <b><tt>fit</tt></b> function with model <b><tt>sin1</tt></b>. Note that the input vectors of <b><tt>fit</tt></b> must be column vectors, but in this example both <b><tt>t</tt></b> and <b><tt>vr1n</tt></b> (or <b><tt>vr2n</tt></b>) are row vectors. So don't forget to use the apostrophe operator (<b><tt>'</tt></b>) to turn a row vector into a column vector:
+         </p><pre class="codeinput">vrfit1 = fit(t', vr1n', <span class="string">'sin1'</span>);
+vrfit2 = fit(...);
+</pre><p>The results, <b><tt>vrfit1</tt></b> and <b><tt>vrfit2</tt></b> have special format that includes values of <b><tt>a1</tt></b>, <b><tt>b1</tt></b>, <b><tt>c1</tt></b> and the information of the model used in <b><tt>fit</tt></b>:
+         </p><pre class="codeinput">vrfit1
+vrfit2
+</pre><pre class="codeoutput">
+vrfit1 = 
+
+     General model Sin1:
+       vrfit1(x) =  a1*sin(b1*x+c1)
+     Coefficients (with 95% confidence bounds):
+       a1 =       ...  (..., ...)
+       b1 =       ...  (..., ...)
+       c1 =       ...  (..., ...)
+
+vrfit2 = 
+
+     General model Sin1:
+       vrfit2(x) =  a1*sin(b1*x+c1)
+     Coefficients (with 95% confidence bounds):
+       a1 =       ...  (..., ...)
+       b1 =       ...  (..., ...)
+       c1 =       ...  (..., ...)
+</pre><p>You can use some other variables to save the fitting results:</p><pre class="codeinput">a1 = vrfit1.a1;
+b1 = vrfit1.b1;
+c1 = vrfit1.c1;
+</pre><pre class="codeinput">a2 = vrfit2.a1;
+b2 = vrfit2.b1;
+c2 = vrfit2.c1;
+</pre><p>Now we can plot the fitting formula on the data. Note that you need enough points (say, 100 points) to get a smooth curve.
+            So, instead of <b><tt>t</tt></b> in the data set (which only has 7 elements), you can create a time vector between the minimum value of <b><tt>t</tt></b> (i.e. <b><tt>t(1)</tt></b>) and the maximum value of <b><tt>t</tt></b> (i.e. <b><tt>t(7)</tt></b>), and has length = 100:
+         </p><pre class="codeinput">tforsin = linspace(t(1),t(7),100);
+</pre><p>The fitting formula is</p><pre class="codeinput">yfit1 = a1*sin(b1*(tforsin)+c1) + ydev;
+yfit2 = a2*sin(b2*(tforsin)+c2) + ydev;
+</pre><p>Now you can plot the curve to see if your fitting formula is a good one!</p><pre class="codeinput">figure(1);
+plot(tforsin, yfit1, <span class="string">'m'</span>);
+plot(tforsin, yfit2, <span class="string">'g'</span>);
+</pre><img vspace="5" hspace="5" src="fitSin_04.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Fitting model to data
+%%
+% Assuming now you have values read from plots in two arrays (relative 
+% strength of features signifies which star is which)
+bin1lambda = [6570.2,6572.3,6570.1,6570.7,6572.6,6572.1,6569.1];
+bin2lambda = [6571.9,6568.7,6571.9,6570.7,6568.4,6568.9,6573.0];
+%%
+% and have them transfered to corresponding radial velocities using the
+% Doppler equation:
+vr1 = 2.99792*1e5*(bin1lambda-6562.79)/6562.79;
+vr2 = 2.99792*1e5*(bin2lambda-6562.79)/6562.79;
+%%
+% We also know the tracking of Julian date (subtracted off constant of
+% time) from the handout:
+t = [78.831,79.581,80.742,81.943,82.670,82.982,83.960];
+%%
+% We can plot these data out to see how they look like:
+figure(1)
+clf;
+plot(t,vr1,'.r')
+%%
+% Don't forget to use *|hold|* to retain the current plot:
+hold on
+plot(t,vr2,'.b')
+%%
+% You can also add labels to remind yourself:
+ylabel('radial velocity (km/s)')
+xlabel('time (days, with arbitrary reference point)')
+%%
+% Now let's think about fitting these data into equations. MATLAB has this
+% handy function *|fit|* to do all the hard work for you, but you need to
+% "guess" what kind of equation your data look like. You can find more
+% details by typing:
+help fit
+%%
+% The simplest periodic formula is sinusoid. To see what kind of fitting
+% model can be used in *|fit|*, try
+cflibhelp sin
+%%
+% For the binary star system, the movement of the stars must be a simple,
+% first-order sinusoid, theoretically. So we choose *|sin1|* as our model.
+%
+% However, since *|sin1|* is the simplest model, it automatically assumes
+% that *|Y|* is oscillating around zero, or *Y(MAX)=-Y(min)*. Therefore, our 
+% data must be shifted first before we apply the *|fit|* function. This is
+% also the "offset" of the system; i.e. the two stars should have the same
+% value of offset (think about it!). We use data from spectrum 4:
+ydev = vr1(4);
+%%
+% It doesn't matter if you want to use *|vr2(4)|* instead of *|vr1(4)|*; 
+% they are the same (you can use this to validate your data).
+%
+% Finally we have two data sets with zero median Y-value:
+vr1n = vr1 - ydev;
+vr2n = vr2 - ydev;
+%%
+% Now we can apply the *|fit|* function with model *|sin1|*. Note that the
+% input vectors of *|fit|* must be column vectors, but in this example both
+% *|t|* and *|vr1n|* (or *|vr2n|*) are row vectors. So don't forget to use
+% the apostrophe operator (*|'|*) to turn a row vector into a column
+% vector:
+vrfit1 = fit(t', vr1n', 'sin1');
+vrfit2 = fit(t', vr2n', 'sin1');
+%%
+% The results, *|vrfit1|* and *|vrfit2|* have special format that includes 
+% values of *|a1|*, *|b1|*, *|c1|* and the information of the model used in
+% *|fit|*:
+vrfit1
+vrfit2
+%%
+% You can use some other variables to save the fitting results:
+a1 = vrfit1.a1;
+b1 = vrfit1.b1;
+c1 = vrfit1.c1;
+%%
+a2 = vrfit2.a1;
+b2 = vrfit2.b1;
+c2 = vrfit2.c1;
+%%
+% Now we can plot the fitting formula on the data. Note that you need 
+% enough points (say, 100 points) to get a smooth curve. So, instead of *|t|* 
+% in the data set (which only has 7 elements), you can create a time vector
+% between the minimum value of *|t|* (i.e. *|t(1)|*) and the maximum value
+% of *|t|* (i.e. *|t(7)|*), and has length = 100:
+tforsin = linspace(t(1),t(7),100);
+%%
+% The fitting formula is
+yfit1 = a1*sin(b1*(tforsin)+c1) + ydev;
+yfit2 = a2*sin(b2*(tforsin)+c2) + ydev;
+%%
+% Now you can plot the curve to see if your fitting formula is a good one!
+figure(1);
+plot(tforsin, yfit1, 'm');
+plot(tforsin, yfit2, 'g');
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
