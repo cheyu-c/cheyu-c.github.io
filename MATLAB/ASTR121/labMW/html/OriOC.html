@@ -1,0 +1,216 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Distribution of the open clusters</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-12">
+      <meta name="m-file" content="OriOC"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Distribution of the open clusters</h1>
+         <!--introduction-->
+         <p><i>This is a reference for you to see if you did everything correctly, what should be on your screen. Note that some commands
+               in this page are blocked (using <b><tt>...</tt></b>) for you to figure out by yourself.</i></p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Read and Organize the data</a></li>
+               <li><a href="#8">Distribution of the clusters</a></li>
+               <li><a href="#9">The ecliptic</a></li>
+               <li><a href="#12">Bonus track</a></li>
+            </ul>
+         </div>
+         <h2>Read and Organize the data<a name="1"></a></h2>
+         <p>Let us plot the survey of open clusters in equatorial coordinates, namely right ascension (in hours) and declination (in degrees)
+            above or below the equatorial plane. Note that, while the data source with the full data is listed in the lab handout, the
+            numerical values needed here have been compiled into a simplified table found in <b><tt>clusters_relevant.txt</tt></b>.
+         </p>
+         <p>First, we have to load the data and save the data to a matrix variable, e.g., <b><tt>cr</tt></b>:
+         </p><pre class="codeinput">cr = load(<span class="string">'clusters_relevant.txt'</span>);
+</pre><p>In this table the first, second, and third columns contain the RA in hours, minutes, and seconds. These values must be combined
+            into a single decimal value of hours:
+         </p><pre class="codeinput">RA = cr(:,1) + cr(:,2)/60 + ... ;
+</pre><p>The same goes for the declination, though it is given by degrees, arcmin, and arcsec in the fourth, fifth, and sixth columns
+            respectively. Note that the sign of the Declination is included in the <i>degree</i> column.
+         </p>
+         <p>To determine the sign of the Declination, use the <b><tt>sign</tt></b> command, which returns <b>1</b> if the element is greater than zero, <b>0</b> if it equals zero and <b>-1</b> if it is less than zero:
+         </p><pre class="codeinput">pmDec = sign(cr(:,4));
+</pre><p>Be careful that some elements of <b><tt>pmDec</tt></b> might be zero, which also correspond to positive declination. To fix this, we can use <b><tt>find</tt></b> command to locate those zero elements:
+         </p><pre class="codeinput">fixpm = find(pmDec==0);
+</pre><p>and then substitute those zero elements by <b>1</b>:
+         </p><pre class="codeinput">pmDec(fixpm) = 1;
+</pre><p>Now we can calculate the Declination:</p><pre class="codeinput">dec = (abs(cr(:,4)) + ... ).*pmDec;
+</pre><p>The <b><tt>pmDec</tt></b> term simply insures the sign of declination carried by the fourth column value is carried over to the other two values added,
+            as they will have matching sign.
+         </p>
+         <h2>Distribution of the clusters<a name="8"></a></h2>
+         <p>Now let's plot the open clusters in RA vs dec, i.e. equatorial coordinates.</p><pre class="codeinput">figure(1); clf
+plot(RA,dec,<span class="string">'b.'</span>)
+title(<span class="string">'distribution of the open clusters'</span>)
+xlabel(<span class="string">'RA (hrs)'</span>)
+ylabel(<span class="string">'dec (degrees)'</span>)
+</pre><img vspace="5" hspace="5" src="OriOC_01.png" alt=""> <h2>The ecliptic<a name="9"></a></h2>
+         <p>First, create an array of linearly spaced points from 0 to 24 hours:</p><pre class="codeinput">hrs = ... ;
+</pre><p>To generate the ecliptic, use the sine function and remember to convert <b><tt>hrs</tt></b> to radians:
+         </p><pre class="codeinput">eclip = ... ;
+</pre><p>Overplot the ecliptic with the open clusters:</p><pre class="codeinput">figure(1); hold <span class="string">on</span>;
+plot(hrs, eclip, <span class="string">'m-'</span>)
+legend(<span class="string">'OCs'</span>, <span class="string">'ecliptic'</span>, <span class="string">'Location'</span>, <span class="string">'SouthEast'</span>)
+</pre><img vspace="5" hspace="5" src="OriOC_02.png" alt=""> <h2>Bonus track<a name="12"></a></h2>
+         <p>We can also plot, with a red circle, the location of the galactic center in order to get a feel for how open clusters are
+            distributed in the galactic plane:
+         </p><pre class="codeinput">figure(1);
+gal = [17 + 45/60. + 40.04/3600, -29 - 28.1/3600];
+plot(gal(1),gal(2),<span class="string">'ro'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'MarkerSize'</span>, 10)
+</pre><img vspace="5" hspace="5" src="OriOC_03.png" alt=""> <p>Since the equatorial plane is tilted with respect to the galactic plane, the clusters, which gather mostly in the galactic
+            plane, follow a sinusoidal curve on this plot.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Distribution of the open clusters
+% _This is a reference for you to see if you did everything correctly, what
+% should be on your screen. Note that some commands in this page are
+% blocked (using *|...|*) for you to figure out by yourself._
+%% Read and Organize the data
+% Let us plot the survey of open clusters in equatorial coordinates, namely 
+% right ascension (in hours) and declination (in degrees) above or below 
+% the equatorial plane. Note that, while the data source with the full data 
+% is listed in the lab handout, the numerical values needed here have been 
+% compiled into a simplified table found in *|clusters_relevant.txt|*.
+%
+% First, we have to load the data and save the data to a matrix variable,
+% e.g., *|cr|*:
+cr = load('clusters_relevant.txt');
+%%
+% In this table the first, second, and third columns contain the RA in
+% hours, minutes, and seconds. These values must be combined into a single 
+% decimal value of hours:
+RA = cr(:,1) + cr(:,2)/60 + cr(:,3)/3600;
+%%
+% The same goes for the declination, though it is given by degrees, arcmin,
+% and arcsec in the fourth, fifth, and sixth columns respectively. Note
+% that the sign of the Declination is included in the _degree_ column.
+%
+% To determine the sign of the Declination, use the *|sign|* command, which
+% returns *1* if the element is greater than zero, *0* if it equals zero
+% and *-1* if it is less than zero:
+pmDec = sign(cr(:,4));
+%%
+% Be careful that some elements of *|pmDec|* might be zero, which also
+% correspond to positive declination. To fix this, we can use *|find|*
+% command to locate those zero elements:
+fixpm = find(pmDec==0);
+%%
+% and then substitute those zero elements by *1*:
+pmDec(fixpm) = 1;
+%%
+% Now we can calculate the Declination:
+dec = (abs(cr(:,4)) + cr(:,5)/60 + cr(:,6)/3600).*pmDec;
+%%
+% The *|pmDec|* term simply insures the sign of declination carried by the
+% fourth column value is carried over to the other two values added, as
+% they will have matching sign.
+%% Distribution of the clusters
+% Now let's plot the open clusters in RA vs dec, i.e. equatorial
+% coordinates.
+figure(1); clf
+plot(RA,dec,'b.')
+title('distribution of the open clusters')
+xlabel('RA (hrs)')
+ylabel('dec (degrees)')
+%% The ecliptic
+% First, create an array of linearly spaced points from 0 to 24 hours:
+hrs = linspace(0, 24, 200);
+%%
+% To generate the ecliptic, use the sine function and remember to convert
+% *|hrs|* to radians:
+eclip = 23.5*sin(hrs*2*pi/24);
+%%
+% Overplot the ecliptic with the open clusters:
+figure(1); hold on;
+plot(hrs, eclip, 'm-')
+legend('OCs', 'ecliptic', 'Location', 'SouthEast')
+%% Bonus track
+% We can also plot, with a red circle, the location of the galactic center
+% in order to get a feel for how open clusters are distributed in the
+% galactic plane:
+figure(1);
+gal = [17 + 45/60. + 40.04/3600, -29 - 28.1/3600];
+plot(gal(1),gal(2),'ro', 'LineWidth', 3, 'MarkerSize', 10)
+%%
+% Since the equatorial plane is tilted with respect to the galactic plane, 
+% the clusters, which gather mostly in the galactic plane, follow a 
+% sinusoidal curve on this plot.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

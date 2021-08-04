@@ -1,0 +1,204 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Shape of the Milky Way</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-12">
+      <meta name="m-file" content="ShapeOC"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Shape of the Milky Way</h1>
+         <!--introduction-->
+         <p><i>This is a reference for you to see if you did everything correctly, what should be on your screen. Note that some commands
+               in this page are blocked (using <b><tt>...</tt></b>) for you to figure out by yourself.</i></p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Read and organize the data</a></li>
+               <li><a href="#4">Distribution of the clusters</a></li>
+               <li><a href="#7">3-D distribution</a></li>
+            </ul>
+         </div>
+         <h2>Read and organize the data<a name="1"></a></h2>
+         <p>Now we plot the distribution of the same 1777 open clusters, but this time we have distance information about the clusters
+            and can plot them in 3-space rather than just their projection onto the celestial sphere as we did in Part I.
+         </p>
+         <p>First, load the data and save them to a variable, e.g., <b><tt>galOC</tt></b>:
+         </p><pre class="codeinput">galOC = load(<span class="string">'clusters_relevantGAL.txt'</span>);
+</pre><p>This time, the third column gives distance in pc and the coordinates are in galactic coordinates (longitude and latitude both
+            in degrees).
+         </p>
+         <p>We must change from degrees to radians since we will use <b><tt>cos</tt></b> and <b><tt>sin</tt></b> functions to transform from galactic (i.e. polar) to cartesian coordinates:
+         </p><pre class="codeinput">lonOC = ... .*2*pi/360.0;
+latOC = ... ;
+</pre><p>Then we can calculate the <img src="ShapeOC_eq43551.png" alt="$x$">, <img src="ShapeOC_eq44020.png" alt="$y$">, and <img src="ShapeOC_eq88768.png" alt="$z$"> coordinates of each galaxy:
+         </p><pre class="codeinput">xoc = galOC(:,3).*cos(latOC).*cos(lonOC);
+yoc = ... ;
+zoc = ... ;
+</pre><h2>Distribution of the clusters<a name="4"></a></h2>
+         <p>Now let's plot the projection of the open clusters onto the x-y plane (distribution as viewed from above galaxy):</p><pre class="codeinput">figure(2); clf
+plot(xoc,yoc, <span class="string">'b.'</span>)
+xlabel(<span class="string">' ... '</span>)
+... ...
+axis <span class="string">equal</span>
+</pre><img vspace="5" hspace="5" src="ShapeOC_01.png" alt=""> <p>Note that you can use <b><tt>axis</tt></b> command to control axis scaling and appearance. The option <b><tt>equal</tt></b> sets the 
+aspect ratio so that equal tick mark increments on the x-, y- and z-axis are equal in size.
+         </p>
+         <p>Also the projection onto the other two planes intersecting the galactic center, one perpendicular to the line of sight from
+            earth and one parallel:
+         </p><pre class="codeinput">figure(3); clf
+plot(xoc,zoc, <span class="string">'b.'</span>)
+... ...
+figure(4); clf
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeOC_02.png" alt=""><img vspace="5" hspace="5" src="ShapeOC_03.png" alt=""> <h2>3-D distribution<a name="7"></a></h2>
+         <p>Or, you can use <b><tt>plot3</tt></b> function to make a 3-D plot showing the distribution of open clusters in the space:
+         </p><pre class="codeinput">figure(5); clf
+plot3(xoc, yoc, zoc, <span class="string">'bo'</span>)
+grid <span class="string">on</span>
+... ...
+</pre><img vspace="5" hspace="5" src="ShapeOC_04.png" alt=""> <p>Then use the <b>Rotate 3D</b> icon <img src="3Drotate.jpg" alt=""> to change the angle of view:
+         </p><img vspace="5" hspace="5" src="ShapeOC04rotate.png" alt="">
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Shape of the Milky Way
+% _This is a reference for you to see if you did everything correctly, what
+% should be on your screen. Note that some commands in this page are
+% blocked (using *|...|*) for you to figure out by yourself._
+%% Read and organize the data
+% Now we plot the distribution of the same 1777 open clusters, but this 
+% time we have distance information about the clusters and can plot them in 
+% 3-space rather than just their projection onto the celestial sphere as we 
+% did in Part I.
+%
+% First, load the data and save them to a variable, e.g., *|galOC|*:
+galOC = load('clusters_relevantGAL.txt');
+%%
+% This time, the third column gives distance in pc and the coordinates are 
+% in galactic coordinates (longitude and latitude both in degrees).
+%
+% We must change from degrees to radians since we will use *|cos|* and
+% *|sin|* functions to transform from galactic (i.e. polar) to cartesian
+% coordinates:
+lonOC = galOC(:,1).*2*pi/360.0;
+latOC = galOC(:,2).*2*pi/360.0;
+%%
+% Then we can calculate the $x$, $y$, and $z$ coordinates of each galaxy:
+xoc = galOC(:,3).*cos(latOC).*cos(lonOC);
+yoc = galOC(:,3).*cos(latOC).*sin(lonOC);
+zoc = galOC(:,3).*sin(latOC);
+%% Distribution of the clusters
+% Now let's plot the projection of the open clusters onto the x-y plane
+% (distribution as viewed from above galaxy):
+figure(2); clf
+plot(xoc,yoc, 'b.')
+xlabel('x (pc)')
+ylabel('y (pc)')
+title('x-y plane')
+axis square
+%%
+% Note that you can use *|axis|* command to control axis scaling and
+% appearance. The option *|square|* makes the current axis box square in
+% size.
+%
+% Also the projection onto the other two planes intersecting the galactic
+% center, one perpendicular to the line of sight from earth and one
+% parallel:
+figure(3); clf
+plot(xoc,zoc, 'b.')
+xlabel('x (pc)')
+ylabel('z (pc)')
+title('x-z plane')
+axis square
+%%
+figure(4); clf
+plot(yoc,zoc, 'b.')
+xlabel('y (pc)')
+ylabel('z (pc)')
+title('y-z plane')
+axis square
+%% 3-D distribution
+% Or, you can use *|plot3|* function to make a 3-D plot showing the
+% distribution of open clusters in the space:
+figure(5); clf
+plot3(xoc, yoc, zoc, 'bo')
+grid on
+axis square
+xlabel('x (pc)')
+ylabel('y (pc)')
+zlabel('z (pc)')
+title('3-D distribution')
+%%
+% Then use the *Rotate 3D* icon to change the angle of view:
+##### SOURCE END #####
+-->
+   </body>
+</html>

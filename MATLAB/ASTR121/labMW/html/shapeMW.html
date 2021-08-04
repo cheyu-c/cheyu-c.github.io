@@ -1,0 +1,349 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Shape and Scale of the Milky Way</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-04-14">
+      <meta name="m-file" content="shapeMW"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Shape and Scale of the Milky Way</h1>
+         <!--introduction-->
+         <p>Here the student plots the positions of star clusters and shows the relative distribution around the Milky Way galaxy of open
+            clusters compared to globular clusters through projection onto the xy, xz, and yz planes where x is defined along the direction
+            to the galactic center and z is height in direction of the galactic North pole.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Part I</a></li>
+               <li><a href="#2">Part II</a></li>
+               <li><a href="#3">Part III</a></li>
+            </ul>
+         </div>
+         <h2>Part I<a name="1"></a></h2>
+         <p>First, let us plot the survey of open clusters in equatorial coordinates, namely right ascension (in hours) and declination
+            (in degrees) above or below the equatorial plane.
+         </p><pre class="codeinput"><span class="comment">% Before we do that we have to load the data. While the data source with</span>
+<span class="comment">% the full data is listed in the lab handout, the numerical values needed</span>
+<span class="comment">% here have been compiled into a simplified table found in</span>
+<span class="comment">% clusters_relevant.txt.</span>
+
+load <span class="string">clusters_relevant.txt</span>
+cr = clusters_relevant;
+
+<span class="comment">% In this table the first, second, and third columns contain the RA in</span>
+<span class="comment">% hours, minutes, and seconds and these values must be combined into a</span>
+<span class="comment">% single decimal value of hours:</span>
+RA = cr(:,1) + cr(:,2)/60 + cr(:,3)/3600;
+<span class="comment">% The same goes for the declination, though it is given by degrees, arcmin,</span>
+<span class="comment">% and arcsec in the fourth, fifth, and sixth columns respectively:</span>
+dec = cr(:,4) + (cr(:,5)/60 + cr(:,6)/3600).*cr(:,4)./abs(cr(:,4));
+<span class="comment">% Note that the cr/abs(cr) term simply insures the sign carried by the</span>
+<span class="comment">% fourth column value is carried over to the other two values added, as</span>
+<span class="comment">% they will have matching sign.</span>
+
+<span class="comment">% Now let's plot the open clusters in RA vs dec, i.e. equatorial</span>
+<span class="comment">% coordinates.</span>
+figure(1); clf
+plot(RA,dec,<span class="string">'.'</span>)
+xlabel(<span class="string">'RA (hrs)'</span>)
+ylabel(<span class="string">'dec (degrees)'</span>)
+
+<span class="comment">% We can also plot, with a red circle, the location of the galactic center</span>
+<span class="comment">% in order to get a feel for how open clusters are distributed in the</span>
+<span class="comment">% galactic plane. Since the equatorial plane is tilted with respect to the</span>
+<span class="comment">% galactic plane, the clusters, which gather mostly in the galactic plane,</span>
+<span class="comment">% follow a sinusoidal curve on this plot.</span>
+
+hold <span class="string">on</span>
+gal = [17 + 45/60. + 40.04/3600, -29 - 28.1/3600];
+plot(gal(1),gal(2),<span class="string">'or'</span>)
+</pre><img vspace="5" hspace="5" src="shapeMW_01.png" alt=""> <h2>Part II<a name="2"></a></h2>
+         <p>Now we plot the distribution of the same 1777 open clusters, but this time we have distance information about the clusters
+            and can plot them in 3-space rather than just their projection onto the celestial sphere as we did in Part I.
+         </p><pre class="codeinput"><span class="comment">% Load the data in a new, simplfiied, table, where this time the third</span>
+<span class="comment">% column gives distance in pc and the coordinates are in galactic</span>
+<span class="comment">% coordinates (longitude and latitude both in degrees).</span>
+
+load <span class="string">clusters_relevantGAL.txt</span>
+crgal = clusters_relevantGAL;
+
+<span class="comment">% We must change from degrees to radians since we will use cos and sin</span>
+<span class="comment">% functions to transform from galactic (i.e. polar) to cartesian</span>
+<span class="comment">% coordinates:</span>
+lon = crgal(:,1).*2*pi/360.0;
+lat = crgal(:,2).*2*pi/360.0;
+
+xoc = crgal(:,3).*cos(lat).*cos(lon);
+yoc = crgal(:,3).*cos(lat).*sin(lon);
+zoc = crgal(:,3).*sin(lat);
+
+<span class="comment">% Now let's plot the projection of the open clustes onto the x-y plane</span>
+<span class="comment">% (distribution as viewed from above galaxy):</span>
+hold <span class="string">off</span>
+figure(2); clf
+plot(xoc,yoc, <span class="string">'.'</span>)
+xlabel(<span class="string">'x (pc)'</span>)
+ylabel(<span class="string">'y (pc)'</span>)
+
+<span class="comment">% Also the projection onto the other two planes intersecting the galactic</span>
+<span class="comment">% center, one perpendicular to the line of sight from earth and one</span>
+<span class="comment">% parallel:</span>
+figure(3); clf
+plot(xoc,zoc, <span class="string">'.'</span>)
+xlabel(<span class="string">'x (pc)'</span>)
+ylabel(<span class="string">'z (pc)'</span>)
+
+figure(4); clf
+plot(yoc,zoc, <span class="string">'.'</span>)
+xlabel(<span class="string">'y (pc)'</span>)
+ylabel(<span class="string">'z (pc)'</span>)
+</pre><img vspace="5" hspace="5" src="shapeMW_02.png" alt=""> <img vspace="5" hspace="5" src="shapeMW_03.png" alt=""> <img vspace="5" hspace="5" src="shapeMW_04.png" alt=""> <img vspace="5" hspace="5" src="shapeMW_05.png" alt=""> <h2>Part III<a name="3"></a></h2>
+         <p>Now we load an analagous table of data for globular clusters and plot them in the same plane projections as we did for the
+            open clusters:
+         </p><pre class="codeinput">load <span class="string">mwgc_short_relevant.txt</span>
+crgal = mwgc_short_relevant;
+lon = crgal(:,1).*2*pi/360.0;
+lat = crgal(:,2).*2*pi/360.0;
+
+xgc = 1000.*crgal(:,3).*cos(lat).*cos(lon); <span class="comment">% This time distance is tabulated in kpc, so we must multiply by 10^3 to convert.</span>
+ygc = 1000.*crgal(:,3).*cos(lat).*sin(lon);
+zgc = 1000.*crgal(:,3).*sin(lat);
+
+<span class="comment">% We plot the projections of the open clusters in blue and the globular clusters in red:</span>
+
+hold <span class="string">off</span>
+figure(5); clf
+plot(xoc,yoc, <span class="string">'.'</span>)
+hold <span class="string">on</span>
+plot(xgc,ygc, <span class="string">'.r'</span>)
+xlabel(<span class="string">'x (pc)'</span>)
+ylabel(<span class="string">'y (pc)'</span>)
+
+figure(6); clf
+plot(xoc,zoc, <span class="string">'.'</span>)
+hold <span class="string">on</span>
+plot(xgc,zgc, <span class="string">'.r'</span>)
+xlabel(<span class="string">'x (pc)'</span>)
+ylabel(<span class="string">'z (pc)'</span>)
+
+figure(7); clf
+plot(yoc,zoc, <span class="string">'.'</span>)
+hold <span class="string">on</span>
+plot(ygc,zgc, <span class="string">'.r'</span>)
+xlabel(<span class="string">'y (pc)'</span>)
+ylabel(<span class="string">'z (pc)'</span>)
+
+<span class="comment">% It is clear that globular clusters are not bound to the plane of the</span>
+<span class="comment">% galaxy and trace the dark matter potential well better than open</span>
+<span class="comment">% clusters. This picture is also consistent with our knowledge that</span>
+<span class="comment">% globular clusters are often much older than open clusters, which much</span>
+<span class="comment">% more often form in star-forming regions in the dense planes of galaxies.</span>
+</pre><img vspace="5" hspace="5" src="shapeMW_06.png" alt=""> <img vspace="5" hspace="5" src="shapeMW_07.png" alt=""> <img vspace="5" hspace="5" src="shapeMW_08.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Shape and Scale of the Milky Way
+% Here the student plots the positions of star clusters and shows the
+% relative distribution around the Milky Way galaxy of open clusters
+% compared to globular clusters through projection onto the
+% xy, xz, and yz planes where x is defined along the direction to the
+% galactic center and z is height in direction of the galactic North pole.
+%% Part I
+% First, let us plot the survey of open clusters in equatorial coordinates,
+% namely right ascension (in hours) and declination (in degrees) above or
+% below the equatorial plane.
+
+% Before we do that we have to load the data. While the data source with
+% the full data is listed in the lab handout, the numerical values needed
+% here have been compiled into a simplified table found in
+% clusters_relevant.txt.
+
+load clusters_relevant.txt
+cr = clusters_relevant;
+
+% In this table the first, second, and third columns contain the RA in
+% hours, minutes, and seconds and these values must be combined into a
+% single decimal value of hours:
+RA = cr(:,1) + cr(:,2)/60 + cr(:,3)/3600;
+% The same goes for the declination, though it is given by degrees, arcmin,
+% and arcsec in the fourth, fifth, and sixth columns respectively:
+dec = cr(:,4) + (cr(:,5)/60 + cr(:,6)/3600).*cr(:,4)./abs(cr(:,4));
+% Note that the cr/abs(cr) term simply insures the sign carried by the
+% fourth column value is carried over to the other two values added, as
+% they will have matching sign.
+
+% Now let's plot the open clusters in RA vs dec, i.e. equatorial
+% coordinates.
+figure(1); clf
+plot(RA,dec,'.')
+xlabel('RA (hrs)')
+ylabel('dec (degrees)')
+
+% We can also plot, with a red circle, the location of the galactic center
+% in order to get a feel for how open clusters are distributed in the
+% galactic plane. Since the equatorial plane is tilted with respect to the
+% galactic plane, the clusters, which gather mostly in the galactic plane,
+% follow a sinusoidal curve on this plot.
+
+hold on
+gal = [17 + 45/60. + 40.04/3600, -29 - 28.1/3600];
+plot(gal(1),gal(2),'or')
+
+%% Part II
+% Now we plot the distribution of the same 1777 open clusters, but this
+% time we have distance information about the clusters and can plot them in
+% 3-space rather than just their projection onto the celestial sphere as we
+% did in Part I.
+
+% Load the data in a new, simplfiied, table, where this time the third
+% column gives distance in pc and the coordinates are in galactic
+% coordinates (longitude and latitude both in degrees).
+
+load clusters_relevantGAL.txt
+crgal = clusters_relevantGAL;
+
+% We must change from degrees to radians since we will use cos and sin
+% functions to transform from galactic (i.e. polar) to cartesian
+% coordinates:
+lon = crgal(:,1).*2*pi/360.0;
+lat = crgal(:,2).*2*pi/360.0;
+
+xoc = crgal(:,3).*cos(lat).*cos(lon);
+yoc = crgal(:,3).*cos(lat).*sin(lon);
+zoc = crgal(:,3).*sin(lat);
+
+% Now let's plot the projection of the open clustes onto the x-y plane
+% (distribution as viewed from above galaxy):
+hold off
+figure(2); clf
+plot(xoc,yoc, '.')
+xlabel('x (pc)')
+ylabel('y (pc)')
+
+% Also the projection onto the other two planes intersecting the galactic
+% center, one perpendicular to the line of sight from earth and one
+% parallel:
+figure(3); clf
+plot(xoc,zoc, '.')
+xlabel('x (pc)')
+ylabel('z (pc)')
+
+figure(4); clf
+plot(yoc,zoc, '.')
+xlabel('y (pc)')
+ylabel('z (pc)')
+
+%% Part III
+% Now we load an analagous table of data for globular clusters and plot
+% them in the same plane projections as we did for the open clusters:
+
+load mwgc_short_relevant.txt
+crgal = mwgc_short_relevant;
+lon = crgal(:,1).*2*pi/360.0;
+lat = crgal(:,2).*2*pi/360.0;
+
+xgc = 1000.*crgal(:,3).*cos(lat).*cos(lon); % This time distance is tabulated in kpc, so we must multiply by 10^3 to convert.
+ygc = 1000.*crgal(:,3).*cos(lat).*sin(lon);
+zgc = 1000.*crgal(:,3).*sin(lat);
+
+% We plot the projections of the open clusters in blue and the globular clusters in red: 
+
+hold off
+figure(5); clf
+plot(xoc,yoc, '.')
+hold on
+plot(xgc,ygc, '.r')
+xlabel('x (pc)')
+ylabel('y (pc)')
+
+figure(6); clf
+plot(xoc,zoc, '.')
+hold on
+plot(xgc,zgc, '.r')
+xlabel('x (pc)')
+ylabel('z (pc)')
+
+figure(7); clf
+plot(yoc,zoc, '.')
+hold on
+plot(ygc,zgc, '.r')
+xlabel('y (pc)')
+ylabel('z (pc)')
+
+% It is clear that globular clusters are not bound to the plane of the
+% galaxy and trace the dark matter potential well better than open
+% clusters. This picture is also consistent with our knowledge that
+% globular clusters are often much older than open clusters, which much
+% more often form in star-forming regions in the dense planes of galaxies.
+##### SOURCE END #####
+-->
+   </body>
+</html>
