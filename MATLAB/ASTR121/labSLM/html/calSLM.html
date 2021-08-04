@@ -1,0 +1,262 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Measuring SLM using a quasar jet image at different epochs in time</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-04-23">
+      <meta name="m-file" content="calSLM"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Measuring SLM using a quasar jet image at different epochs in time</h1>
+         <!--introduction-->
+         <p>Though I include step-by-step instructions here, the results are not shown. Try these commands by yourself and find out your
+            own result.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Find the distance to 3C 279</a></li>
+               <li><a href="#6">The scale between angle on the sky and the distance</a></li>
+               <li><a href="#9">Apparent velocity of the knot</a></li>
+               <li><a href="#17">The true velocity</a></li>
+            </ul>
+         </div>
+         <h2>Find the distance to 3C 279<a name="1"></a></h2>
+         <p>Set up the constant parameters first:</p>
+         <p>The Hubble constant, in units of <b>km/s/Mpc</b></p><pre class="codeinput">H0 = ... ;
+</pre><p>the redshift of 3C 279 (redshift has no unit!)</p><pre class="codeinput">z = ... ;
+</pre><p>the speed of light, in units of <b>m/s</b></p><pre class="codeinput">c = ... ;
+</pre><p>The receding velocity can be calculated from the redshift as <img src="calSLM_eq02163.png" alt="$\beta = v/c$"> and <img src="calSLM_eq49618.png" alt="$z = \sqrt{\frac{1+\beta}{1-\beta}}-1$">. Doing some calculations you'll solve <b><tt>v_rec</tt></b>:
+         </p><pre class="codeinput">v_rec = ...
+</pre><pre class="codeoutput">
+v_rec =
+
+   ...
+
+</pre><p>This is in units of <b>m/s</b>. To calculate the distance using the Hubble constant, we need to divide <b><tt>v</tt></b> by 1000 to get v in units of <b>km/s</b>. Then we can get D in <b>Mpc</b>:
+         </p><pre class="codeinput">D = ...
+</pre><pre class="codeoutput">
+D =
+
+   ...
+
+</pre><h2>The scale between angle on the sky and the distance<a name="6"></a></h2>
+         <p><i>If you are not familiar with <b>angular diameter</b>, check the wiki page: <a href="http://en.wikipedia.org/wiki/Angular_diameter" target="_blank">Angular Diameter</a></i></p>
+         <p>The real "ruler" on the sky at distance <b><tt>D</tt></b> is the angle we observed times the distance <b><tt>D</tt></b>, while the angle is measured in <b>rad</b>. The conversion factor from <b>deg</b> to <b>rad</b> is
+         </p><pre class="codeinput">deg2rad = ... ;
+</pre><p>Therefore, 1 <b>arcsec</b> = 1 <b>deg</b> / (60*60) is (in units of <b>rad</b>)
+         </p><pre class="codeinput">asc = deg2rad / ... ;
+</pre><p>Therefore the conversion factor between 1 <b>arcsec</b> on sky and distance at 3C 279 (in <b>pc</b>) is (recall that our <b><tt>D</tt></b> is in units of <b>Mpc</b> = 1e6 <b>pc</b>)
+         </p><pre class="codeinput">as2pc = asc * ...
+</pre><pre class="codeoutput">
+as2pc =
+
+   ...
+
+</pre><h2>Apparent velocity of the knot<a name="9"></a></h2>
+         <p>Using the image, I estimate the brightest knot moved from about <b>A milliarcsec</b> away from the central source to about <b>B milliarcsec</b> in <b>N years</b>. The velocity in the sky is thus
+         </p><pre class="codeinput">vSky = (B - A)/N;
+</pre><p>This is in units of <b>milliarcsec / years</b>, which is not very useful. We want to convert it to our familiar unit system <b>m/s</b>.
+         </p>
+         <p>First, convert the time unit from <b>year</b> to <b>second</b>:
+         </p><pre class="codeinput">yr2s = ... ;
+</pre><p>so the velocity in <b>milliarcsec/second</b> is
+         </p><pre class="codeinput">vma = ...
+</pre><pre class="codeoutput">
+vma =
+
+   ...
+
+</pre><p>and in <b>arcsec/second</b>:
+         </p><pre class="codeinput">va = vma * ...
+</pre><pre class="codeoutput">
+va =
+
+   ...
+
+</pre><p>Then let's convert <b>milliarcsec</b> to the real ruler on the sky, <b>pc</b>:
+         </p><pre class="codeinput">vpc = va * ...
+</pre><pre class="codeoutput">
+vpc =
+
+   ...
+
+</pre><p>And the conversion factor from <b>pc</b> to <b>meters</b>: 1*pc* = 3.086e16 <b>m</b></p><pre class="codeinput">pc2m = 3.086e16;
+</pre><p>Then we have the measured velocity in <b>m / s</b>:
+         </p><pre class="codeinput">v = vpc * ...
+</pre><pre class="codeoutput">
+v =
+
+   ...
+
+</pre><p>This velocity is much greater than the speed of light!</p>
+         <h2>The true velocity<a name="17"></a></h2>
+         <p>But, we know this is not true velocity. If we assume an inclination angle of the jet along which the knot moves to the line
+            of sight which maximizes apparent velocity, then we get a lower limit on the actual velocity of the knot in the rest frame
+            of the Quasar:
+         </p><pre class="codeinput">beta = ...
+</pre><pre class="codeoutput">
+beta =
+
+    ...
+
+</pre><p>which means <b>v_real</b> is
+         </p><pre class="codeinput">v_real = beta*c
+</pre><pre class="codeoutput">
+v_real =
+
+   ...
+
+</pre><p>very close, but smaller to the speed of light!</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Measuring SLM using a quasar jet image at different epochs in time
+% Though I include step-by-step instructions here, the results are not
+% shown. Try these commands by yourself and find out your own result.
+%% Find the distance to 3C 279
+% Set up the constant parameters first:
+%
+% The Hubble constant, in units of *km/s/Mpc*
+H0 = 74.2;
+%%
+% the redshift of 3C 279 (redshift has no unit!)
+z = 0.5362;
+%%
+% the speed of light, in units of *m/s*
+c = 3e8;
+%%
+% The receding velocity can be calculated from the redshift as $\beta =
+% v/c$ and $z = \sqrt{\frac{1+\beta}{1-\beta}}-1$. Doing some calculations
+% you'll solve *|v_rec|*: 
+v_rec = (((1+z)^2-1)/((1+z)^2+1))*c
+%%
+% This is in units of *m/s*. To calculate the distance using the Hubble constant,
+% we need to divide *|v|* by 1000 to get v in units of *km/s*. Then we can
+% get D in *Mpc*:
+D = (v_rec/1000) /H0
+%% The scale between angle on the sky and the distance
+% _If you are not familiar with *angular diameter*, check the wiki page:_
+%
+% The real "ruler" on the sky at distance *|D|* is the angle we observed
+% times the distance *|D|*, while the angle is measured in *rad*. The
+% conversion factor from *deg* to *rad* is
+deg2rad = (2*pi)/360;
+%%
+% Therefore, 1 *arcsec* = 1 *deg* / (60*60) is (in units of *rad*)
+asc = deg2rad / (60*60);
+%%
+% Therefore the conversion factor between 1 *arcsec* on sky and distance at 
+% 3C 279 (in *pc*) is (recall that our *|D|* is in units of *Mpc* = 1e6
+% *pc*)
+as2pc = asc * (D*1e6)
+%% Apparent velocity of the knot
+% Using the image, I estimate the brightest knot moved from about *2 
+% milliarcsec* away from the central source to about *2.5 milliarcsec* in 
+% *2.7 years*. The velocity in the sky is thus
+vSky = (2.5 - 2)/2.7;
+%%
+% This is in units of *milliarcsec / years*, which is not very useful. We
+% want to convert it to our familiar unit system *m/s*.
+%
+% First, convert the time unit from *year* to *second*:
+yr2s = 31556926;
+%%
+% so the velocity in *milliarcsec/second* is
+vma = vSky / yr2s
+%%
+% and in *arcsec/second*:
+va = vma*1e-3
+%%
+% Then let's convert *milliarcsec* to the real ruler on the sky, *pc*:
+vpc = va*as2pc
+%%
+% And the conversion factor from *pc* to *meters*: 1*pc* = 3.086e16 *m*
+pc2m = 3.086e16;
+%%
+% Then we have the measured velocity in *m / s*:
+v = vpc*pc2m
+%%
+% This velocity is much greater than the speed of light! 
+%% The true velocity
+% But, we know this is not true velocity. If we assume an inclination angle 
+% of the jet along which the knot moves to the line of sight which 
+% maximizes apparent velocity, then we get a lower limit on the actual 
+% velocity of the knot in the rest frame of the Quasar:
+beta = 1/sqrt(1+1/(v/c)^2)
+%%
+% which means *v_real* is
+v_real = beta*c
+%%
+% very close, but smaller to the speed of light!
+##### SOURCE END #####
+-->
+   </body>
+</html>

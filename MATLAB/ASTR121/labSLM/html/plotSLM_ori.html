@@ -1,0 +1,167 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting the transverse velocity</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-04-22">
+      <meta name="m-file" content="plotSLM"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting the transverse velocity</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Here, <b><tt>betaT()</tt></b> is a user-specified function which returns the value of betaT based on the value of beta and theta we put in. You need to
+            write your own <b><tt>betaT</tt></b> function M-file before you can continue!
+         </p>
+         <p>You can test your <b><tt>betaT</tt></b> function by using <b><tt>\theta=0</tt></b> and <b><tt>\theta=90</tt></b>:
+         </p><pre class="codeinput">bT = betaT(0.99, 0)
+</pre><pre class="codeoutput">
+bT =
+
+     0
+
+</pre><pre class="codeinput">bT = betaT(0.99, 90)
+</pre><pre class="codeoutput">
+bT =
+
+    0.9900
+
+</pre><p>Are these results what you expected?</p>
+         <p>Now, get prepared to plot the transverse velocity. First, let's create an array for <b><tt>\theta</tt></b> using <b><tt>linspace</tt></b>:
+         </p><pre class="codeinput">theta = linspace(0, 180, 200);
+</pre><p>Also create an array of <b><tt>\beta</tt></b> values:
+         </p><pre class="codeinput">beta = [0.5, 0.7, 0.9, 0.995, 0.999, 0.9999];
+</pre><p>and an array containing color options for <b><tt>plot</tt></b>:
+         </p><pre class="codeinput">clrs = [<span class="string">'r'</span>, <span class="string">'y'</span>, <span class="string">'g'</span>, <span class="string">'b'</span>, <span class="string">'k'</span>, <span class="string">'m'</span>];
+</pre><p>Don't forget to set up a figure window:</p><pre class="codeinput">figure(1); clf;
+hold <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="plotSLM_01.png" alt=""> <p>Now let's make plot using <b><tt>for</tt></b> loop to save some typing. The <b><tt>for</tt></b> loop repeats a group of statements by a fixed, predetermined number of times, and a matching <b><tt>end</tt></b> delineates the statements:
+         </p><pre class="codeinput"><span class="keyword">for</span> i = 1:6
+    bT = betaT(beta(i),theta);
+    plot(theta, bT, clrs(i))
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="plotSLM_02.png" alt=""> <p>And you can add graphic info AFTER the <b><tt>for</tt></b> loop:
+         </p><pre class="codeinput">title(<span class="string">'Plot of Transverse Velocity'</span>)
+xlabel(<span class="string">'theta (angle to line of sight)'</span>)
+ylabel(<span class="string">'transverse velocity (normalized to c)'</span>)
+legend(<span class="string">'0.5'</span>, <span class="string">'0.7'</span>, <span class="string">'0.9'</span>, <span class="string">'0.995'</span>, <span class="string">'0.999'</span>, <span class="string">'0.9999'</span>, <span class="string">'Location'</span>, <span class="string">'NorthEast'</span>);
+</pre><img vspace="5" hspace="5" src="plotSLM_03.png" alt=""> <p>You can set the limits of the vertical axis so you can see structure of the equations for small beta's:</p><pre class="codeinput">ylim([0 20])
+</pre><img vspace="5" hspace="5" src="plotSLM_04.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting the transverse velocity
+%%
+% Here, *|betaT()|* is a user-specified function which returns the value of
+% betaT based on the value of beta and theta we put in. You need to write
+% your own *|betaT|* function M-file before you can continue!
+%
+% You can test your *|betaT|* function by using *|\theta=0|* and
+% *|\theta=90|*:
+bT = betaT(0.99, 0)
+%%
+bT = betaT(0.99, 90)
+%%
+% Are these results what you expected?
+%
+% Now, get prepared to plot the transverse velocity. First, let's create an
+% array for *|\theta|* using *|linspace|*:
+theta = linspace(0, 180, 200); 
+%%
+% Also create an array of *|\beta|* values:
+beta = [0.5, 0.7, 0.9, 0.995, 0.999, 0.9999];
+%%
+% and an array containing color options for *|plot|*:
+clrs = ['r', 'y', 'g', 'b', 'k', 'm'];
+%%
+% Don't forget to set up a figure window:
+figure(1); clf;
+hold on;
+%%
+% Now let's make plot using *|for|* loop to save some typing. The *|for|*
+% loop repeats a group of statements by a fixed, predetermined number of
+% times, and a matching *|end|* delineates the statements:
+for i = 1:6
+    bT = betaT(beta(i),theta);
+    plot(theta, bT, clrs(i))
+end
+%%
+% And you can add graphic info AFTER the *|for|* loop:
+title('Plot of Transverse Velocity')
+xlabel('theta (angle to line of sight)')
+ylabel('transverse velocity (normalized to c)')
+legend('0.5', '0.7', '0.9', '0.995', '0.999', '0.9999', 'Location', 'NorthEast');
+%%
+% You can set the limits of the vertical axis so you can see structure
+% of the equations for small beta's:
+ylim([0 20])
+%%
+##### SOURCE END #####
+-->
+   </body>
+</html>

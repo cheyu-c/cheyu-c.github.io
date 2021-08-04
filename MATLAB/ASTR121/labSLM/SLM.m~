@@ -1,0 +1,67 @@
+%% Superluminal Motion and Quasar Jets
+% In the Superluminal Motion lab the student explores what is meant by
+% "superluminal motion" and in doing so gains experience plotting functions and writing function files and matlab scripts.
+%% First the student learns to write a script and a function in .m files
+
+% Open functionExample.m and read what each part does. Let's try plotting
+% the function defined in this file using plotExample.m 
+
+plotExample
+
+% Note where in plotExample functionExample is called.
+
+% From here on the student is expected to make changes to plotExample,
+% renaming  this file to something personlized for this lab. However, for
+% simplicity, I will include what would be added to plotExample here.
+
+beta = .99;
+theta = linspace(0, pi, 200);   % independent variable vector
+bT = betaT(beta,theta);                       % dependent variable
+
+hold off;
+figure(2);clf                         % clear the figure area, just in case
+plot(theta, bT, 'b')             % plot y vs. x, with blue line
+xlabel('theta (angle to line of sight)')        % x label
+ylabel('transverse velocity (normalized to c)')        % y label
+title('Plot of Transverse Velocity')   % title for plot
+ylim([0 20]) % set the limits of the vertical axis so you can see structure of the equations for beta~1
+
+
+
+% Let's add a few other curves for varying value of beta:
+hold on
+beta = [0.5,0.7,0.9, 0.995, 0.999, 0.9999];
+for i=1:6,
+    bT = betaT(beta(i),theta);
+    plot(theta, bT, 'b')
+end
+
+%% Measuring SLM using a quasar jet image at different epochs in time
+
+% First we find the distance to 3C 279.
+
+H0 = 74.2; % km / s / Mpc  the Hubble constant
+z = 0.5362; % redshift of 3C 279
+c = 3e8; % m/s
+pc2m = 3.086e16; % conversion from pc to meters
+
+v = z*c;
+D = v/1000 /H0; % divide by 1000 to get v in units of km/s, D in Mpc
+
+as2pc = 2*pi/360/60/60 * D * 1e6; % conversion factor between 1 arcsec on sky and distance at source (in pc)
+
+% I estimate the brightest knot moved from about 2 milliarcsec away from the
+% central source to about 2.5 milliarcsec in 2.7 years.
+
+yr2s = 31556926; % one year in seconds
+v = .5e-3 * as2pc * pc2m / yr2s % velocity observed in m/s. 
+
+% This velocity is much greater than the speed of light! But, we know this
+% is not true velocity. If we assume an inclination angle of the jet along
+% which the knot moves to the line of sight which maximizes transverse
+% velocity, then we get a lower limit on the actual velocity of the knot in
+% the rest frame of the Quasar.
+
+gamma = 
+
+

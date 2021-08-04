@@ -1,0 +1,4 @@
+
+function f = betaT(beta,theta);     % define the function
+
+f = beta.*sin(theta)./(1-beta.*cos(theta));

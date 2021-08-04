@@ -1,0 +1,93 @@
+%% Measuring SLM using a quasar jet image at different epochs in time
+% Though I include step-by-step instructions here, the results are not
+% shown. Try these commands by yourself and find out your own result.
+%% Find the distance to 3C 279
+% Set up the constant parameters first:
+%
+% The Hubble constant, in units of *km/s/Mpc*
+H0 = 74.2;
+%%
+% the redshift of 3C 279 (redshift has no unit!)
+z = 0.5362;
+%%
+% the speed of light, in units of *m/s*
+c = 3e8;
+%%
+% The conversion factor from *pc* to *meters*: 1pc = 3.086e16 m
+pc2m = 3.086e16;
+%%
+% The receding velocity can be calculated from the redshift:
+v = z*c;
+%%
+% This is in units of *m/s*. To calculate the distance using the Hubble constant,
+% we need to divide *|v|* by 1000 to get v in units of *km/s*. Then we can
+% get D in *Mpc*:
+D = (v/1000) /H0
+%% The scale between angle on the sky and the distance
+% _If you are not familiar with *angular diameter*, check the wiki page:_
+%
+% The real "ruler" on the sky at distance *|D|* is the angle we observed
+% times the distance *|D|*, while the angle is measured in *rad*. The
+% conversion factor from *deg* to *rad* is
+deg2rad = (2*pi)/360;
+%%
+% Therefore, 1 *arcsec* = 1 *deg* / (60*60) is (in units of *rad*)
+asc = deg2rad / (60*60);
+%%
+% Therefore the conversion factor between 1 *arcsec* on sky and distance at 
+% 3C 279 (in *pc*) is (recall that our *|D|* is in units of *Mpc* = 1e6
+% *pc*)
+as2pc = asc * (D*1e6)
+%% Transverse velocity of the knot
+% Using the image, I estimate the brightest knot moved from about *2 
+% milliarcsec* away from the central source to about *2.5 milliarcsec* in 
+% *2.7 years*. The velocity in the sky is thus
+vSky = (2.5 - 2)/2.7;
+%%
+% This is in units of *milliarcsec / years*, which is not very useful. We
+% want to convert it to our familiar unit system *m/s*.
+%
+% First, convert *milliarcsec* to the real ruler on the sky, *pc*:
+vpc = (vSky*1e-3)*as2pc;
+%%
+% Then convert *pc* to *meter*:
+vm = vpc*pc2m;
+%%
+% But we still need to convert the time unit from *year* to *second*:
+yr2s = 31556926;
+%%
+% Therefore the velocity observed in *m/s* is
+v = vm / yr2s
+%%
+% This velocity is much greater than the speed of light! 
+%% The true velocity
+% But, we know this is not true velocity. If we assume an inclination angle 
+% of the jet along which the knot moves to the line of sight which 
+% maximizes transverse velocity, then we get a lower limit on the actual 
+% velocity of the knot in the rest frame of the Quasar.
+%
+% Recall that
+%
+% $$\beta_T^\mathrm{MAX} = \beta \gamma$$
+%
+% and
+%
+% $$ \gamma = \frac{1}{\sqrt{1-\beta^2}}$$
+%
+% where
+%
+% $$ \beta = \frac{v_\mathrm{true}}{c}$$
+%
+% is the real movement of the knot. If we assume the transverse velocity
+% *|v|* we derived satisfied
+%
+% $$ \frac{v}{c} = \beta_T^\mathrm{MAX} 
+% 
+beta = sqrt(1-1/(v/c)^2) % approximate beta_T^max = beta*gamma as gamma since beta ~1 in the numerator.
+
+% Bottom line; material emitting brightly as the knot is moving
+% relativistically.
+
+
+
+
