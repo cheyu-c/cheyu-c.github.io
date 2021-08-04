@@ -1,0 +1,200 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Making composite images</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-04-15">
+      <meta name="m-file" content="rgbimage"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Making composite images</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Assuming that now you have data from B, V, and R filters, the structure is aligned in all three images, and you've found the
+            optimized boundaries (<b><tt>Bmin</tt></b>, <b><tt>Bmax</tt></b>, <b><tt>Vmin</tt></b>, etc.) for each image:
+         </p><pre class="codeinput">imagesc(log10(M81B), [Bmin Bmax])
+... ...
+</pre><pre class="codeinput">imagesc(log10(M81V), [Vmin Vmax])
+... ...
+</pre><pre class="codeinput">imagesc(log10(M81R), [Rmin Rmax])
+... ...
+</pre> 
+<table>
+<tr>
+<td><img src="rgbimage_01.png" width="350" /></td>
+<td><img src="rgbimage_02.png" width="350" /></td>
+<td><img src="rgbimage_03.png" width="350" /></td>
+</tr>
+</table>
+<p>To make a composite image, we need to create a matrix that has 3 planes of the correct size:</p><pre class="codeinput">rgb=zeros([size(M81B),3]);
+</pre><p><i>(Since <b><tt>M81R</tt></b>, <b><tt>M81V</tt></b>, and <b><tt>M81B</tt></b> all have the same size, it doesn't matter which one you choose to generate <b><tt>rgb</tt></b>.)</i></p>
+         <p>Note that these images might have different scaling of data. Therefore, we have to normalize each image so that the values
+            are between 0 and 1. The function <b><tt>imscale</tt></b> basically transfers the input data array to an array includes values between 0 and 1
+         </p><pre class="codeinput">M81Bn = imscale(log10(M81B), Bmax, Bmin);
+M81Vn = imscale(log10(M81V), Vmax, Vmin);
+M81Rn = imscale(log10(M81R), Rmax, Rmin);
+</pre><p>Now they all have the same scaling:</p><pre class="codeinput">imagesc(M81Bn)
+... ...
+</pre><pre class="codeinput">imagesc(M81Vn)
+... ...
+</pre><pre class="codeinput">imagesc(M81Rn)
+... ...
+</pre>
+<table>
+<tr>
+<td><img src="rgbimage_04.png" width="350" /></td>
+<td><img src="rgbimage_05.png" width="350" /></td>
+<td><img src="rgbimage_06.png" width="350" /></td>
+</tr>
+</table>
+<p>Now we can insert <b><tt>M81Rn</tt></b> in the first plane (the red), <b><tt>M81Vn</tt></b> in the second (the green), and <b><tt>M81Bn</tt></b> in the last (the blue):
+         </p><pre class="codeinput">rgb(:,:,1) = M81Rn;
+rgb(:,:,2) = M81Vn;
+rgb(:,:,3) = M81Bn;
+</pre><p>Now we can display the image:</p><pre class="codeinput">imagesc(rgb)
+... ...
+</pre><img vspace="5" hspace="5" src="rgbimage_07.png" alt=""> <p>You can play with different boundary values and try to get a better image than this!</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Making composite images
+%%
+% Assuming that now you have data from B, V, and R filters, the structure 
+% is aligned in all three images, and you've found the optimized boundaries
+% (*|Bmin|*, *|Bmax|*, *|Vmin|*, etc.) for each image:
+imagesc(log10(M81B), [Bmin Bmax])
+axis square
+colorbar
+title('M81 in log10 sacle (B filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+imagesc(log10(M81V), [Vmin Vmax])
+axis square
+colorbar
+title('M81 in log10 sacle (V filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+imagesc(log10(M81R), [Rmin Rmax])
+axis square
+colorbar
+title('M81 in log10 sacle (R filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+% To make a composite image, we need to create a matrix that has 3 planes 
+% of the correct size:
+rgb=zeros([size(M81B),3]); 
+%%
+% _(Since *|M81R|*, *|M81V|*, and *|M81B|* all have the same size, it 
+% doesn't matter which one you choose to generate *|rgb|*.)_
+%
+% Note that these images might have different scaling of data. Therefore, 
+% we have to normalize each image so that the values are between 0 and 1.
+% The function *|imscale|* basically transfers the input data array to an
+% array includes values between 0 and 1 
+M81Bn = imscale(log10(M81B), Bmax, Bmin);
+M81Vn = imscale(log10(M81V), Vmax, Vmin);
+M81Rn = imscale(log10(M81R), Rmax, Rmin);
+%%
+% Now they all have the same scaling:
+imagesc(M81Bn)
+axis square
+colorbar
+title('M81 in log10 sacle (B filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+imagesc(M81Vn)
+axis square
+colorbar
+title('M81 in log10 sacle (V filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+imagesc(M81Rn)
+axis square
+colorbar
+title('M81 in log10 sacle (R filter)')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+% Now we can insert *|M81Rn|* in the first plane (the red), *|M81Vn|* in
+% the second (the green), and *|M81Bn|* in the last (the blue):
+rgb(:,:,1) = M81Rn;
+rgb(:,:,2) = M81Vn;
+rgb(:,:,3) = M81Bn;
+%%
+% Now we can display the image:
+imagesc(rgb)
+axis square
+title('M81')
+xlabel('pixel #'); ylabel('pixel #');
+%%
+% You can play with different boundary values and try to get a better image
+% than this!
+##### SOURCE END #####
+-->
+   </body>
+</html>
