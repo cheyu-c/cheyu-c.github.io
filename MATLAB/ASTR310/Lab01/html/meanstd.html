@@ -1,0 +1,178 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Means and Standard Deviations of Box Pixels</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-06">
+      <meta name="m-file" content="meanstd"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Means and Standard Deviations of Box Pixels</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Now you need to choose one box from each step to calculate the variance and mean intensity for each box.</p>
+         <p>Suppose you have obtained the the average of the bias-corrected images <b><tt>sc</tt></b> and the variance image <b><tt>var</tt></b>:
+         </p><pre class="codeinput">figure(1)
+imagesc(sc)
+figure(2)
+imagesc(var)
+</pre><img vspace="5" hspace="5" src="meanstd_01.png" alt=""> <img vspace="5" hspace="5" src="meanstd_02.png" alt=""> <p>Then we invoke the procedure <b><tt>box_vals</tt></b>. When calling <b><tt>box_vals</tt></b>, you'll need to click and drag on the image to define a box. You should do so on <b><tt>sc</tt></b> (figure 1) instead of <b><tt>var</tt></b> (figure 2), since it's easier to see the edges of steps on <b><tt>sc</tt></b>.
+         </p>
+         <p>The function <b><tt>box_vals</tt></b> requires two input, which is <b><tt>sc</tt></b> and <b><tt>var</tt></b> in this case:
+         </p><pre class="codeinput">box_vals(sc, var)
+</pre><p>It will give you the following output:</p>
+<pre class="codeoutput">mean intensity = 9879.664, std of intensity = 56.295
+mean variance = 1189.840, std of variance = 1625.585
+</pre>
+         <p>Now you can save the mean intensity (<b><tt>avm</tt></b>) and the variance (<b><tt>dfm</tt></b>) to the vectors <b><tt>xvec</tt></b> and <b><tt>yvec</tt></b>:
+         </p><pre class="codeinput">xvec(1) = 9879.664;
+yvec(1) = 1189.840;
+</pre><p>Recall that <b><tt>xvec(1)</tt></b> means the first element of vector <b><tt>xvec</tt></b>, which corresponds to your first measurement, or data from the first step. Don't forget to change the number inside the parentheses
+            when you are measuring the other steps!
+         </p>
+         <p>Repeat this process for all 9 steps, and you'll be able to plot the variance vs. the mean intensity:</p><pre class="codeinput">figure(3)
+plot(xvec, yvec)
+</pre><img vspace="5" hspace="5" src="meanstd_03.png" alt=""> <p>The slope of this plot gives you the gain of your CCD. To calculate the slope, we can use the MATLAB function <b><tt>polyfit</tt></b>:
+         </p><pre class="codeinput">coef = polyfit(xvec, yvec, 1)
+</pre><pre class="codeoutput">
+coef =
+
+    0.1206    5.8303
+
+</pre><p>which will fit <b><tt>xvec</tt></b> and <b><tt>yvec</tt></b> into a polynomial of degree 1, <b>yvec = a*xvec + b</b>, where <b><tt>coef(1)</tt></b> is <b><tt>a</tt></b> and <b><tt>coef(2)</tt></b> is <b><tt>b</tt></b>.
+         </p>
+         <p>You can also overplot the fitted formula on your measured data by using <b><tt>hold</tt></b>:
+         </p><pre class="codeinput">figure(3)
+hold <span class="string">on</span>
+plot(xvec, coef(1)*xvec+coef(2), <span class="string">'r--'</span>)
+</pre><img vspace="5" hspace="5" src="meanstd_04.png" alt=""> <p>The third parameter defines the line property, and <b><tt>r--</tt></b> here means red dashed line. The default line property is <b><tt>b-</tt></b> : blue straight line.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Means and Standard Deviations of Box Pixels
+%%
+% Now you need to choose one box from each step to calculate the variance
+% and mean intensity for each box. 
+% 
+% Suppose you have obtained the the average of the bias-corrected images
+% *|sc|* and the variance image *|var|*:
+figure(1)
+imagesc(sc)
+figure(2)
+imagesc(var)
+%%
+% Then we invoke the procedure *|box_vals|*. When calling *|box_vals|*, you'll
+% need to click and drag on the image to define a box. You should do so on
+% *|sc|* (figure 1) instead of *|var|* (figure 2), since it's easier to see
+% the edges of steps on *|sc|*.
+% 
+% The function *|box_vals|* requires two input, which is *|sc|* and *|var|*
+% in this case:
+box_vals(sc, var)
+%%
+% It will give you the following output:
+%
+% Now you can save the mean intensity (*|avm|*) and the variance (*|dfm|*)
+% to the vectors *|xvec|* and *|yvec|*:
+xvec(1) = 9879.664;
+yvec(1) = 1189.840;
+%%
+% Recall that *|xvec(1)|* means the first element of vector *|xvec|*, which
+% corresponds to your first measurement, or data from the first step. Don't
+% forget to change the number inside the parentheses when you are measuring 
+% the other steps!
+% 
+% Repeat this process for all 9 steps, and you'll be able to plot the
+% variance vs. the mean intensity:
+figure(3)
+plot(xvec, yvec)
+%%
+% The slope of this plot gives you the gain of your CCD. To calculate the
+% slope, we can use the MATLAB function *|polyfit|*:
+coef = polyfit(xvec, yvec, 1)
+%%
+% which will fit *|xvec|* and *|yvec|* into a polynomial of degree 1, *yvec
+% = a*xvec + b*, where *|coef(1)|* is *|a|* and *|coef(2)|* is *|b|*.
+%
+% You can also overplot the fitted formula on your measured data by using
+% *|hold|*:
+figure(3)
+hold on
+plot(xvec, coef(1)*xvec+coef(2), 'rREPLACE_WITH_DASH_DASH')
+%%
+% The third parameter defines the line property, and *|rREPLACE_WITH_DASH_DASH|* here means red
+% dashed line. The default line property is *|b-|* : blue straight line.
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

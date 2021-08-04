@@ -1,0 +1,256 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Vectors, Matrices, and Arrays: Size, Length, and Subscripts</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-08-17">
+      <meta name="m-file" content="vectors02"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Vectors, Matrices, and Arrays: Size, Length, and Subscripts</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Size of an Array</a></li>
+               <li><a href="#7">Length of a Vector</a></li>
+               <li><a href="#9">Length of an Array</a></li>
+               <li><a href="#12">Subscripts</a></li>
+               <li><a href="#15">Colon Operator as Subscript</a></li>
+               <li><a href="#17">Exercise</a></li>
+            </ul>
+         </div>
+         <p>Let's say we have these sample arrays and vectors:</p><pre class="codeinput">VectorExample1 = [2; 4; 6; 1; 3; 5];
+VectorExample2 = [2  4  6  1  3  5];
+MatrixExample1 = [2  4  6; 1  3  5];
+MatrixExample2 = [2  4; 6  1; 3  5];
+</pre><p><i>(Exercise: do you know how these vectors/matrices look like without typing these commands in MATLAB?)</i></p>
+         <h2>Size of an Array<a name="3"></a></h2>
+         <p>Many times it is important to find out the dimensions of an array. The function <b><tt>size</tt></b> returns a vector of dimensions:
+         </p><pre class="codeinput">size(MatrixExample1)
+</pre><pre class="codeoutput">
+ans =
+
+     2     3
+
+</pre><pre class="codeinput">size(MatrixExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     3     2
+
+</pre><p>To save the numbers for future use, type</p><pre class="codeinput">[RowNumber, ColNumber] = size(MatrixExample1)
+</pre><pre class="codeoutput">
+RowNumber =
+
+     2
+
+
+ColNumber =
+
+     3
+
+</pre><p>or use a vector to save the info:</p><pre class="codeinput">SizeNumber = size(MatrixExample1)
+</pre><pre class="codeoutput">
+SizeNumber =
+
+     2     3
+
+</pre><h2>Length of a Vector<a name="7"></a></h2>
+         <p>In MATLAB, a vector is basically a 1xN (or Nx1) array. Therefore we don't really need the size; all we need is the <b><tt>length</tt></b> (i.e. the value of N)
+         </p><pre class="codeinput">length(VectorExample1)
+</pre><pre class="codeoutput">
+ans =
+
+     6
+
+</pre><pre class="codeinput">length(VectorExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     6
+
+</pre><h2>Length of an Array<a name="9"></a></h2>
+         <p>Sometimes we are not interested in all the dimensions, but just the longest one (as with 1xN arrays). MATLAB provides the
+            handy function <b><tt>length</tt></b> to obtain that number:
+         </p><pre class="codeinput">length(MatrixExample1)
+</pre><pre class="codeoutput">
+ans =
+
+     3
+
+</pre><pre class="codeinput">length(MatrixExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     3
+
+</pre><p>Note that the length for the two matrices are the same.</p>
+         <h2>Subscripts<a name="12"></a></h2>
+         <p>Subscripts are the intuitive mathematical representation for accessing data that has more than one dimension. For example,</p><pre class="codeinput">VectorExample1(3)
+</pre><pre class="codeoutput">
+ans =
+
+     6
+
+</pre><p>refers to the third element of the vector <b><tt>VectorExample1</tt></b>, and
+         </p><pre class="codeinput">MatrixExample1(1,2)
+</pre><pre class="codeoutput">
+ans =
+
+     4
+
+</pre><p>refers to the element in the first row, second column of the array <b><tt>MatrixExample1</tt></b>.
+         </p>
+         <h2>Colon Operator as Subscript<a name="15"></a></h2>
+         <p>If you want to see a range of values, use the colon operator:</p><pre class="codeinput">VectorExample2(2:5)
+</pre><pre class="codeoutput">
+ans =
+
+     4     6     1     3
+
+</pre><pre class="codeinput">MatrixExample1(1:2, 2:3)
+</pre><pre class="codeoutput">
+ans =
+
+     4     6
+     3     5
+
+</pre><h2>Exercise<a name="17"></a></h2>
+         <p>We have</p><pre class="codeinput">A = [1:5; zeros(1,3),ones(1,2); 10:-1:6];
+S = size(A);
+Q = S(1) + length(A) - A(2,5) + length(zeros(1,3));
+</pre><p>What's the value of <b><tt>Q</tt></b>?
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Vectors, Matrices, and Arrays: Size, Length, and Subscripts
+%%
+% Let's say we have these sample arrays and vectors:
+VectorExample1 = [2; 4; 6; 1; 3; 5];
+VectorExample2 = [2  4  6  1  3  5];
+MatrixExample1 = [2  4  6; 1  3  5];
+MatrixExample2 = [2  4; 6  1; 3  5];
+%%
+% _(Exercise: do you know how these vectors/matrices look like without
+% typing these commands in MATLAB?)_
+%% Size of an Array
+% Many times it is important to find out the dimensions of an array. The
+% function *|size|* returns a vector of dimensions:
+size(MatrixExample1)
+%%
+size(MatrixExample2)
+%% 
+% To save the numbers for future use, type
+[RowNumber, ColNumber] = size(MatrixExample1)
+%%
+% or use a vector to save the info:
+SizeNumber = size(MatrixExample1)
+%% Length of a Vector
+% In MATLAB, a vector is basically a 1xN (or Nx1) array. Therefore we don't
+% really need the size; all we need is the *|length|* (i.e. the value of N)
+length(VectorExample1)
+%%
+length(VectorExample2)
+%% Length of an Array
+% Sometimes we are not interested in all the dimensions, but just the 
+% longest one (as with 1xN arrays). MATLAB provides the handy function 
+% *|length|* to obtain that number:
+length(MatrixExample1)
+%%
+length(MatrixExample2)
+%%
+% Note that the length for the two matrices are the same.
+%% Subscripts
+% Subscripts are the intuitive mathematical representation for accessing 
+% data that has more than one dimension. For example,
+VectorExample1(3)
+%%
+% refers to the third element of the vector *|VectorExample1|*, and 
+MatrixExample1(1,2)
+%%
+% refers to the element in the first row, second column of the array 
+% *|MatrixExample1|*.
+%% Colon Operator as Subscript
+% If you want to see a range of values, use the colon operator:
+VectorExample2(2:5)
+%%
+MatrixExample1(1:2, 2:3)
+%% Exercise
+% We have
+A = [1:5; zeros(1,3),ones(1,2); 10:-1:6];
+S = size(A);
+Q = S(1) + length(A) - A(2,5) + length(zeros(1,3));
+%%
+% What's the value of *|Q|*?
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,270 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Vectors, Matrices, and Arrays: Basic Operations</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-08-17">
+      <meta name="m-file" content="MoreVectors01"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Vectors, Matrices, and Arrays: Basic Operations</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Visualization</a></li>
+               <li><a href="#4">Basic Calculation</a></li>
+               <li><a href="#7">Dot-Operators</a></li>
+               <li><a href="#12">Vectorized Functions</a></li>
+               <li><a href="#15">Exercise</a></li>
+            </ul>
+         </div>
+         <h2>Visualization<a name="1"></a></h2>
+         <p>Assume we have</p><pre class="codeinput">SampleArray = [1:5;2:6;3:7;4:8;5:9];
+</pre><p>We can plot this data array by calling the function <b><tt>imagesc</tt></b></p><pre class="codeinput">imagesc(SampleArray)
+</pre><img vspace="5" hspace="5" src="MoreVectors01_01.png" alt=""> <p>Use the <b><tt>colorbar</tt></b> command to see what the colorcode refers to:
+         </p><pre class="codeinput">colorbar;
+</pre><img vspace="5" hspace="5" src="MoreVectors01_02.png" alt=""> <h2>Basic Calculation<a name="4"></a></h2>
+         <p>Simple math between two arrays with same size is straightforward. For example,</p><pre class="codeinput">A = [1 2 3; 4 5 6];
+B = [1 4 9; 16 25 36];
+</pre><p>Try</p><pre class="codeinput">A + B
+</pre><pre class="codeoutput">
+ans =
+
+     2     6    12
+    20    30    42
+
+</pre><p>and</p><pre class="codeinput">A - B
+</pre><pre class="codeoutput">
+ans =
+
+     0    -2    -6
+   -12   -20   -30
+
+</pre><h2>Dot-Operators<a name="7"></a></h2>
+         <p>MATLAB uses the dot-operator (<b><tt>.</tt></b>) construction to distinguish between scalar-vectorized operations and matrix operations. Dot-operators are meant to repeat
+            operations on the members of the array. For example,
+         </p><pre class="codeinput">A .* A
+</pre><pre class="codeoutput">
+ans =
+
+     1     4     9
+    16    25    36
+
+</pre><p>returns an array composed by square of each element in <b><tt>A</tt></b>.
+         </p>
+         <p><i>(Note: This differs from <b><tt>A*A</tt></b>, which would fail in this case, since the matrix multiplication is only mathematically defined for arrays with the same number
+               of rows and columns.)</i></p>
+         <p>Another example of dot-operator is the power (<b><tt>^</tt></b>) function:
+         </p><pre class="codeinput">B.^0.5
+</pre><pre class="codeoutput">
+ans =
+
+     1     2     3
+     4     5     6
+
+</pre><p>which applies the "raise to the 0.5 power" operation to each member of the array B.</p>
+         <p>The division between two arrays is also a dot-operator:</p><pre class="codeinput">A ./ B
+</pre><pre class="codeoutput">
+ans =
+
+    1.0000    0.5000    0.3333
+    0.2500    0.2000    0.1667
+
+</pre><p>which allows us to divide elements in A by the corresponding elements in B.</p>
+         <h2>Vectorized Functions<a name="12"></a></h2>
+         <p>MATLAB is a vectorized language. That means it operates automatically over each member of an array without the need for an
+            explicit loop (which would be necessary in C or FORTRAN). In fact, it is not only more compact, but more efficient and faster
+            to avoid loops if possible.
+         </p>
+         <p>Most (if not all) MATLAB functions are vectorized. For example:</p><pre class="codeinput">B = [1 4 9; 16 25 36];
+sqrt(B)
+</pre><pre class="codeoutput">
+ans =
+
+     1     2     3
+     4     5     6
+
+</pre><p>This uses the square root operator over each element of the array. Similarly, try:</p><pre class="codeinput">log(B)
+</pre><pre class="codeoutput">
+ans =
+
+         0    1.3863    2.1972
+    2.7726    3.2189    3.5835
+
+</pre><pre class="codeinput">sin(B)
+</pre><pre class="codeoutput">
+ans =
+
+    0.8415   -0.7568    0.4121
+   -0.2879   -0.1324   -0.9918
+
+</pre><h2>Exercise<a name="15"></a></h2>
+         <p>Consider the three arrays:</p><pre class="codeinput">SampleA = [1:3;4:6;7:9];
+SampleB = [ones(1,3);zeros(1,3)];
+SampleC = [1:2:5;2:2:6];
+</pre><p>For the following sets of two commands, point out which sets have identical commands, and explain why the commands in other
+            sets are different:
+         </p>
+         <p>1)</p><pre class="codeinput">SampleA*SampleA;
+SampleA.*SampleA;
+</pre><p>2)</p><pre class="codeinput">size(SampleB)./size(SampleC);
+size(SampleB./SampleC);
+</pre><p>3)</p><pre class="codeinput">SampleC.*SampleC;
+SampleC.^2;
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Vectors, Matrices, and Arrays: Basic Operations
+%% Visualization
+% Assume we have
+SampleArray = [1:5;2:6;3:7;4:8;5:9];
+%%
+% We can plot this data array by calling the function *|imagesc|*
+imagesc(SampleArray)
+%%
+% Use the *|colorbar|* command to see what the colorcode refers to:
+colorbar;
+%% Basic Calculation
+% Simple math between two arrays with same size is straightforward. For
+% example,
+A = [1 2 3; 4 5 6];
+B = [1 4 9; 16 25 36];
+%%
+% Try
+A + B
+%%
+% and
+A - B
+%% Dot-Operators
+% MATLAB uses the dot-operator (*|.|*) construction to distinguish between
+% scalar-vectorized operations and matrix operations. Dot-operators are 
+% meant to repeat operations on the members of the array. For example,
+%%
+A .* A
+%%
+% returns an array composed by square of each element in *|A|*.
+% 
+% _(Note: This differs from *|A*A|*, which would fail in this case, since the
+% matrix multiplication is only mathematically defined for arrays with the 
+% same number of rows and columns.)_
+%
+% Another example of dot-operator is the power (*|^|*) function:
+B.^0.5
+%%
+% which applies the "raise to the 0.5 power" operation to each member of 
+% the array B.
+%
+% The division between two arrays is also a dot-operator:
+A ./ B
+%%
+% which allows us to divide elements in A by the corresponding elements in
+% B.
+%% Vectorized Functions
+% MATLAB is a vectorized language. That means it operates automatically
+% over each member of an array without the need for an explicit loop 
+% (which would be necessary in C or FORTRAN). In fact, it is not only more 
+% compact, but more efficient and faster to avoid loops if possible.
+%
+% Most (if not all) MATLAB functions are vectorized. For example:
+B = [1 4 9; 16 25 36];
+sqrt(B)
+%%
+% This uses the square root operator over each element of the array.
+% Similarly, try:
+log(B)
+%%
+sin(B)
+%% Exercise
+% Consider the three arrays:
+SampleA = [1:3;4:6;7:9];
+SampleB = [ones(1,3);zeros(1,3)];
+SampleC = [1:2:5;2:2:6];
+%%
+% For the following sets of two commands, point out which sets have
+% identical commands, and explain why the commands in other sets are
+% different:
+%
+% 1)
+SampleA*SampleA;
+SampleA.*SampleA;
+%%
+% 2)
+size(SampleB)./size(SampleC);
+size(SampleB./SampleC);
+%%
+% 3)
+SampleC.*SampleC;
+SampleC.^2;
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

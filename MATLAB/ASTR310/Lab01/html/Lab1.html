@@ -1,0 +1,231 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting FITS images</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-13">
+      <meta name="m-file" content="Lab1"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting FITS images</h1>
+         <!--introduction-->
+         <p>Assume that you already copied the <b><tt>.m</tt></b> files <b><tt>img2fits.m</tt></b> and <b><tt>rfits.m</tt></b> in your current directory, and you have the <b><tt>sample.img</tt></b> file in the directory <b><tt>images/</tt></b>.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Change the file format</a></li>
+               <li><a href="#3">Read the FITS file</a></li>
+               <li><a href="#4">What's inside?</a></li>
+               <li><a href="#9">Plot the data</a></li>
+               <li><a href="#14">Setting the display range</a></li>
+            </ul>
+         </div>
+         <h2>Change the file format<a name="1"></a></h2>
+         <p>The first step is to change the <b><tt>.img</tt></b> files (a special format valid only for this camera) into <b><tt>.fits</tt></b> files (FITS is a standard astronomical format). This can be done by simply calling the function <b><tt>img2fits</tt></b>:
+         </p><pre class="codeinput">img2fits(<span class="string">'images/sample.IMG'</span>);
+</pre><p>You will find a new file with the name <b><tt>sample.fits</tt></b> in the directory <b><tt>images/</tt></b>.
+         </p>
+         <h2>Read the FITS file<a name="3"></a></h2>
+         <p>Now read in the images by using the <b><tt>rfits</tt></b> procedure:
+         </p><pre class="codeinput">s = rfits(<span class="string">'images/sample.fits'</span>);
+</pre><h2>What's inside?<a name="4"></a></h2>
+         <p>The MATLAB command <b><tt>whos</tt></b> will show you a list of all variables you currently have, including there names and types:
+         </p><pre class="codeinput">whos
+</pre><pre class="codeoutput">  Name      Size              Bytes  Class     Attributes
+
+  s         1x1             1779408  struct              
+
+</pre><p>As you can see here, the variable <b><tt>s</tt></b> is a complex data structure. Now type the variale name <b><tt>s</tt></b> will give you what variables are inside this structure:
+         </p><pre class="codeinput">s
+</pre><pre class="codeoutput">
+s = 
+
+     naxis: 2
+    bitpix: -32
+     numpt: [384 576]
+     crval: [2x1 double]
+     crpix: [2x1 double]
+     cdelt: [2x1 double]
+     crota: [2x1 double]
+     ctype: {2x1 cell}
+     cunit: {2x1 cell}
+    bscale: 1
+     bzero: 0
+     bunit: ''
+     blank: NaN
+         x: {[1x384 double]  [1x576 double]}
+      data: [384x576 double]
+
+</pre><p>So now we know <b><tt>s</tt></b> contains <b><tt>naxis</tt></b>, <b><tt>bitpix</tt></b>, <b><tt>numpt</tt></b>, <b><tt>crval</tt></b>, and so on. We also know that, for example, <b><tt>naxis</tt></b> is number <tt>2</tt>, and <b><tt>crval</tt></b> is a vector with 2 elements which are the type <tt>double</tt> (means they are <i>double</i>-precision floating-point numbers). These components of <b><tt>s</tt></b> provide the header information of this CCD map.
+         </p>
+         <p>You can type <b><tt>s.</tt></b><i>variables</i> to see what's inside the sub-variables:
+         </p><pre class="codeinput">s.naxis
+</pre><pre class="codeoutput">
+ans =
+
+     2
+
+</pre><pre class="codeinput">s.crval
+</pre><pre class="codeoutput">
+ans =
+
+     1
+     1
+
+</pre><p>Now, the last variable inside <b><tt>s</tt></b> is <b><tt>data</tt></b>, which is an <tt>384 x 576</tt> numerical (note the type <tt>double</tt>) array. This is what we need in this lab.
+         </p>
+         <h2>Plot the data<a name="9"></a></h2>
+         <p>Now you have <b><tt>s.data</tt></b> as a data array. To visualize, you may type
+         </p><pre class="codeinput">imagesc(s.data)
+</pre><img vspace="5" hspace="5" src="Lab1_01.png" alt=""> <p><i>(Do you remember how to add a colorbar?)</i></p>
+         <p>You can also change the color map by using <b><tt>colormap</tt></b>, e.g.,
+         </p><pre class="codeinput">colormap <span class="string">gray</span>
+</pre><img vspace="5" hspace="5" src="Lab1_02.png" alt=""> <p>The default color map is <b><tt>jet</tt></b>. Try
+         </p><pre class="codeinput">colormap <span class="string">jet</span>
+</pre><img vspace="5" hspace="5" src="Lab1_03.png" alt=""> <p>or</p><pre class="codeinput">colormap <span class="string">default</span>
+</pre><p>to recover it.</p>
+         <h2>Setting the display range<a name="14"></a></h2>
+         <p>The default pseudocolor axis scaling is autoranging, but you can set the values corresponding to the extremes of the color
+            range using <b><tt>caxis([min max])</tt></b>:
+         </p><pre class="codeinput">caxis([5000 10000])
+</pre><img vspace="5" hspace="5" src="Lab1_04.png" alt=""> <p>Properly choosing your <b><tt>[min max]</tt></b> values can help you see all detail that is in your data!
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting FITS images
+%
+% Assume that you already copied the *|.m|* files *|img2fits.m|* and
+% *|rfits.m|* in your current directory, and you have the *|sample.img|* 
+% file in the directory *|images/|*. 
+%% Change the file format
+% The first step is to change the *|.img|* files (a special format valid only 
+% for this camera) into *|.fits|* files (FITS is a standard astronomical 
+% format). This can be done by simply calling the function *|img2fits|*:
+img2fits('images/sample.IMG');
+%%
+% You will find a new file with the name *|sample.fits|* in the directory 
+% *|images/|*.
+%% Read the FITS file
+% Now read in the images by using the *|rfits|* procedure:
+s = rfits('images/sample.fits');
+%% What's inside?
+% The MATLAB command *|whos|* will show you a list of all variables you
+% currently have, including there names and types:
+whos
+%%
+% As you can see here, the variable *|s|* is a complex data structure. Now
+% type the variale name *|s|* will give you what variables are inside this
+% structure:
+s
+%%
+% So now we know *|s|* contains *|naxis|*, *|bitpix|*, *|numpt|*,
+% *|crval|*, and so on. We also know that, for example, *|naxis|* is number
+% |2|, and *|crval|* is a vector with 2 elements which are the type
+% |double| (means they are _double_-precision floating-point numbers).
+% These components of *|s|* provide the header information of this CCD map.
+%
+% You can type *|s.|*_variables_ to see what's inside the sub-variables:
+s.naxis
+%%
+s.crval
+%%
+% Now, the last variable inside *|s|* is *|data|*, which is an |384 x 576| 
+% numerical (note the type |double|) array. This is what we need in this 
+% lab. 
+%% Plot the data
+% Now you have *|s.data|* as a data array. To visualize, you may type
+imagesc(s.data)
+%%
+% _(Do you remember how to add a colorbar?)_
+%
+% You can also change the color map by using *|colormap|*, e.g.,
+colormap gray
+%%
+% The default color map is *|jet|*. Try
+colormap jet
+%%
+% or
+colormap default
+%%
+% to recover it.
+%% Setting the display range
+% The default pseudocolor axis scaling is autoranging, but you can set the
+% values corresponding to the extremes of the color range using *|caxis([min max])|*:
+caxis([5000 10000])
+%%
+% Properly choosing your *|[min max]|* values can help you see all detail 
+% that is in your data!
+%
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,138 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Cleaning Maps</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-07">
+      <meta name="m-file" content="CleanMap"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Cleaning Maps</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Basically, you should have three maps: your first measurement,</p><pre class="codeinput">figure(1)
+imagesc(s1.data)
+</pre><img vspace="5" hspace="5" src="CleanMap_01.png" alt=""> <p>your second measurement (note that you can use <b><tt>figure(<i>number</i>)</tt></b> to create new figure windows),
+         </p><pre class="codeinput">figure(2)
+imagesc(s2.data)
+</pre><img vspace="5" hspace="5" src="CleanMap_02.png" alt=""> <p>and your bias measurement.</p><pre class="codeinput">figure(3)
+imagesc(bias.data)
+</pre><img vspace="5" hspace="5" src="CleanMap_03.png" alt=""> <p>Now you can have two bias-corrected images <b><tt>sc1</tt></b> and <b><tt>sc2</tt></b>: (note that you can add ' <b><tt>;</tt></b> ' at the end of commands to run the commands without printing the results!)
+         </p><pre class="codeinput">sc1 = s1.data - bias.data;
+sc2 = s2.data - bias.data;
+</pre><p>These two together give you the final map:</p><pre class="codeinput">sc = (sc1 + sc2)/2;
+</pre><pre class="codeinput">figure(1)
+imagesc(sc)
+</pre><img vspace="5" hspace="5" src="CleanMap_04.png" alt=""> <p>You can also calculate the variance:</p><pre class="codeinput">diff = s1.data - s2.data;
+var = diff.*diff;
+</pre><pre class="codeinput">figure(2)
+imagesc(var)
+</pre><img vspace="5" hspace="5" src="CleanMap_05.png" alt=""> <p>These two images will be used to determine the gain of your CCD.</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Cleaning Maps
+%%
+% Basically, you should have three maps: your first measurement,
+figure(1)
+imagesc(s1.data)
+%%
+% your second measurement (note that you can use *|figure(_number_)|* to
+% create new figure windows),
+figure(2)
+imagesc(s2.data)
+%%
+% and your bias measurement.
+figure(3)
+imagesc(bias.data)
+%%
+% Now you can have two bias-corrected images *|sc1|* and *|sc2|*: (note
+% that you can add ' *|;|* ' at the end of commands to run the commands without
+% printing the results!)
+sc1 = s1.data - bias.data;
+sc2 = s2.data - bias.data;
+%%
+% These two together give you the final map:
+sc = (sc1 + sc2)/2;
+%%
+figure(1)
+imagesc(sc)
+%%
+% You can also calculate the variance:
+diff = s1.data - s2.data;
+var = diff.*diff;
+%%
+figure(2)
+imagesc(var)
+%%
+% These two images will be used to determine the gain of your CCD.
+##### SOURCE END #####
+-->
+   </body>
+</html>

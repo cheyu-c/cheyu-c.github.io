@@ -1,0 +1,264 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Vectors, Matrices, and Arrays: Statistical Analysis</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-08-17">
+      <meta name="m-file" content="MoreVectors02"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Vectors, Matrices, and Arrays: Statistical Analysis</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Comparison between Elements</a></li>
+               <li><a href="#6">Specifying Subscripts</a></li>
+               <li><a href="#9">Colon Operator Again!</a></li>
+               <li><a href="#11">Simple Statistics</a></li>
+               <li><a href="#13">Exercise</a></li>
+            </ul>
+         </div>
+         <p>Though most MATLAB functions are vectorized, we should be careful when using those functions which include usage of two or
+            more array elements in the same time. This situation occurs frequently when dealing with data statistics.
+         </p>
+         <p>Here's a sample data array generated from the random number generator:</p><pre class="codeinput">DataA = rand(3,5)
+</pre><pre class="codeoutput">
+DataA =
+
+    0.1829    0.0287    0.9787    0.4711    0.0424
+    0.2399    0.4899    0.7127    0.0596    0.0714
+    0.8865    0.1679    0.5005    0.6820    0.5216
+
+</pre><h2>Comparison between Elements<a name="2"></a></h2>
+         <p>By default, in arrays of two or more dimensions, these operators do the calculations along the first non-singleton dimension.
+            For example:
+         </p><pre class="codeinput">max(DataA)
+</pre><pre class="codeoutput">
+ans =
+
+    0.8865    0.4899    0.9787    0.6820    0.5216
+
+</pre><pre class="codeinput">min(DataA)
+</pre><pre class="codeoutput">
+ans =
+
+    0.1829    0.0287    0.5005    0.0596    0.0424
+
+</pre><p>these print the maximum and minimum values of each row in array <b><tt>DataA</tt></b>. Another example is
+         </p><pre class="codeinput">sum(DataA)
+</pre><pre class="codeoutput">
+ans =
+
+    1.3094    0.6865    2.1918    1.2127    0.6355
+
+</pre><p>this calculates the sum of the elements of each row in array <b><tt>DataA</tt></b>.
+         </p>
+         <h2>Specifying Subscripts<a name="6"></a></h2>
+         <p>If the default dimension is not the one along which you want to operate the functions, you can add a second optional parameter
+            that specifies which dimension you want to collapse:
+         </p><pre class="codeinput">sum(DataA,2)
+</pre><pre class="codeoutput">
+ans =
+
+    1.7038
+    1.5736
+    2.7585
+
+</pre><p>this will sum the columns (the <b>2nd</b> dimension).
+         </p>
+         <p>Note that in the case of <b><tt>max</tt></b> and <b><tt>min</tt></b>, these functions are supposed to compare <i>two</i> arrays, so the second optional parameter of <b><tt>max</tt></b> and <b><tt>min</tt></b> is set to be an array. Therefore, to specify which dimension we want to analysize, we need to add an empty second optional
+            parameter and indicate the dimension we want in the third argument:
+         </p><pre class="codeinput">max(DataA,[], 2)
+</pre><pre class="codeoutput">
+ans =
+
+    0.9787
+    0.7127
+    0.8865
+
+</pre><p><i>(Exercise: what will happen if you type</i>  <b><tt>max(DataA,2)</tt></b> <i>?)</i></p>
+         <h2>Colon Operator Again!<a name="9"></a></h2>
+         <p>In the case of data arrays, we want the operators to apply on every element in the array, instead of columns or rows. This
+            can be achieved by using the colon operator. For example, if you want to sum all the numbers in <b><tt>DataA</tt></b> irrespective of their position in the array, do
+         </p><pre class="codeinput">sum(DataA(:))
+</pre><pre class="codeoutput">
+ans =
+
+    6.0359
+
+</pre><p>which gives you the summation of every single element in array <b><tt>DataA</tt></b>. Similarly you can have
+         </p><pre class="codeinput">max(DataA(:))
+min(DataA(:))
+</pre><pre class="codeoutput">
+ans =
+
+    0.9787
+
+
+ans =
+
+    0.0287
+
+</pre><h2>Simple Statistics<a name="11"></a></h2>
+         <p>MATLAB provides several internal function for the sake of data statistics. For example, the average value of each element
+            in array <b><tt>DataA</tt></b> can be calculated by using the function <b><tt>mean</tt></b>:
+         </p><pre class="codeinput">mean(DataA(:))
+</pre><pre class="codeoutput">
+ans =
+
+    0.4024
+
+</pre><p>For the standard deviation between each element of array <b><tt>DataA</tt></b>, use <b><tt>std</tt></b>:
+         </p><pre class="codeinput">std(DataA(:))
+</pre><pre class="codeoutput">
+ans =
+
+    0.3166
+
+</pre><h2>Exercise<a name="13"></a></h2>
+         <p>The goal of this exercise is to make you feel grateful to the MATLAB internal functions...</p>
+         <p>Your professor gives you an unknown data set named <b><tt>BlackBox</tt></b>. You don't know what are the values in the data set, you don't even know the size of the data set. How could you calculate
+            the average value of the data set, without using the function <b><tt>mean</tt></b>?
+         </p>
+         <p><i>(Hint: Use</i> <b><tt>sum</tt></b> <i>and</i> <b><tt>size</tt></b><i>!)</i></p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Vectors, Matrices, and Arrays: Statistical Analysis
+%%
+% Though most MATLAB functions are vectorized, we should be careful when
+% using those functions which include usage of two or more array elements
+% in the same time. This situation occurs frequently when dealing with
+% data statistics.
+%
+% Here's a sample data array generated from the random number generator:
+DataA = rand(3,5)
+%% Comparison between Elements
+% By default, in arrays of two or more dimensions, these operators do the 
+% calculations along the first non-singleton dimension. For example:
+max(DataA)
+%%
+min(DataA)
+%%
+% these print the maximum and minimum values of each row in array *|DataA|*.
+% Another example is
+sum(DataA)
+%%
+% this calculates the sum of the elements of each row in array *|DataA|*.
+%% Specifying Subscripts
+% If the default dimension is not the one along which you want to operate 
+% the functions, you can add a second optional parameter that specifies 
+% which dimension you want to collapse:
+sum(DataA,2)
+%%
+% this will sum the columns (the *2nd* dimension). 
+% 
+% Note that in the case of *|max|* and *|min|*, these functions are
+% supposed to compare _two_ arrays, so the second optional parameter of *|max|*
+% and *|min|* is set to be an array. Therefore, to specify which dimension 
+% we want to analysize, we need to add an empty second optional parameter 
+% and indicate the dimension we want in the third argument:
+max(DataA,[], 2)
+%%
+% _(Exercise: what will happen if you type_  *|max(DataA,2)|* _?)_
+%% Colon Operator Again!
+% In the case of data arrays, we want the operators to apply on every
+% element in the array, instead of columns or rows. This can be achieved by
+% using the colon operator. For example, if you want to sum all the numbers 
+% in *|DataA|* irrespective of their position in the array, do
+sum(DataA(:))
+%% 
+% which gives you the summation of every single element in array *|DataA|*.
+% Similarly you can have
+max(DataA(:))
+min(DataA(:))
+%% Simple Statistics
+% MATLAB provides several internal function for the sake of data
+% statistics. For example, the average value of each element in array *|DataA|* can
+% be calculated by using the function *|mean|*:
+mean(DataA(:))
+%%
+% For the standard deviation between each element of array *|DataA|*, use *|std|*:
+std(DataA(:))
+%% Exercise
+% The goal of this exercise is to make you feel grateful to the MATLAB
+% internal functions...
+%
+% Your professor gives you an unknown data set named *|BlackBox|*. You don't
+% know what are the values in the data set, you don't even know the size of
+% the data set. How could you calculate the average value of the data set, 
+% without using the function *|mean|*?
+%
+% _(Hint: Use_ *|sum|* _and_ *|size|*_!)_
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,154 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>box_vals.m - What does the function do?</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-07">
+      <meta name="m-file" content="box_vals_intro"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>box_vals.m - What does the function do?</h1>
+         <!--introduction-->
+         <p><i>(You don't need to enter the commands below. They are already included in the code</i> <b><tt>box_vals.m</tt></b><i>. This document is only for you to learn what's inside the blackbox.)</i></p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Box-selecting</a></li>
+               <li><a href="#2">Box-defining</a></li>
+               <li><a href="#4">Calculating mean values and standard deviations</a></li>
+               <li><a href="#6">Printing results</a></li>
+            </ul>
+         </div>
+         <h2>Box-selecting<a name="1"></a></h2>
+         <p>The function <b><tt>box_cursor</tt></b> allows you to select the region of the image in which you want to carry out the calculation, and save the location of the
+            box in <b><tt>(x0,y0)</tt></b> and the box size in <b><tt>(nx,ny)</tt></b>.
+         </p><pre class="codeinput">[x0,y0,nx,ny] = box_cursor;
+</pre><h2>Box-defining<a name="2"></a></h2>
+         <p>The function <b><tt>box_vals.m</tt></b> takes two input, <b><tt>av</tt></b> as the cleaned intensity map, and <b><tt>difs</tt></b> as the variance map. Now, recall that the colon operator (<b><tt>:</tt></b>) returns a range of subscripts defined by the numbers before and after it. Therefore <b><tt>x:(x+nx)</tt></b> gives the values from subscript <b><tt>x</tt></b> to subscript <b><tt>x+nx</tt></b>. The following commands:
+         </p><pre class="codeinput">avbox = av(y0:(y0+ny), x0:(x0+nx));
+difbox = difs(y0:(y0+ny), x0:(x0+nx));
+</pre><p>generate a box <b><tt>avbox</tt></b> as a subarray of data array <b><tt>av</tt></b>, and a box <b><tt>difbox</tt></b> as a subarray of data array <b><tt>difs</tt></b>.
+         </p>
+         <h2>Calculating mean values and standard deviations<a name="4"></a></h2>
+         <p>After we construct the two boxes we want to analyze, we can apply those MATLAB commands for numerical arrays on them. The
+            mean value of each box can be calculated by using the MATLAB internal function <b><tt>mean</tt></b>:
+         </p><pre class="codeinput">avm = mean(avbox(:));
+dfm = mean(difbox(:));
+</pre><p>Similarly, the MATLAB function <b><tt>std</tt></b> is applied here to calculate the standard deviations:
+         </p><pre class="codeinput">sigav = std(avbox(:));
+sigdif = std(difbox(:));
+</pre><h2>Printing results<a name="6"></a></h2>
+         <p>The last two commands are just to print out those values evaluated in this function.</p><pre class="codeinput">fprintf(1,<span class="string">'mean intensity = %0.3f, std of intensity = %0.3f\n'</span>, avm, sigav);
+fprintf(1,<span class="string">'mean variance = %0.3f, std of variance = %0.3f\n'</span>, dfm, sigdif);
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% box_vals.m - What does the function do?
+% _(You don't need to enter the commands below. They are already included in 
+% the code_ *|box_vals.m|*_. This document is only for you to learn what's 
+% inside the blackbox.)_
+%% Box-selecting
+% The function *|box_cursor|* allows you to select the region of the image in 
+% which you want to carry out the calculation, and save the location of the 
+% box in *|(x0,y0)|* and the box size in *|(nx,ny)|*.
+[x0,y0,nx,ny] = box_cursor;
+%% Box-defining
+% The function *|box_vals.m|* takes two input, *|av|* as the cleaned
+% intensity map, and *|difs|* as the variance map. Now, recall that the 
+% colon operator (*|:|*) returns a range of subscripts defined by the 
+% numbers before and after it. Therefore *|x:(x+nx)|* gives the values from
+% subscript *|x|* to subscript *|x+nx|*. The following commands:
+avbox = av(y0:(y0+ny), x0:(x0+nx));
+difbox = difs(y0:(y0+ny), x0:(x0+nx));
+%%
+% generate a box *|avbox|* as a subarray of data array *|av|*, and a box
+% *|difbox|* as a subarray of data array *|difs|*.
+%% Calculating mean values and standard deviations
+% After we construct the two boxes we want to analyze, we can apply those
+% MATLAB commands for numerical arrays on them. The mean value of each box 
+% can be calculated by using the MATLAB internal function *|mean|*:
+avm = mean(avbox(:));
+dfm = mean(difbox(:));
+%%
+% Similarly, the MATLAB function *|std|* is applied here to calculate the 
+% standard deviations:
+sigav = std(avbox(:));
+sigdif = std(difbox(:));
+%% Printing results
+% The last two commands are just to print out those values evaluated in 
+% this function.
+fprintf(1,'mean intensity = %0.3f, std of intensity = %0.3f\n', avm, sigav);
+fprintf(1,'mean variance = %0.3f, std of variance = %0.3f\n', dfm, sigdif);
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

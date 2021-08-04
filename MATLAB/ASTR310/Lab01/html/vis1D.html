@@ -1,0 +1,205 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>1-D Visualization</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-13">
+      <meta name="m-file" content="vis1D"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>1-D Visualization</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>In MATLAB, <b><tt>plot</tt></b> is the basic plotting tool. The syntax is <b><tt>plot(x, y)</tt></b>, where <b><tt>x</tt></b> and <b><tt>y</tt></b> are vectors of same length which contains the data you want to plot.
+         </p>
+         <p>Let's try this set of <b><tt>x</tt></b> and <b><tt>y</tt></b>:
+         </p><pre class="codeinput">x = linspace(0, 2*pi, 50);
+y = sin(x);
+</pre><p>Here, <b><tt>linspace(min, max, N)</tt></b> is a function which creates a vector from <b><tt>min</tt></b> to <b><tt>max</tt></b> containing <b><tt>N</tt></b> linearly spaced points.
+         </p>
+         <p>Then we can plot the sine function:</p><pre class="codeinput">plot(x, y)
+</pre><img vspace="5" hspace="5" src="vis1D_01.png" alt=""> <p>We can also add title and labels:</p><pre class="codeinput">title(<span class="string">'plotting example'</span>);
+</pre><img vspace="5" hspace="5" src="vis1D_02.png" alt=""> <pre class="codeinput">xlabel(<span class="string">'variable x'</span>);
+ylabel(<span class="string">'function of x'</span>);
+</pre><img vspace="5" hspace="5" src="vis1D_03.png" alt=""> <p>If we have two data sets to plot in the same figure, use <b><tt>hold</tt></b>:
+         </p><pre class="codeinput">hold <span class="string">on</span>
+</pre><img vspace="5" hspace="5" src="vis1D_04.png" alt=""> <p>Then we can plot another vector vs. <b><tt>x</tt></b>:
+         </p><pre class="codeinput">y2 = cos(x);
+plot(x, y2, <span class="string">'r--'</span>)
+</pre><img vspace="5" hspace="5" src="vis1D_05.png" alt=""> <p>Adding a third parameter to the plot command can change the color and point marker. You can use <b><tt>help</tt></b> to see the options:
+         </p><pre class="codeinput">help <span class="string">plot</span>
+</pre><pre class="codeoutput"> PLOT   Linear plot. 
+    PLOT(X,Y) plots vector Y versus vector X. If X or Y is a matrix,
+    then the vector is plotted versus the rows or columns of the matrix,
+    whichever line up.  If X is a scalar and Y is a vector, disconnected
+    line objects are created and plotted as discrete points vertically at
+    X.
+ 
+    PLOT(Y) plots the columns of Y versus their index.
+    If Y is complex, PLOT(Y) is equivalent to PLOT(real(Y),imag(Y)).
+    In all other uses of PLOT, the imaginary part is ignored.
+ 
+    Various line types, plot symbols and colors may be obtained with
+    PLOT(X,Y,S) where S is a character string made from one element
+    from any or all the following 3 columns:
+ 
+           b     blue          .     point              -     solid
+           g     green         o     circle             :     dotted
+           r     red           x     x-mark             -.    dashdot 
+           c     cyan          +     plus               --    dashed   
+           m     magenta       *     star             (none)  no line
+           y     yellow        s     square
+           k     black         d     diamond
+           w     white         v     triangle (down)
+                               ^     triangle (up)
+                               &lt;     triangle (left)
+                               &gt;     triangle (right)
+                               p     pentagram
+                               h     hexagram
+                          
+    ... ...
+
+</pre><p>It's also a good idea to include legend in figures with more than one curve. The syntax is simple:</p><pre class="codeinput">legend(<span class="string">'sin(x)'</span>, <span class="string">'cos(x)'</span>, <span class="string">'Location'</span>, <span class="string">'Best'</span>);
+</pre><img vspace="5" hspace="5" src="vis1D_06.png" alt=""> <p>Similarly, you can use <b><tt>help</tt></b> to find out more options for <b><tt>'Location'</tt></b>:
+         </p><pre class="codeinput">help <span class="string">legend</span>
+</pre><pre class="codeoutput"> LEGEND Display legend.
+    ... ...
+    
+    LEGEND(...,'Location',LOC) adds a legend in the specified
+    location, LOC, with respect to the axes.  LOC may be either a
+    1x4 position vector or one of the following strings:
+        'North'              inside plot box near top
+        'South'              inside bottom
+        'East'               inside right
+        'West'               inside left
+        'NorthEast'          inside top right (default for 2-D plots)
+        'NorthWest'           inside top left
+        'SouthEast'          inside bottom right
+        'SouthWest'          inside bottom left
+        'NorthOutside'       outside plot box near top
+        'SouthOutside'       outside bottom
+        'EastOutside'        outside right
+        'WestOutside'        outside left
+        'NorthEastOutside'   outside top right (default for 3-D plots)
+        'NorthWestOutside'   outside top left
+        'SouthEastOutside'   outside bottom right
+        'SouthWestOutside'   outside bottom left
+        'Best'               least conflict with data in plot
+        'BestOutside'        least unused space outside plot
+
+    ... ...
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% 1-D Visualization
+%%
+% In MATLAB, *|plot|* is the basic plotting tool. The syntax is *|plot(x,
+% y)|*, where *|x|* and *|y|* are vectors of same length which contains the
+% data you want to plot.
+%
+% Let's try this set of *|x|* and *|y|*:
+x = linspace(0, 2*pi, 50);
+y = sin(x);
+%%
+% Here, *|linspace(min, max, N)|* is a function which creates a vector from
+% *|min|* to *|max|* containing *|N|* linearly spaced points.
+%
+% Then we can plot the sine function:
+plot(x, y)
+%%
+% We can also add title and labels:
+title('plotting example');
+%%
+xlabel('variable x');
+ylabel('function of x');
+%%
+% If we have two data sets to plot in the same figure, use *|hold|*:
+hold on
+%%
+% Then we can plot another vector vs. *|x|*:
+y2 = cos(x);
+plot(x, y2, 'rREPLACE_WITH_DASH_DASH')
+%%
+% Adding a third parameter to the plot command can change the color and
+% point marker. You can use *|help|* to see the options:
+help plot
+%%
+% It's also a good idea to include legend in figures with more than one
+% curve. The syntax is simple:
+legend('sin(x)', 'cos(x)', 'Location', 'Best');
+%%
+% Similarly, you can use *|help|* to find out more options for 
+% *|'Location'|*:
+help legend
+%%
+##### SOURCE END #####
+-->
+   </body>
+</html>

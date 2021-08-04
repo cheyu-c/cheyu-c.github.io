@@ -1,0 +1,526 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>MATLAB: Basics of Vectors, Matrices, and Arrays</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-08-10">
+      <meta name="m-file" content="vectors"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>MATLAB: Basics of Vectors, Matrices, and Arrays</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Constructing vectors</a></li>
+               <li><a href="#15">Size and Length</a></li>
+               <li><a href="#25">Accessing entries</a></li>
+               <li><a href="#35">Indices and Subscripts</a></li>
+            </ul>
+         </div>
+         <h2>Constructing vectors<a name="1"></a></h2>
+         <p>You can create a vertical vector by using semicolons:</p><pre class="codeinput">VectorExample1 = [2; 4; 6; 1; 3; 5]
+</pre><pre class="codeoutput">
+VectorExample1 =
+
+     2
+     4
+     6
+     1
+     3
+     5
+
+</pre><p>which is a 6x1 size matrix. You can also choose to create a horizontal vector by using spaces or commas:</p><pre class="codeinput">VectorExample2 = [2  4  6  1  3  5]
+VectorExample3 = [2, 4, 6, 1, 3, 5]
+</pre><pre class="codeoutput">
+VectorExample2 =
+
+     2     4     6     1     3     5
+
+
+VectorExample3 =
+
+     2     4     6     1     3     5
+
+</pre><p>which are both 1x6 size matrices. In combination, you can freely create NxM matrix:</p><pre class="codeinput">MatrixExample1 = [2  4  6; 1  3  5]
+MatrixExample2 = [2  4; 6  1; 3  5]
+</pre><pre class="codeoutput">
+MatrixExample1 =
+
+     2     4     6
+     1     3     5
+
+
+MatrixExample2 =
+
+     2     4
+     6     1
+     3     5
+
+</pre><p>It is frequently useful to generate arrays of running indices by using the colon operator:</p><pre class="codeinput">TryColon1 = [1:6]
+TryColon2 = 1:6
+</pre><pre class="codeoutput">
+TryColon1 =
+
+     1     2     3     4     5     6
+
+
+TryColon2 =
+
+     1     2     3     4     5     6
+
+</pre><p>A more general construction involves two colons, with the syntax StartingValue:Increment:NoLargerThan</p><pre class="codeinput">TryColon3 = 1:1:6
+TryColon4 = 1:2:6
+</pre><pre class="codeoutput">
+TryColon3 =
+
+     1     2     3     4     5     6
+
+
+TryColon4 =
+
+     1     3     5
+
+</pre><p>Here are some examples of more complicated arrays of running indices:</p><pre class="codeinput">SampleArray1 = [2:2:6, 1:2:6]
+SampleArray2 = [2:2:6; 1:2:6]
+</pre><pre class="codeoutput">
+SampleArray1 =
+
+     2     4     6     1     3     5
+
+
+SampleArray2 =
+
+     2     4     6
+     1     3     5
+
+</pre><p>It is considerably faster, less accident-prone, and much more convenient to predefine large arrays before using them. The
+            functions "zeros" and "ones" work fantastic on defining arrays of zeros and ones:
+         </p><pre class="codeinput">ZeroArray = zeros(2,3)
+OneArray = ones(2,3)
+</pre><pre class="codeoutput">
+ZeroArray =
+
+     0     0     0
+     0     0     0
+
+
+OneArray =
+
+     1     1     1
+     1     1     1
+
+</pre><p>It also accepts the alternate syntax</p><pre class="codeinput">Size = [2,3]
+ZeroArray = zeros(Size)
+</pre><pre class="codeoutput">
+Size =
+
+     2     3
+
+
+ZeroArray =
+
+     0     0     0
+     0     0     0
+
+</pre><h2>Size and Length<a name="15"></a></h2>
+         <p>Many times it is important to find out the dimensions of an array. The function</p><pre class="codeinput">size(MatrixExample1)
+size(MatrixExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     2     3
+
+
+ans =
+
+     3     2
+
+</pre><p>returns a vector of dimensions. To save the numbers for future use, type</p><pre class="codeinput">[RowNumber, ColNumber] = size(MatrixExample1)
+</pre><pre class="codeoutput">
+RowNumber =
+
+     2
+
+
+ColNumber =
+
+     3
+
+</pre><p>or use another vector to save the info:</p><pre class="codeinput">SizeNumber = size(MatrixExample1)
+</pre><pre class="codeoutput">
+SizeNumber =
+
+     2     3
+
+</pre><p>Sometimes we are not interested in all the dimen- sions, but just the longest one (as with 1xN arrays). MATLAB provides the
+            handy function "length" to obtain that number:
+         </p><pre class="codeinput">length(VectorExample1)
+length(VectorExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     6
+
+
+ans =
+
+     6
+
+</pre><pre class="codeinput">length(MatrixExample1)
+length(MatrixExample2)
+</pre><pre class="codeoutput">
+ans =
+
+     3
+
+
+ans =
+
+     3
+
+</pre><p>Note that the output of length() for the two vectors are the same, as well as the two matrices.</p>
+         <h2>Accessing entries<a name="25"></a></h2>
+         <p>It is straightforward to access individual elements of a vector. Try:</p><pre class="codeinput">VectorExample1(1)
+VectorExample1(6)
+</pre><pre class="codeoutput">
+ans =
+
+     2
+
+
+ans =
+
+     5
+
+</pre><p>which print the first and last elements of VectorExample1. More generally, we can refer to the last element of any array as</p><pre class="codeinput">VectorExample1(end)
+</pre><pre class="codeoutput">
+ans =
+
+     5
+
+</pre><p>Note that MATLAB departs from C in the convention for the indexing of arrays: indices start from 1 (just like FORTRAN or BASIC)
+            and not from zero.
+         </p>
+         <p>If you want to see a range of values, use the colon operator:</p><pre class="codeinput">SampleArray1(2:5)
+</pre><pre class="codeoutput">
+ans =
+
+     4     6     1     3
+
+</pre><p>For large arrays, MATLAB will automatically indicate the column range in each line.</p>
+         <p>We can also use the colon operator to create sub-array:</p><pre class="codeinput">MainArray = [1, 2, 3, 4, 5; 2, 3, 4, 5, 6; 3, 4, 5, 6, 7]
+</pre><pre class="codeoutput">
+MainArray =
+
+     1     2     3     4     5
+     2     3     4     5     6
+     3     4     5     6     7
+
+</pre><pre class="codeinput">SubArray = MainArray(1:2, 3:5)
+</pre><pre class="codeoutput">
+SubArray =
+
+     3     4     5
+     4     5     6
+
+</pre><p>This is useful when we are interested in only a part of a matrix.</p>
+         <h2>Indices and Subscripts<a name="35"></a></h2>
+         <p>There are two mechanisms for accessing data that has more than one dimension: subscripts and indices. Subscripts are the intuitive
+            mathematical representation. For example,
+         </p><pre class="codeinput">SampleArray2
+SampleArray2(1,2)
+</pre><pre class="codeoutput">
+SampleArray2 =
+
+     2     4     6
+     1     3     5
+
+
+ans =
+
+     4
+
+</pre><p>refers to the element in the first row, second column of SampleArray2. This can be easily generalized to an arbitrary number
+            of dimensions, although it can become cumbersome.
+         </p>
+         <p>Indices, on the other hand, use just one number to address (or index) any element of an array. It actually corresponds to
+            the physical order in which elements are stored in the computer memory. In MATLAB matrices are stored running through the
+            rows first, then the columns, thus the fastest running subscript of a matrix is the first subscript, the row subscript. For
+            example,
+         </p><pre class="codeinput">SampleArray2(2)
+SampleArray2(2,1)
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+
+ans =
+
+     1
+
+</pre><p>is the same, and</p><pre class="codeinput">SampleArray2(3)
+SampleArray2(1,2)
+</pre><pre class="codeoutput">
+ans =
+
+     4
+
+
+ans =
+
+     4
+
+</pre><p>is the same.</p>
+         <p>When used to address the contents of a matrixwhen used to address the contents of a matrix, the colon operator stands for
+            everything. So one can obtain all the numbers in the first row of matrix SampleArray2 by typing
+         </p><pre class="codeinput">SampleArray2(1,:)
+</pre><pre class="codeoutput">
+ans =
+
+     2     4     6
+
+</pre><p>Similarly, all numbers in the 3rd column are obtained by issuing</p><pre class="codeinput">SampleArray2(:,3)
+</pre><pre class="codeoutput">
+ans =
+
+     6
+     5
+
+</pre><p>We can also specify a range of indices or subscripts:</p><pre class="codeinput">SampleArray2(3:6)
+SampleArray2(:,2:3)
+</pre><pre class="codeoutput">
+ans =
+
+     4     3     6     5
+
+
+ans =
+
+     4     6
+     3     5
+
+</pre><p>Note that the dimensions of the result are different.</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% MATLAB: Basics of Vectors, Matrices, and Arrays
+
+%% Constructing vectors
+% You can create a vertical vector by using semicolons:
+%%
+VectorExample1 = [2; 4; 6; 1; 3; 5]
+%%
+% which is a 6x1 size matrix. You can also choose to create a horizontal 
+% vector by using spaces or commas:
+%%
+VectorExample2 = [2  4  6  1  3  5]
+VectorExample3 = [2, 4, 6, 1, 3, 5]
+%%
+% which are both 1x6 size matrices. In combination, you can freely create
+% NxM matrix:
+%%
+MatrixExample1 = [2  4  6; 1  3  5]
+MatrixExample2 = [2  4; 6  1; 3  5]
+%%
+% It is frequently useful to generate arrays of running indices by using
+% the colon operator:
+%%
+TryColon1 = [1:6]
+TryColon2 = 1:6
+%%
+% A more general construction involves two colons, with the syntax
+% StartingValue:Increment:NoLargerThan
+TryColon3 = 1:1:6
+TryColon4 = 1:2:6
+%%
+% Here are some examples of more complicated arrays of running indices:
+%%
+SampleArray1 = [2:2:6, 1:2:6]
+SampleArray2 = [2:2:6; 1:2:6]
+%%
+%  
+% It is considerably faster, less accident-prone, and much more convenient
+% to predefine large arrays before using them. The functions "zeros" and
+% "ones" work fantastic on defining arrays of zeros and ones:
+ZeroArray = zeros(2,3)
+OneArray = ones(2,3)
+%%
+% It also accepts the alternate syntax
+%%
+Size = [2,3] 
+ZeroArray = zeros(Size)
+%% Size and Length
+% Many times it is important to find out the dimensions of an array. The
+% function
+%%
+size(MatrixExample1)
+size(MatrixExample2)
+%% 
+% returns a vector of dimensions. To save the numbers for future use, type
+%%
+[RowNumber, ColNumber] = size(MatrixExample1)
+%%
+% or use another vector to save the info:
+%%
+SizeNumber = size(MatrixExample1)
+%%
+% Sometimes we are not interested in all the dimen- sions, but just the
+% longest one (as with 1xN arrays). MATLAB provides the handy function 
+% "length" to obtain that number:
+%%
+length(VectorExample1)
+length(VectorExample2)
+%%
+length(MatrixExample1)
+length(MatrixExample2)
+%%
+% Note that the output of length() for the two vectors are the same, as
+% well as the two matrices.
+%% Accessing entries
+% It is straightforward to access individual elements of a vector. Try:
+%%
+VectorExample1(1)
+VectorExample1(6)
+%%
+% which print the first and last elements of VectorExample1. More 
+% generally, we can refer to the last element of any array as
+%%
+VectorExample1(end)
+%%
+% Note that MATLAB departs from C in the convention for the indexing of
+% arrays: indices start from 1 (just like FORTRAN or BASIC) and not from 
+% zero.
+%
+% If you want to see a range of values, use the colon operator:
+%%
+SampleArray1(2:5)
+%%
+% For large arrays, MATLAB will automatically indicate the column range in
+% each line.
+%
+% We can also use the colon operator to create sub-array:
+%%
+MainArray = [1, 2, 3, 4, 5; 2, 3, 4, 5, 6; 3, 4, 5, 6, 7]
+%%
+SubArray = MainArray(1:2, 3:5)
+%%
+% This is useful when we are interested in only a part of a matrix.
+%% Indices and Subscripts
+% There are two mechanisms for accessing data that has more than one
+% dimension: subscripts and indices. Subscripts are the intuitive 
+% mathematical representation. For example,
+%%
+SampleArray2
+SampleArray2(1,2)
+%%
+% refers to the element in the first row, second column of SampleArray2.
+% This can be easily generalized to an arbitrary number of dimensions, 
+% although it can become cumbersome.
+%
+% Indices, on the other hand, use just one number to address (or index)
+% any element of an array. It actually corresponds to the physical order in
+% which elements are stored in the computer memory. In MATLAB matrices are 
+% stored running through the rows first, then the columns, thus the fastest 
+% running subscript of a matrix is the first subscript, the row subscript.
+% For example,
+%%
+SampleArray2(2)
+SampleArray2(2,1)
+%%
+% is the same, and
+%%
+SampleArray2(3)
+SampleArray2(1,2)
+%%
+% is the same.
+% 
+% When used to address the contents of a matrixwhen used to address the
+% contents of a matrix, the colon operator stands for everything. So one
+% can obtain all the numbers in the first row of matrix SampleArray2 by 
+% typing
+%%
+SampleArray2(1,:)
+%%
+% Similarly, all numbers in the 3rd column are obtained by issuing
+%%
+SampleArray2(:,3)
+%%
+% We can also specify a range of indices or subscripts:
+%%
+SampleArray2(3:6)
+SampleArray2(:,2:3)
+%%
+% Note that the dimensions of the result are different.
+##### SOURCE END #####
+-->
+   </body>
+</html>

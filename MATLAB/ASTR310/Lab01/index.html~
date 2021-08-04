@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+   <title>Lab01</title>
+  </head>
+<body>
+<h2>
+<hr width="100%">
+Lab01: Gain of a CCD
+<hr width="100%">
+</h2>
+<h3>
+<a href="html/array.html">MATLAB: Arrays</a><br/>
+<a href="html/Lab1.html">Lab01: Plotting CCD Images</a><br/>
+<a href="html/box_vals_intro.html">Lab01: Means and Standard Deviations</a><br/>
+</h3>
+</body>
+</html>

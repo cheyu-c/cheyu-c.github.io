@@ -1,0 +1,12 @@
+function box_vals(av,difs)
+
+[x0,y0,nx,ny]=box_cursor;
+avbox=av(y0:(y0+ny),x0:(x0+nx));
+difbox=difs(y0:(y0+ny),x0:(x0+nx));
+avm=mean(avbox(:));
+dfm=mean(difbox(:));
+sigav=std(avbox(:));
+sigdif=std(difbox(:));
+fprintf(1,'avm=%0.3f, sigav=%0.3f\n',avm,sigav);
+fprintf(1,'dfm=%0.3f, sigdif=%0.3f\n',dfm,sigdif);
+sfprintf(1,'box=%d,%d,%d,%d\n',x0,y0,nx,ny);
