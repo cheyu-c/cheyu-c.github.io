@@ -1,28 +1,283 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Miniport by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
 	<head>
-		<title>test</title>
+		<title>Che-Yu Chen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
-	<body>
-		<nav>
-    		<ul>
-        		<li><a href="/">Home</a></li>
-	        	<li><a href="/about">About</a></li>
-        		<li><a href="/cv">CV</a></li>
-        		<li><a href="/blog">Blog</a></li>
-    		</ul>
-		</nav>
-		<div class="container">
-    		<div class="blurb">
-        		<h1>Hi there</h1>
-				<p>test <a href="/about">Read more</a></p>
-    		</div><!-- /.blurb -->
-		</div><!-- /.container -->
-		<footer>
-    		<ul>
-        		<li><a href="mailto:cheyu.c@gmail.com">email</a></li>
-        		<li><a href="https://github.com/cheyu-c">link</a></li>
-			</ul>
-		</footer>
+	<body class="is-preload">
+
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="container">
+					<li><a href="#top">Home</a></li>
+					<li><a href="#work">Research</a></li>
+					<li><a href="#GRID">GRID-core</a></li>
+					<li><a href="#personal">Personal</a></li>
+                    <li><a href="#links">Links</a></li>
+				</ul>
+			</nav>
+
+		<!-- Home -->
+			<article id="top" class="wrapper style1">
+				<div class="container">
+					<div class="row">
+						<div class="col-4 col-5-large col-12-medium">
+							<span class="image fit"><img src="images/profile.png" alt="" /></span>
+						</div>
+						<div class="col-8 col-7-large col-12-medium">
+ 						<header>
+								<h2><strong>Che-Yu Chen</strong></h2>
+                        </header>
+                            <p>Hi! I'm currently a <strong>Research Scientist</strong> in the <a href="https://astronomy.as.virginia.edu/">Department of Astronomy at the University of Virginia</a>. My primary research interest is the earliest stages of star formation, with a focus on the roles played by turbulence and magnetic fields at multiple scales, from supporting molecular clouds against gravitational collapse to regulating the formation of protostellar systems.
+                            <br><font size="4.5"><strong>Email: cc6pg at virginia dot edu</strong></font></p>
+						</div>
+					</div>
+				</div>
+                <footer>
+                    <center><a href="CV_cychen.pdf" class="button medium scrolly">My CV</a>
+                        <br>(last updated: 12/2/2019)</center>
+                </footer>
+
+			</article>
+
+		<!-- Work -->
+			<article id="work" class="wrapper style2">
+				<div class="container">
+					<header>
+						<h2>Here are some of my recent work.</h2>
+						<p>I am a theoretical astrophysicist familiar with observational approaches. Though most of my work is theoretical study, I work closely with observers on both magnetic (polarimetric) and dynamic (spectral) properties in star-forming regions. </p>
+					</header>
+					<div class="row aln-center">
+						<div class="col-4 col-6-medium col-12-small">
+							<section class="box style1">
+<!--								<span class="icon featured fa-comments"></span> -->
+                                <span class="image featured"><img src="images/10pc_3D.png" alt="" /></span>
+								<h3>Formation of Magnetized Star-forming Cores in Shock-compressed Regions</h3>
+                                <p>I ran 3D MHD simulations with <a href="https://github.com/PrincetonUniversity/Athena-Cversion" target="_blank">Athena</a> to directly assess the role of magnetic fields in core formation, with convergent supersonic flows compressing turbulent gas to form dense, star-forming clumps in the post-shock regions <a href="http://adsabs.harvard.edu/abs/2014ApJ...785...69C" target="_blank">(Chen & Ostriker 2014</a>, <a href="http://adsabs.harvard.edu/abs/2015ApJ...810..126C" target="_blank">2015)</a>. A thorough statistical investigation on the properties and dynamic features of these pre-collapse cores is discussed in <a href="https://iopscience.iop.org/article/10.3847/1538-4357/aad905" target="_blank">Chen & Ostriker (2018)</a>.</p>
+							</section>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<section class="box style1">
+<!--								<span class="icon solid featured fa-camera-retro"></span>-->
+                                <span class="image featured"><img src="images/p_disp.png" alt="" /></span>
+								<h3>Magnetic Field Structures of Molecular Clouds</h3>
+                                <p>I characterized the transition feature in the polarization fraction−column density relationship within star-forming regions, and developed a method to observationally estimate the magnetic field strength in the cloud <a href="https://iopscience.iop.org/article/10.3847/0004-637X/829/2/84" target="_blank">(Chen et al. 2016)</a>. I also proposed a simple method on estimating the 3D magnetic field orientation using projected polarization fraction <a href="https://doi.org/10.1093/mnras/stz618" target="_blank">(Chen et al. 2019a)</a>.</p>
+							</section>
+						</div>
+                        <div class="col-4 col-6-medium col-12-small">
+							<section class="box style1">
+								<!--<span class="icon featured fa-thumbs-up"></span>-->
+                                <span class="image featured"><img src="images/GBTcore.png" alt="" /></span>
+                                <h3>Dynamics in Star-forming Cores: a GBT-Argus Survey (DiSCo GAS)</h3>
+                                <p>I am currently leading a large observational program to survey detailed dynamics of dense cores in nearby clouds using the recently-commissioned Argus focal plane array on GBT. The complete survey (> 200 hr with 108 targets) will establish a statistical sample of core/envelope velocity structure. Our pilot study is published in <a href="https://doi.org/10.1093/mnras/stz2633" target="_blank">Chen et al. (2019b)</a>. Also see the survey webpage: <a href="https://greenbankobservatory.org/science/gbt-surveys/disco-gas/" target="_blank">DiSCo GAS</a>.</p>
+							</section>
+						</div>
+					</div>
+					<footer>
+						<center><strong>Interested in my work? See more details in my published work!</strong>
+						<br><a href="https://orcid.org/0000-0002-9209-7916" class="button small scrolly">Publication List</a></center>
+					</footer>
+				</div>
+			</article>
+
+        <!-- GRID -->
+            <article id="GRID" class="wrapper style1">
+                 <div class="container">
+                    <header>
+                        <h2>Gravitational Potential Identification of Cores (GRID-core)</h2>
+                    </header>
+                    <div class="row">
+                        <div class="col-4 col-5-large col-5-medium">
+                            <span class="image featured"><img src="images/pad_column.png" alt="" /></span>
+                            <span class="image fit"><img src="images/cores_phi_on_surfd.png" alt="" /></span>
+                        </div>
+                        <div class="col-8 col-7-large col-12-medium">
+                            <p>&nbsp;&nbsp; GRID-core is a core-finding method using the contours of the local gravitational potential to identify core boundaries, as described in <a href="http://adsabs.harvard.edu/abs/2011ApJ...729..120G" target="_blank">Gong & Ostriker (2011)</a>. This method can be applied to both observed 2D surface density and simulated 3D volume density. Detailed discussion and user's manual can be found on <a href="https://www.astro.princeton.edu/~eco/core_finding/GRID_core.htm" target="_blank"> Prof. Eve Ostriker's website</a>. I have developed a modified 3D version of the GRID-core script that includes measurements of core's magnetic field and angular momentum. This function was utilized in my work <a href="http://adsabs.harvard.edu/abs/2014ApJ...785...69C" target="_blank">Chen & Ostriker (2014)</a>, <a href="http://adsabs.harvard.edu/abs/2015ApJ...810..126C" target="_blank">(2015)</a>, <a href="https://ui.adsabs.harvard.edu/abs/2018ApJ...865...34C/abstract" target="_blank">(2018)</a>. The complete script will soon to be made available here.</p>
+                                <p> &nbsp;&nbsp; An <a href="code/grid_core.pro" target="_blank">updated 2D version of the GRID-core algorithm in IDL</a> is avilable here. This script is suitable for identifying clumps/cores in observed column density maps. The required input is a two-dimensional FITS file containing a map of the column density of atomic hydrogen (e.g. the <a href="images/pad_column.pdf" target="_blank">figure</a> on the top left). The code will generate two fits files containing information of identified cores, as well as a map illustrating the gravitational potential contours and the identified cores (e.g. the <a href="images/cores_phi_on_surfd.pdf" target="_blank">figure</a> on the bottom left). A <a href="code/column.fits" download>sample FITS map</a> is provided here for code-testing purpose.</p>
+                        </div>
+                    </div>
+                    <footer>
+                        <center><a href="https://github.com/cheyu-c/GRID-core" class="button small scrolly">GRID-core on Github</a></center>
+                    </footer>
+
+                </div>
+            </article>
+
+        <!-- Personal -->
+            <article id="personal" class="wrapper style2">
+                <div class="container">
+                   <header>
+                       <h2>Personal Life</h2>
+                   </header>
+                   <div class="row">
+                       <div class="col-4 col-5-large col-5-medium">
+                           <span class="image featured"><img src="images/kids.jpg" alt="" /></span>
+                       </div>
+                       <div class="col-8 col-7-large col-12-medium">
+                           <strong>
+                           <p>&bullet; I grew up in <a href="http://en.wikipedia.org/wiki/Hsinchu" target="_blank">Hsinchu</a>,
+                           <a href="http://en.wikipedia.org/wiki/Taiwan" target="_blank">Taiwan</a> and came to the US in 2008. I consider myself as a Marylander since then. Go Terps!</p>
+                           <p>&bullet; I'm a super sports fan. I enjoy watching almost all kind of sports games. My all-time favorite athletes are <a href="http://en.wikipedia.org/wiki/Shawn_Marion" target="_blank">Shawn Marion</a>, <a href="http://en.wikipedia.org/wiki/Miroslav_Klose" target="_blank">Miroslav Klose</a>, and <a href="http://www.baseball-reference.com/bullpen/Wei-Chu_Lin" target="_blank">Wei-Chu Lin</a>. </p>
+                           <p>&bullet; My true sport enthusiasm is volleyball, and I go snowboarding in winter, though I haven't been able to do any of those for many years since my kids were born.</p>
+                           <p>&bullet; I play piano and violin. I was the club president of my high school string orchestra.</p>
+                           <p>&bullet; I love the <a href="http://en.memory-alpha.org/wiki/" target="_blank">Star Trek</a> world, but my favorite movie is
+                           <a href="http://en.wikipedia.org/wiki/How_to_Train_Your_Dragon_(film)" target="_blank">How to Train Your Dragon</a>.</p>
+                           <p>&bullet; My kids, Lyra and Rigel, are born in 2015 and 2017. Life has been intensively crazy but joyful since then.</p>
+                           </strong>
+                       </div>
+                   </div>
+                </div>
+            </article>
+
+            <!-- links -->
+                <article id="links" class="wrapper style1">
+                    <div class="container">
+                       <header>
+                           <h2>Useful Links</h2>
+                       </header>
+                        <p>&bullet; <a href="MATLAB/index.html" target="_blank">UMD Matlab project</a>
+                        <br>&bullet; <a href="TheoryLunch.html" target="_blank">UVA Theory Lunch</a>
+                        <br>&bullet; <a href="SFLunch.html" target="_blank">UVA/NRAO Star Formation Meeting</a>
+                     </div>
+                </article>
+
+        <!-- Portfolio
+			<article id="portfolio" class="wrapper style3">
+				<div class="container">
+					<header>
+						<h2>Here’s some stuff I made recently.</h2>
+						<p>Proin odio consequat  sapien vestibulum consequat lorem dolore feugiat.</p>
+					</header>
+					<div class="row">
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+								<h3><a href="#">Magna feugiat</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
+								<h3><a href="#">Veroeros primis</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+								<h3><a href="#">Lorem ipsum</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
+								<h3><a href="#">Tempus dolore</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
+								<h3><a href="#">Feugiat aliquam</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+						<div class="col-4 col-6-medium col-12-small">
+							<article class="box style2">
+								<a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a>
+								<h3><a href="#">Sed amet ornare</a></h3>
+								<p>Ornare nulla proin odio consequat.</p>
+							</article>
+						</div>
+					</div>
+					<footer>
+						<p>Lorem ipsum dolor sit sapien vestibulum ipsum primis?</p>
+						<a href="#contact" class="button large scrolly">Get in touch with me</a>
+					</footer>
+				</div>
+			</article> -->
+
+		<!-- Contact
+			<article id="contact" class="wrapper style4">
+				<div class="container medium">
+					<header>
+						<h2>Have me make stuff for you.</h2>
+						<p>Ornare nulla proin odio consequat sapien vestibulum ipsum.</p>
+					</header>
+					<div class="row">
+						<div class="col-12">
+							<form method="post" action="#">
+								<div class="row">
+									<div class="col-6 col-12-small">
+										<input type="text" name="name" id="name" placeholder="Name" />
+									</div>
+									<div class="col-6 col-12-small">
+										<input type="text" name="email" id="email" placeholder="Email" />
+									</div>
+									<div class="col-12">
+										<input type="text" name="subject" id="subject" placeholder="Subject" />
+									</div>
+									<div class="col-12">
+										<textarea name="message" id="message" placeholder="Message"></textarea>
+									</div>
+									<div class="col-12">
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" /></li>
+											<li><input type="reset" value="Clear Form" class="alt" /></li>
+										</ul>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="col-12">
+							<hr />
+							<h3>Find me on ...</h3>
+							<ul class="social">
+								<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+								<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+								<li><a href="#" class="icon brands fa-tumblr"><span class="label">Tumblr</span></a></li>
+								<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+								<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+								<!--
+								<li><a href="#" class="icon solid fa-rss"><span>RSS</span></a></li>
+								<li><a href="#" class="icon brands fa-instagram"><span>Instagram</span></a></li>
+								<li><a href="#" class="icon brands fa-foursquare"><span>Foursquare</span></a></li>
+								<li><a href="#" class="icon brands fa-skype"><span>Skype</span></a></li>
+								<li><a href="#" class="icon brands fa-soundcloud"><span>Soundcloud</span></a></li>
+								<li><a href="#" class="icon brands fa-youtube"><span>YouTube</span></a></li>
+								<li><a href="#" class="icon brands fa-blogger"><span>Blogger</span></a></li>
+								<li><a href="#" class="icon brands fa-flickr"><span>Flickr</span></a></li>
+								<li><a href="#" class="icon brands fa-vimeo"><span>Vimeo</span></a></li>
+								
+							</ul>
+							<hr />
+						</div>
+					</div>-->
+                    <article id="contact" class="wrapper style4">
+						<ul id="copyright">
+							<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+				</div>
+			</article>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
 	</body>
 </html>
