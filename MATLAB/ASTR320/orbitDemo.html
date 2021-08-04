@@ -1,0 +1,171 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Script uses numerical solution of ODE to plot orbit</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-03-22">
+      <meta name="m-file" content="orbitDemo"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Script uses numerical solution of ODE to plot orbit</h1>
+         <introduction>
+            <p>Expressions from Prof. Harrington's ASTR320 notes on orbits, including the General Relativity term yielding orbital "precession."</p>
+            <p>This script is from <a href="orbitDemo.m">orbitDemo.m</a>. A separate <a href="grOrbitFn.m">grOrbitFn.m</a> function defines the second-order ODE.
+            </p>
+            <p>AH 2010.1.31</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Set up conditions</a></li>
+               <li><a href="#2">Solve for orbit</a></li>
+               <li><a href="#3">Then plot it up</a></li>
+            </ul>
+         </div>
+         <h2>Set up conditions<a name="1"></a></h2><pre class="codeinput">phaSpan = [0, 25*2*pi];     <span class="comment">% phase range</span>
+ic = [0.5; 0];                <span class="comment">% initial conditions for 1/r and 1/dr/dp</span>
+</pre><h2>Solve for orbit<a name="2"></a></h2><pre class="codeinput">options = odeset(<span class="string">'reltol'</span>, 1e-6, <span class="string">'abstol'</span>, 1e-8);
+<span class="comment">% sets numerical tolerances to make a smoother plot (more points)</span>
+[p, z] = ode45(<span class="string">'grOrbitFn'</span>, phaSpan, ic, options);
+<span class="comment">% solves for the orbit, where</span>
+<span class="comment">%   p is phase along orbit</span>
+<span class="comment">%   z is proportional to reciprocal of radius</span>
+<span class="comment">%   z(:,1) is 1/radius, z(:,2) is 1/dr/dp</span>
+</pre><h2>Then plot it up<a name="3"></a></h2><pre class="codeinput"><span class="comment">% First plot reciprocal of radius and dr/dphi terms</span>
+figure(1)       <span class="comment">% set to figure 1</span>
+clf             <span class="comment">% clear plotting area</span>
+plot(p, z);     <span class="comment">% plot both elements in y vs. phase</span>
+xlabel(<span class="string">'Phase angle [rad]'</span>)     <span class="comment">% axis labels</span>
+ylabel(<span class="string">'Reciprocals of radius, dr/dphi'</span>)
+
+<span class="comment">% Then plot the orbit</span>
+figure(2)       <span class="comment">% set to figure 2</span>
+clf             <span class="comment">% clear plotting area</span>
+x = 1./z(:,1) .* cos(p);    <span class="comment">% radius in cartesian coordinates (x)</span>
+y = 1./z(:,1) .* sin(p);    <span class="comment">% radius in cartesian coordinates (y)</span>
+mxr = max(x)*1.1;   <span class="comment">% maximum x value for plot scaling</span>
+hold <span class="string">on</span>             <span class="comment">% lock plotting region</span>
+axis([-mxr mxr -mxr mxr]); axis <span class="string">square</span>   <span class="comment">% make plot area square</span>
+plot(0, 0, <span class="string">'ro'</span>)    <span class="comment">% point showing focus</span>
+plot(x, y)          <span class="comment">% plot orbit</span>
+<span class="comment">% comet(x, y)       % or plot with this to watch path change</span>
+xlabel(<span class="string">'x coordinate'</span>)  <span class="comment">% axis labels</span>
+ylabel(<span class="string">'y coordinate'</span>)
+hold <span class="string">off</span>            <span class="comment">% done with plot, release</span>
+</pre><img vspace="5" hspace="5" src="orbitDemo_01.png"> <img vspace="5" hspace="5" src="orbitDemo_02.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Script uses numerical solution of ODE to plot orbit
+% Expressions from Prof. Harrington's ASTR320 notes on orbits, 
+% including the General Relativity term yielding orbital "precession."
+%
+% This script is from <orbitDemo.m>.  
+% A separate <grOrbitFn.m> function defines the second-order ODE.
+%
+% AH 2010.1.31
+
+%% Set up conditions
+phaSpan = [0, 25*2*pi];     % phase range
+ic = [0.5; 0];                % initial conditions for 1/r and 1/dr/dp
+
+%% Solve for orbit
+options = odeset('reltol', 1e-6, 'abstol', 1e-8);
+% sets numerical tolerances to make a smoother plot (more points)
+[p, z] = ode45('grOrbitFn', phaSpan, ic, options);
+% solves for the orbit, where
+%   p is phase along orbit
+%   z is proportional to reciprocal of radius
+%   z(:,1) is 1/radius, z(:,2) is 1/dr/dp
+
+%% Then plot it up
+
+% First plot reciprocal of radius and dr/dphi terms
+figure(1)       % set to figure 1
+clf             % clear plotting area
+plot(p, z);     % plot both elements in y vs. phase
+xlabel('Phase angle [rad]')     % axis labels
+ylabel('Reciprocals of radius, dr/dphi')
+
+% Then plot the orbit
+figure(2)       % set to figure 2
+clf             % clear plotting area
+x = 1./z(:,1) .* cos(p);    % radius in cartesian coordinates (x)
+y = 1./z(:,1) .* sin(p);    % radius in cartesian coordinates (y)
+mxr = max(x)*1.1;   % maximum x value for plot scaling
+hold on             % lock plotting region 
+axis([-mxr mxr -mxr mxr]); axis square   % make plot area square
+plot(0, 0, 'ro')    % point showing focus
+plot(x, y)          % plot orbit
+% comet(x, y)       % or plot with this to watch path change
+xlabel('x coordinate')  % axis labels
+ylabel('y coordinate')
+hold off            % done with plot, release
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

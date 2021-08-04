@@ -1,0 +1,233 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Bonnor-Ebert Sphere Profile</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-06-01">
+      <meta name="m-file" content="BonnorEbert"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Bonnor-Ebert Sphere Profile</h1>
+         <!--introduction-->
+         <p>The Lane-Embden equation describes the potential and density radial distribution for a spherically symmetric self-gravitating
+            perfect gas at constant-temperature. The solutions to this equation provide a simple description of astrophysical gas clouds
+            such as molecular clouds which have a fixed outer radius at which the pressure of the cloud must match the surrounding ISM
+            pressure in the equilibrium state. In this example we numerically integrate for a solution to the Lane-Emden equation and
+            plot the scaled density and scaled potential. We also plot the total mass of the cloud in hydrostatic equilibrium as a function
+            of external bounding radius for a given external pressure and show it is consistent with the critical Bonnor-Ebert mass derived
+            in ASTRO 320 or found in textbooks.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Setup</a></li>
+               <li><a href="#2">Integration and plotting</a></li>
+               <li><a href="#3">Total Enclosed Mass</a></li>
+            </ul>
+         </div>
+         <h2>Setup<a name="1"></a></h2>
+         <p>See <a href="BonnorEbertTheory.pdf">BonnorEbertTheory.pdf</a> for a description of how to scale the Lane-Emden equation and separate this 2nd order equation into two simplified 1st order
+            ODEs, thereby making the numerical integration simpler.
+         </p><pre class="codeinput"><span class="comment">% We must define our coupled ODEs in the standard form required by Matlab</span>
+<span class="comment">% integrators. Thus, we define them both in a function f (instead of writing</span>
+<span class="comment">% a whole new file we'll just use a function handle), such that the</span>
+<span class="comment">% function returns an array with the value of the right hand side of each</span>
+<span class="comment">% ODE:</span>
+
+
+f = @(x,psi) [psi(2)/x^2; -x^2 * exp(psi(1))]; <span class="comment">%i.e. returns [d\Psi /dx; dy/dx]</span>
+</pre><h2>Integration and plotting<a name="2"></a></h2>
+         <p>Our integration is performed using ode45, a medium order solver appropriate for non-stiff differential equations. [0.0001
+            10] is the range of values of x over which we integrate. [0 0] are the starting values for psi and y respectively
+         </p><pre class="codeinput">[xa,psia] = ode45(f,[0.0001 10], [0 0]);
+
+<span class="comment">% Now we are ready to plot the solution:</span>
+<span class="comment">% First we plot the scaled potential (negative comes from definition of $\Psi$ )</span>
+figure(1); clf
+subplot(3,1,1)
+plot(xa,-psia(:,1))
+xlabel(<span class="string">'r/r_0'</span>)
+ylabel(<span class="string">'-\Psi'</span>)
+
+<span class="comment">% Then plot the scaled density, using the definition:</span>
+subplot(3,1,2)
+plot(xa,exp(psia(:,1)))
+ylim([0 1.2])
+xlabel(<span class="string">'r/r_0'</span>)
+ylabel(<span class="string">'\rho / \rho_0'</span>)
+</pre><img vspace="5" hspace="5" src="BonnorEbert_01.png" alt=""> <h2>Total Enclosed Mass<a name="3"></a></h2>
+         <p>Since psia contains values of y, which IS the integral in the definition of m(x), we do not need to perform another numerical
+            integral. Our original integral gave us the corresponding values of y in psia(:,2):
+         </p><pre class="codeinput">figure(2); clf
+plot(xa, -exp(psia(:,1)/2.0) .* psia(:,2) )
+xlabel(<span class="string">'r/r_0'</span>)
+ylabel(<span class="string">'m(x)'</span>)
+
+<span class="comment">% We can now ask, at what value of x does m(x) have a maximum?</span>
+<span class="comment">% We can use the max() function to give us the maximum and its array index:</span>
+[maxval,maxindex] = max(-exp(psia(:,1)/2.0) .* psia(:,2));
+maxval
+x_max = xa(maxindex) <span class="comment">% value of r/r_0 at the maximum</span>
+
+<span class="comment">% Note that if we multiply this by 0.282 from the definition of M_c we</span>
+<span class="comment">% recover the constant factor in the Bonnor-Ebert mass shown in textbooks:</span>
+Const_BE = 0.282 * maxval
+</pre><pre class="codeoutput">
+maxval =
+
+    4.1910
+
+
+x_max =
+
+    6.3835
+
+
+Const_BE =
+
+    1.1819
+
+</pre><img vspace="5" hspace="5" src="BonnorEbert_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Bonnor-Ebert Sphere Profile
+% The Lane-Embden equation describes the potential and density radial
+% distribution for a spherically symmetric self-gravitating perfect gas at
+% constant-temperature. The solutions to this equation provide a simple
+% description of astrophysical gas clouds such as molecular clouds which
+% have a fixed outer radius at which the pressure of the cloud must match
+% the surrounding ISM pressure in the equilibrium state. In this example we
+% numerically integrate for a solution to the Lane-Emden equation and plot
+% the scaled density and scaled potential. We also plot the total mass of
+% the cloud in hydrostatic equilibrium as a function of external bounding
+% radius for a given external pressure and show it is consistent with the
+% critical Bonnor-Ebert mass derived in ASTRO 320 or found in textbooks.
+% 
+%% Setup
+% See <../BonnorEbertTheory.pdf> for a description of how to scale the
+% Lane-Emden equation and separate this 2nd order equation into two
+% simplified 1st order ODEs, thereby making the numerical integration
+% simpler.
+ 
+% We must define our coupled ODEs in the standard form required by Matlab
+% integrators. Thus, we define them both in a function f (instead of writing
+% a whole new file we'll just use a function handle), such that the
+% function returns an array with the value of the right hand side of each
+% ODE:
+
+
+f = @(x,psi) [psi(2)/x^2; -x^2 * exp(psi(1))]; %i.e. returns [d\Psi /dx; dy/dx]
+
+%% Integration and plotting
+% Our integration is performed using ode45, a medium order solver
+% appropriate for non-stiff differential equations.
+% [0.0001 10] is the range of values of x over which we integrate.
+% [0 0] are the starting values for psi and y respectively
+[xa,psia] = ode45(f,[0.0001 10], [0 0]);
+
+% Now we are ready to plot the solution:
+% First we plot the scaled potential (negative comes from definition of $\Psi$ )
+figure(1); clf
+subplot(3,1,1)
+plot(xa,-psia(:,1))
+xlabel('r/r_0')
+ylabel('-\Psi')
+
+% Then plot the scaled density, using the definition:
+subplot(3,1,2)
+plot(xa,exp(psia(:,1)))
+ylim([0 1.2])
+xlabel('r/r_0')
+ylabel('\rho / \rho_0')
+
+
+%% Total Enclosed Mass
+% Since psia contains values of y, which IS the integral in the definition
+% of m(x), we do not need to perform another numerical integral. Our
+% original integral gave us the corresponding values of y in psia(:,2):
+figure(2); clf
+plot(xa, -exp(psia(:,1)/2.0) .* psia(:,2) )
+xlabel('r/r_0')
+ylabel('m(x)')
+
+% We can now ask, at what value of x does m(x) have a maximum?
+% We can use the max() function to give us the maximum and its array index:
+[maxval,maxindex] = max(-exp(psia(:,1)/2.0) .* psia(:,2));
+maxval
+x_max = xa(maxindex) % value of r/r_0 at the maximum
+
+% Note that if we multiply this by 0.282 from the definition of M_c we
+% recover the constant factor in the Bonnor-Ebert mass shown in textbooks:
+Const_BE = 0.282 * maxval
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

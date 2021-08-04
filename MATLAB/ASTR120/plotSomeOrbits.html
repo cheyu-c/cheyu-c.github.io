@@ -1,0 +1,166 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Orbit plotter</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-05-03">
+      <meta name="m-file" content="plotSomeOrbits"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Orbit plotter</h1>
+         <introduction>
+            <p>This is a script that plots several orbits on top of each other for comparison.</p>
+            <p>Specifically, it takes a set of data (a vector) that carries the ellipticities of orbits (e) and another set of data that
+               includes the semi-major axes (a) of plots and then plots the orbits for the corresponding ellipticity and semi-major axis.
+            </p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Set up some orbits to plot</a></li>
+               <li><a href="#2">Make the plot</a></li>
+            </ul>
+         </div>
+         <h2>Set up some orbits to plot<a name="1"></a></h2>
+         <p>Define vectors of a: semi-major axis e: ellipticity</p><pre class="codeinput">a = [1, 1, 2];
+e = [0, 0.2, 0.7];
+</pre><h2>Make the plot<a name="2"></a></h2><pre class="codeinput">clf <span class="comment">% Clear figure of any other plots shown on it.</span>
+
+plot(0,0,<span class="string">'-ob'</span>); <span class="comment">% Plots the common focal point of every orbit plotted,</span>
+                 <span class="comment">% equivalent to the sun in the solar system.</span>
+
+phi = -pi/6; <span class="comment">% Starting point for where labels are placed along the ellipse</span>
+             <span class="comment">% Value is adjustable</span>
+delphi = (sqrt(2)/36).*pi;<span class="comment">% the step by which phi increases-</span>
+<span class="comment">% made it irrational to try and prevent overlap in case, phi makes a full</span>
+<span class="comment">% rotation</span>
+<span class="keyword">if</span>( length(a) == length(e))<span class="comment">% Checks that the elipticity and semimajor</span>
+                           <span class="comment">% vectors are of equal length</span>
+    hold <span class="string">on</span>;
+    axis <span class="string">square</span>;
+    <span class="keyword">for</span> i = 1:length(a) <span class="comment">% In order to plot all orbits, need to use a loop</span>
+        plotOrbits(a(i), e(i), phi);
+        <span class="comment">% Calls the function plotOrbits to draw a curve of the elliptical</span>
+        <span class="comment">% orbit from its semi-major axis and eccentricity. The value of phi</span>
+        <span class="comment">% determines where along the orbit, the labels can be placed.</span>
+        phi = phi + delphi;<span class="comment">% Increasing value of phi.</span>
+    <span class="keyword">end</span>
+    hold <span class="string">off</span>
+<span class="keyword">else</span>
+    display(<span class="string">'Dimensions do not agree'</span>);<span class="comment">%in the case when vectors are unequal</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="plotSomeOrbits_01.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Orbit plotter
+% This is a script that plots several orbits on top of each other for 
+% comparison.
+%
+% Specifically, it takes a set of data (a vector) that carries the
+% ellipticities of orbits (e) and another set of data that includes the
+% semi-major axes (a) of plots and then plots the orbits for the
+% corresponding ellipticity and semi-major axis.
+
+%% Set up some orbits to plot
+% Define vectors of 
+% a: semi-major axis
+% e: ellipticity
+a = [1, 1, 2];
+e = [0, 0.2, 0.7];
+
+
+%% Make the plot
+clf % Clear figure of any other plots shown on it.
+
+plot(0,0,'-ob'); % Plots the common focal point of every orbit plotted,
+                 % equivalent to the sun in the solar system.
+                 
+phi = -pi/6; % Starting point for where labels are placed along the ellipse 
+             % Value is adjustable
+delphi = (sqrt(2)/36).*pi;% the step by which phi increases- 
+% made it irrational to try and prevent overlap in case, phi makes a full
+% rotation
+if( length(a) == length(e))% Checks that the elipticity and semimajor
+                           % vectors are of equal length
+    hold on;
+    axis square;
+    for i = 1:length(a) % In order to plot all orbits, need to use a loop
+        plotOrbits(a(i), e(i), phi);
+        % Calls the function plotOrbits to draw a curve of the elliptical
+        % orbit from its semi-major axis and eccentricity. The value of phi
+        % determines where along the orbit, the labels can be placed.
+        phi = phi + delphi;% Increasing value of phi.
+    end
+    hold off
+else
+    display('Dimensions do not agree');%in the case when vectors are unequal
+end
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,226 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Cosmological Evolution and Dependence On Curvature</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-06-23">
+      <meta name="m-file" content="cosmicEvol"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Cosmological Evolution and Dependence On Curvature</h1>
+         <!--introduction-->
+         <p>The curvature of the universe is a parameter describing both the topology and the evolution of the universe as it changes
+            in time. Curvature is parameterized by a value k found in the Friedmann Equations. k may be defined in two ways: here we choose
+            the definition such that k = {-1,0,1}, which means the scale factor a(t) has units of length and in the case k=+1,-1, a(t)
+            gives the radius of curvature of space and is often expressed as R(t).
+         </p>
+         <p>For k=-1, the universe is open and infinite in extent. This curvature implies the universe will evolve hyperbolically and
+            never collapse back upon itself.
+         </p>
+         <p>k=0 describes a flat geometry and is presumably the correct description of our own universe.</p>
+         <p>For k=+1 the universe is closed and the scale factor follows a symmetric cycloid solution.</p>
+         <p>Our purpose here is to coincidentally plot the evolution of the scale factor for a universe with these three gemoetries in
+            order to visualize the similarities and differences in their evolution.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Plotting the Evolution</a></li>
+            </ul>
+         </div>
+         <h2>Plotting the Evolution<a name="1"></a></h2>
+         <p>We plot the evolution of the normalized radius, <img src="cosmicEvol_eq77725.png" alt="$R/R_r$"> as a function of time (using parameterization for the <img src="cosmicEvol_eq84951.png" alt="$|k|=1$"> cases and the analytic solution to the Friedmann Equations for the <img src="cosmicEvol_eq12377.png" alt="$k=0$"> case).
+         </p><pre class="codeinput">theta = linspace(0,2*pi,400); <span class="comment">% First we define a vector for the parameter</span>
+
+<span class="comment">% Case 1: k=-1, Open</span>
+figure(1); clf
+R1 = 2*sinh(theta).^2;
+t1 = sinh(2*theta)-2*theta;
+loglog(t1,R1) <span class="comment">% Note that I plot in loglog space.</span>
+xlabel(<span class="string">'time'</span>)
+ylabel(<span class="string">'Normalized scale factor'</span>)
+title(<span class="string">'Full view of evolution of scale factor for Open, Flat, and Close Universe: Focus on early time'</span>)
+ylim([10^-5 10^4])
+hold <span class="string">on</span>
+
+<span class="comment">% Case 2: k=+1, Closed</span>
+theta = linspace(0,pi,400); <span class="comment">% k=+1 universe closes on itself when parameter goes to pi</span>
+R2 = 2*sin(theta).^2;
+t2 = 2*theta-sin(2*theta);
+loglog(t2,R2,<span class="string">'r'</span>)
+
+<span class="comment">% Case 3: k=0, Flat</span>
+R3 = 2.0^(-1/3) *3^(2/3.) * t1.^(2./3); <span class="comment">% It doesn't matter what vector I use for time</span>
+loglog(t1,R3,<span class="string">'g'</span>)
+legend(<span class="string">'k=-1'</span>,<span class="string">'k=+1'</span>,<span class="string">'k=0'</span>, <span class="string">'Location'</span>, <span class="string">'NorthWest'</span>) <span class="comment">% 'NorthWest' specifies</span>
+                                        <span class="comment">% the 'Location' of the legend on the</span>
+                                        <span class="comment">% plot.</span>
+hold <span class="string">off</span>
+
+<span class="comment">% I plot this in log-log space to emphasize the fact that all three</span>
+<span class="comment">% solutions converge for small values of time, i.e. the early universe</span>
+<span class="comment">% evolved the same regardless of the nature of the curvature. However,</span>
+<span class="comment">% plotting like this obscures the fact that the evolution for a closed</span>
+<span class="comment">% universe follows a symmetric cycloid. To illustrate this I plot the</span>
+<span class="comment">% curves on a linear axis plot:</span>
+
+figure(2); clf
+plot(t2,R2,<span class="string">'.r'</span>)
+hold <span class="string">on</span>
+plot(t1(1:100),R3(1:100),<span class="string">'g'</span>) <span class="comment">% I restrict the range of theta so that the</span>
+                                <span class="comment">% timerange covered for all three solutions</span>
+                                <span class="comment">% is roughtly equivalent</span>
+plot(t1(1:100),R1(1:100))
+xlabel(<span class="string">'time'</span>)
+ylabel(<span class="string">'Normalized scale factor'</span>)
+title(<span class="string">'Symmetric Cycloid solution for k=+1'</span>)
+legend(<span class="string">'k=+1'</span>,<span class="string">'k=0'</span>,<span class="string">'k=-1'</span>, <span class="string">'Location'</span>, <span class="string">'NorthWest'</span>)
+</pre><img vspace="5" hspace="5" src="cosmicEvol_01.png" alt=""> <img vspace="5" hspace="5" src="cosmicEvol_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Cosmological Evolution and Dependence On Curvature
+% The curvature of the universe is a parameter describing both the topology
+% and the evolution of the universe as it changes in time. Curvature is
+% parameterized by a value k found in the Friedmann Equations. k may be
+% defined in two ways: here we choose the definition such that k = {-1,0,1}, 
+% which means the scale factor a(t) has units of length and in the case 
+% k=+1,-1, a(t) gives the
+% radius of curvature of space and is often expressed as R(t). 
+%
+% For k=-1, the universe is open and infinite in extent. This curvature
+% implies the universe will evolve hyperbolically and never collapse back
+% upon itself.
+%
+% k=0 describes a flat geometry and is presumably the correct description
+% of our own universe. 
+%
+% For k=+1 the universe is closed and the scale factor follows a symmetric
+% cycloid solution. 
+%
+% Our purpose here is to coincidentally plot the evolution of the scale
+% factor for a universe with these three gemoetries in order to visualize
+% the similarities and differences in their evolution.
+%
+%% Plotting the Evolution
+% We plot the evolution of the normalized radius, $R/R_r$ as a function
+% of time (using parameterization for the $|k|=1$ cases and the analytic
+% solution to the Friedmann Equations for the $k=0$ case).
+
+theta = linspace(0,2*pi,400); % First we define a vector for the parameter
+
+% Case 1: k=-1, Open
+figure(1); clf
+R1 = 2*sinh(theta).^2;
+t1 = sinh(2*theta)-2*theta;
+loglog(t1,R1) % Note that I plot in loglog space.
+xlabel('time')
+ylabel('Normalized scale factor')
+title('Full view of evolution of scale factor for Open, Flat, and Close Universe: Focus on early time')
+ylim([10^-5 10^4])
+hold on
+
+% Case 2: k=+1, Closed
+theta = linspace(0,pi,400); % k=+1 universe closes on itself when parameter goes to pi
+R2 = 2*sin(theta).^2;
+t2 = 2*theta-sin(2*theta);
+loglog(t2,R2,'r')
+
+% Case 3: k=0, Flat
+R3 = 2.0^(-1/3) *3^(2/3.) * t1.^(2./3); % It doesn't matter what vector I use for time
+loglog(t1,R3,'g')
+legend('k=-1','k=+1','k=0', 'Location', 'NorthWest') % 'NorthWest' specifies
+                                        % the 'Location' of the legend on the
+                                        % plot.
+hold off
+
+% I plot this in log-log space to emphasize the fact that all three
+% solutions converge for small values of time, i.e. the early universe
+% evolved the same regardless of the nature of the curvature. However,
+% plotting like this obscures the fact that the evolution for a closed
+% universe follows a symmetric cycloid. To illustrate this I plot the
+% curves on a linear axis plot:
+
+figure(2); clf
+plot(t2,R2,'.r')
+hold on
+plot(t1(1:100),R3(1:100),'g') % I restrict the range of theta so that the 
+                                % timerange covered for all three solutions
+                                % is roughtly equivalent
+plot(t1(1:100),R1(1:100))
+xlabel('time')
+ylabel('Normalized scale factor')
+title('Symmetric Cycloid solution for k=+1')
+legend('k=+1','k=0','k=-1', 'Location', 'NorthWest')
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,221 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting orbits from the classical 1-body problem</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-05-26">
+      <meta name="m-file" content="problem3"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting orbits from the classical 1-body problem</h1>
+         <!--introduction-->
+         <p>Problem: The general orbit solution may be written as <img src="problem3_eq23165.png" alt="$x=R\cos\phi$"> and <img src="problem3_eq92922.png" alt="$y=R\sin\phi$"> where
+         </p>
+         <p><img src="problem3_eq94308.png" alt="$$ R=\frac{a|1\ ^\_ \ e^2 |}{1+e\cos{(\phi\ ^\_ \  \phi_0)}}. $$"></p>
+         <p><img src="problem3_eq34276.png" alt="$a$"> is the semi-major axis, <img src="problem3_eq24615.png" alt="$e$"> eccentricity, <img src="problem3_eq26509.png" alt="$\phi$"> the azimuthal angle of the orbit. Taking <img src="problem3_eq48817.png" alt="$a=2$"> and <img src="problem3_eq63839.png" alt="$\phi_0 =0$">, use Matlab to plot elliptic orbits with <img src="problem3_eq30464.png" alt="$e=0,0.5,0.9,0.99$">, a parabolic orbit with <img src="problem3_eq47316.png" alt="$e=1$">, and hyperbolic orbits with <img src="problem3_eq15532.png" alt="$e=1.1,2,3$">. Make sure to label <img src="problem3_eq24615.png" alt="$e$"> for each orbit.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Here we plot the orits, both those of bound and un-bound nature.</a></li>
+               <li><a href="#2">Ellipses</a></li>
+               <li><a href="#3">Parabola</a></li>
+               <li><a href="#4">Hyperbolas</a></li>
+               <li><a href="#5">Publishing</a></li>
+            </ul>
+         </div>
+         <h2>Here we plot the orits, both those of bound and un-bound nature.<a name="1"></a></h2><pre class="codeinput">a = 2; <span class="comment">%a</span>
+e=[0,0.5,0.9,0.99,1,1.1,2,3]; <span class="comment">%eccentricities</span>
+r=@(phi,a,e) a*abs(1.-e.^2) ./ (1+e*cos(phi)); <span class="comment">%Here I define a function in shorthand script</span>
+                                               <span class="comment">% which takes in parameters</span>
+                                               <span class="comment">% phi,a,and the eccentricity</span>
+                                               <span class="comment">% and returns the radius.</span>
+phi=0:0.01:2*pi;                         <span class="comment">% phi is defined to  be an array of 2*pi/0.01 values</span>
+                                         <span class="comment">%  ranging from 0 to 2pi</span>
+<span class="comment">%polar(phi,r(1,phi,a,e))        %One could plot directly using this</span>
+                                <span class="comment">% command in polar coordinates</span>
+                                <span class="comment">% but I choose to use cartesian</span>
+</pre><h2>Ellipses<a name="2"></a></h2><pre class="codeinput">figure(1); clf
+hold <span class="string">on</span>              <span class="comment">% Hold the plot so that multiple plot commands write to the same figure</span>
+ylim([-2.5 2.5])   <span class="comment">%set y limiting values</span>
+color = [<span class="string">'g'</span>,<span class="string">'r'</span>,<span class="string">'b'</span>,<span class="string">'k'</span>];   <span class="comment">%make an array of color reference characters to use with plot</span>
+<span class="keyword">for</span> i = 1:4           <span class="comment">% for loop running following comands over values of i ranging 1 to 4</span>
+    x=cos(phi).*r(phi,a,e(i));    <span class="comment">%comands.....</span>
+    y=sin(phi).*r(phi,a,e(i));
+    plot(x,y,color(i))
+<span class="keyword">end</span>
+axis <span class="string">equal</span>   <span class="comment">%make the axis eqal in delimeter</span>
+title(<span class="string">'Ellipses'</span>)   <span class="comment">%set title of first figure</span>
+legend(<span class="string">'e=0'</span>,<span class="string">'e=0.5'</span>,<span class="string">'e=0.9'</span>,<span class="string">'e=0.99'</span>)  <span class="comment">%create legend, which automatically is asociated with</span>
+                                        <span class="comment">%    order in which I plotted lines</span>
+hold <span class="string">off</span>      <span class="comment">% take hold off since I'm moving to next plot</span>
+</pre><img vspace="5" hspace="5" src="problem3_01.png" alt=""> <h2>Parabola<a name="3"></a></h2><pre class="codeinput">figure(2); clf
+<span class="comment">% Same ideas as before from here on out:</span>
+hold <span class="string">on</span>
+x = -4:.01:1;  <span class="comment">% Limit range to 1 so that we do not plot imaginary solutions.</span>
+yPlus=2*sqrt(1-x);
+plot(x,yPlus)
+plot(x,-yPlus)
+xlim([-4 2])
+title(<span class="string">'Parabola with \Lambda^2/GM = 2'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="problem3_02.png" alt=""> <h2>Hyperbolas<a name="4"></a></h2><pre class="codeinput">figure(3); clf
+hold <span class="string">on</span>
+<span class="keyword">for</span> i = 6:8
+    x = -4:0.05:-a+a*e(i);
+    yPlus = sqrt(e(i)^2-1).*sqrt((x-a*e(i)).^2-a^2);
+    plot(x,yPlus, color(i-4))
+    plot(x,-yPlus, color(i-4))
+<span class="keyword">end</span>
+legend(<span class="string">'e=1.1'</span>,<span class="string">'e=2'</span>,<span class="string">'e=3'</span>, <span class="string">'Location'</span>, <span class="string">'NorthEast'</span>)
+title(<span class="string">'Hyperbolas'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="problem3_03.png" alt=""> <h2>Publishing<a name="5"></a></h2><pre class="codeinput"><span class="comment">%publish('problem3.m','latex')  % This is how I published this .m file into</span>
+                                <span class="comment">% tex formatting so I could include</span>
+                                <span class="comment">% directly into the tex file I used to make</span>
+                                <span class="comment">% homework solutions</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting orbits from the classical 1-body problem
+% Problem: The general orbit solution may be written as $x=R\cos\phi$ and $y=R\sin\phi$ where 
+% 
+% $$ R=\frac{a|1\ ^\_ \ e^2 |}{1+e\cos{(\phi\ ^\_ \  \phi_0)}}. $$ 
+% 
+% $a$ is the semi-major axis, $e$ eccentricity, $\phi$ the azimuthal angle of the orbit. 
+% Taking $a=2$ and $\phi_0 =0$, use Matlab to plot elliptic orbits with $e=0,0.5,0.9,0.99$, a parabolic orbit with $e=1$, and hyperbolic orbits with 
+% $e=1.1,2,3$. Make sure to label $e$ for each orbit. 
+%
+%% Here we plot the orits, both those of bound and un-bound nature.
+%
+
+a = 2; %a
+e=[0,0.5,0.9,0.99,1,1.1,2,3]; %eccentricities
+r=@(phi,a,e) a*abs(1.-e.^2) ./ (1+e*cos(phi)); %Here I define a function in shorthand script
+                                               % which takes in parameters
+                                               % phi,a,and the eccentricity
+                                               % and returns the radius.
+phi=0:0.01:2*pi;                         % phi is defined to  be an array of 2*pi/0.01 values 
+                                         %  ranging from 0 to 2pi
+%polar(phi,r(1,phi,a,e))        %One could plot directly using this
+                                % command in polar coordinates
+                                % but I choose to use cartesian
+
+%% Ellipses 
+figure(1); clf
+hold on              % Hold the plot so that multiple plot commands write to the same figure
+ylim([-2.5 2.5])   %set y limiting values
+color = ['g','r','b','k'];   %make an array of color reference characters to use with plot
+for i = 1:4           % for loop running following comands over values of i ranging 1 to 4
+    x=cos(phi).*r(phi,a,e(i));    %comands.....
+    y=sin(phi).*r(phi,a,e(i));
+    plot(x,y,color(i))
+end
+axis equal   %make the axis eqal in delimeter
+title('Ellipses')   %set title of first figure
+legend('e=0','e=0.5','e=0.9','e=0.99')  %create legend, which automatically is asociated with 
+                                        %    order in which I plotted lines
+hold off      % take hold off since I'm moving to next plot
+
+%% Parabola
+figure(2); clf
+% Same ideas as before from here on out:
+hold on
+x = -4:.01:1;  % Limit range to 1 so that we do not plot imaginary solutions.
+yPlus=2*sqrt(1-x);
+plot(x,yPlus)
+plot(x,-yPlus)
+xlim([-4 2])
+title('Parabola with \Lambda^2/GM = 2')
+hold off
+
+%% Hyperbolas
+figure(3); clf
+hold on
+for i = 6:8
+    x = -4:0.05:-a+a*e(i);
+    yPlus = sqrt(e(i)^2-1).*sqrt((x-a*e(i)).^2-a^2);
+    plot(x,yPlus, color(i-4))
+    plot(x,-yPlus, color(i-4))
+end
+legend('e=1.1','e=2','e=3', 'Location', 'NorthEast')
+title('Hyperbolas')
+hold off
+
+%% Publishing
+%publish('problem3.m','latex')  % This is how I published this .m file into
+                                % tex formatting so I could include
+                                % directly into the tex file I used to make
+                                % homework solutions
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

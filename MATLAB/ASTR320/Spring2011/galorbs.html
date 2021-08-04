@@ -1,0 +1,255 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Epicycles for Galactic Orbits</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-06-24">
+      <meta name="m-file" content="galorbs"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Epicycles for Galactic Orbits</h1>
+         <!--introduction-->
+         <p>Epicycles provide a simple way to study approximate solutions for the orbit of a test body in a gravitational potential. In
+            <a href="../../epicycles/html/epicycles.html">../../epicycles/html/epicycles.html</a> the near-circular orbit of a test particle with epicyclic (low-eccentricity) perturbations was plotted in two frames, the
+            guiding center and the frame of a distant observer. That was for an orbit around a point mass and would be the correct prescription
+            for studying the lowest order movement of planets in our Solar System, where the Sun acts as a Newtonian point mass. We can
+            ask what happens if we relax the assumption of the point mass to a more general gravitational potential.
+         </p>
+         <p>Near-circular orbits in a spherical potential <img src="galorbs_eq88635.png" alt="$\Phi (R)$"> follow <img src="galorbs_eq38569.png" alt="$R=R_0+x_1$"> and <img src="galorbs_eq38028.png" alt="$\phi=\Omega_0 t+y_1 / R_0$"> with <img src="galorbs_eq05826.png" alt="$x_1=A\sin{\kappa_0 t}$"> and <img src="galorbs_eq58682.png" alt="$y_1=2(\Omega_0 /\kappa_0 )A\cos{\kappa_0 t}$">, where <img src="galorbs_eq21816.png" alt="$\Omega^2 = R^{\ ^\_ \ 1}d\Phi /dR=GM(R)/R^3$"> and <img src="galorbs_eq63405.png" alt="$\kappa^2 = R^{\ ^\_ \ 3}d(\Omega^2 R^4)/dR$">. <img src="galorbs_eq42343.png" alt="$\Omega_0$"> and <img src="galorbs_eq19649.png" alt="$\kappa_0$"> are the orbital and epicyclic frequencies evaluated at <img src="galorbs_eq34096.png" alt="$R_0$">. In the point mass case seen in the epicycles script linked above, these are equal. If they are unequal, as we will now see,
+            orbits do not necessarily close and more complex shapes can be seen. If the mass density that produces the gravitational potential
+            varies as <img src="galorbs_eq47006.png" alt="$\rho(R)\propto R^{\ ^\_ \ \alpha}$">, one can show that <img src="galorbs_eq97447.png" alt="$\kappa^2=(4\ ^\_ \ \alpha)\Omega^2$">.
+         </p>
+         <p>We now consider two specific cases that are highly relevant to real galaxies such as our own, namely <img src="galorbs_eq76279.png" alt="$\alpha=2$"> for a dark-matter dominated potential, and <img src="galorbs_eq65816.png" alt="$\alpha=0$"> for a bulge potential.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Plots of Orbits</a></li>
+            </ul>
+         </div>
+         <h2>Plots of Orbits<a name="1"></a></h2><pre class="codeinput"><span class="comment">% Initial parameter values</span>
+R0 = 1.; <span class="comment">% We'll use solar units, so mass is in solar masses, distance is</span>
+G = 1.;  <span class="comment">%  in AU, G=1, and time is in years</span>
+Mr = 1.;
+
+A = 0.2*R0;
+
+omega = @(G,Mr,r)  sqrt( G*Mr./(r.^3)  );
+kappa = @(omega,alpha) sqrt(4-alpha)*omega;
+
+f=1; <span class="comment">% figure number</span>
+<span class="keyword">for</span> alph = [0.0,2.0], <span class="comment">% I have a for loop which cycles through the two</span>
+                        <span class="comment">% values of alpha, 0 and 2 for the bulge potential</span>
+                        <span class="comment">% and dark matter cases.</span>
+
+    omega0 = omega(G,Mr,R0);
+    kappa0 = kappa(omega0,alph);
+
+    time = linspace(0,4*2*pi/omega0,200);  <span class="comment">%values of time for our orbits</span>
+
+    <span class="comment">% Now I specify the background circular orbit</span>
+    x0 = R0*cos(omega0*time);
+    y0 = R0*sin(omega0*time);
+
+    <span class="comment">% And then specify the epicyclic perturbation:</span>
+    x1 = A*sin(kappa0*time);
+    y1 = 2.0 *(omega0/kappa0)*A*cos(kappa0*time);
+
+    <span class="comment">% Our first orbit to plot has x and y as:</span>
+    x = R0 + x1;
+    y = y1;
+
+    figure(f); clf; f=f+1;
+    plot(x,y)
+    axis([R0-3*A R0+3*A  -3*A  3*A])
+    axis <span class="string">square</span>
+    title(<span class="string">'Epicyclic orbit as seen in frame of Guiding Center'</span>)
+    xlabel(<span class="string">'x'</span>)
+    ylabel(<span class="string">'y'</span>)
+
+    <span class="comment">% Now we consider the full epicyclic orbit with the circular orbit</span>
+    <span class="comment">% background:</span>
+
+    <span class="comment">% First we consider the position of the perturbed orbti in circular coords:</span>
+    R = R0 + x1;
+    phi = omega0*time + y1./R0;
+
+    <span class="comment">% Then transform this into cartesian coordinates for plotting:</span>
+    x = R.*cos(phi);
+    y = R.*sin(phi);
+
+    figure(f); clf; f=f+1;
+    hold <span class="string">on</span>
+    plot(x0,y0,<span class="string">'--r'</span>)  <span class="comment">%First we plot the background circular orbit in red dotted line</span>
+    plot(x,y,<span class="string">'b'</span>)  <span class="comment">% Then plot the perturbed orbit</span>
+    axis([-1.5*R0 1.5*R0 -1.5*R0  1.5*R0])
+    axis <span class="string">square</span>
+    title(<span class="string">'Epicyclic orbit with background circ. orbit'</span>)
+    xlabel(<span class="string">'x'</span>)
+    ylabel(<span class="string">'y'</span>)
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="galorbs_01.png" alt=""> <img vspace="5" hspace="5" src="galorbs_02.png" alt=""> <img vspace="5" hspace="5" src="galorbs_03.png" alt=""> <img vspace="5" hspace="5" src="galorbs_04.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Epicycles for Galactic Orbits
+% Epicycles provide a simple way to study approximate solutions for the
+% orbit of a test body in a gravitational potential. In
+% <../../epicycles/html/epicycles.html> the near-circular orbit of a test
+% particle with epicyclic (low-eccentricity) perturbations was plotted in
+% two frames, the guiding center and the frame of a distant observer. That
+% was for an orbit around a point mass and would be the correct
+% prescription for studying the lowest order movement of planets in our
+% Solar System, where the Sun acts as a Newtonian point mass. We can ask
+% what happens if we relax the assumption of the point mass to a more general
+% gravitational potential. 
+%
+% Near-circular orbits in a spherical potential $\Phi (R)$ follow
+% $R=R_0+x_1$ and $\phi=\Omega_0 t+y_1 / R_0$ with $x_1=A\sin{\kappa_0 t}$
+% and $y_1=2(\Omega_0 /\kappa_0 )A\cos{\kappa_0 t}$, where $\Omega^2 =
+% R^{\ ^\_ \ 1}d\Phi /dR=GM(R)/R^3$ and $\kappa^2 = R^{\ ^\_ \ 3}d(\Omega^2 R^4)/dR$.
+% $\Omega_0$ and $\kappa_0$ are the orbital and epicyclic frequencies
+% evaluated at $R_0$. In the point mass case seen in the epicycles script
+% linked above, these are equal. If they are unequal, as we will now see,
+% orbits do not necessarily close and more complex shapes can be seen. If
+% the mass density that produces the gravitational potential varies as
+% $\rho(R)\propto R^{\ ^\_ \ \alpha}$, one can show that
+% $\kappa^2=(4\ ^\_ \ \alpha)\Omega^2$.
+%
+% We now consider two specific cases that are highly relevant to real
+% galaxies such as our own, namely $\alpha=2$ for a dark-matter dominated
+% potential, and $\alpha=0$ for a bulge potential.
+%% Plots of Orbits
+% 
+
+% Initial parameter values
+R0 = 1.; % We'll use solar units, so mass is in solar masses, distance is
+G = 1.;  %  in AU, G=1, and time is in years
+Mr = 1.;
+
+A = 0.2*R0;
+
+omega = @(G,Mr,r)  sqrt( G*Mr./(r.^3)  );
+kappa = @(omega,alpha) sqrt(4-alpha)*omega;
+
+f=1; % figure number
+for alph = [0.0,2.0], % I have a for loop which cycles through the two
+                        % values of alpha, 0 and 2 for the bulge potential
+                        % and dark matter cases.
+    
+    omega0 = omega(G,Mr,R0);
+    kappa0 = kappa(omega0,alph);
+
+    time = linspace(0,4*2*pi/omega0,200);  %values of time for our orbits
+
+    % Now I specify the background circular orbit 
+    x0 = R0*cos(omega0*time);
+    y0 = R0*sin(omega0*time);
+
+    % And then specify the epicyclic perturbation:
+    x1 = A*sin(kappa0*time);
+    y1 = 2.0 *(omega0/kappa0)*A*cos(kappa0*time);
+
+    % Our first orbit to plot has x and y as:
+    x = R0 + x1;
+    y = y1;
+
+    figure(f); clf; f=f+1;
+    plot(x,y)
+    axis([R0-3*A R0+3*A  -3*A  3*A])
+    axis square
+    title('Epicyclic orbit as seen in frame of Guiding Center')
+    xlabel('x')
+    ylabel('y')
+
+    % Now we consider the full epicyclic orbit with the circular orbit
+    % background:
+
+    % First we consider the position of the perturbed orbti in circular coords:
+    R = R0 + x1;
+    phi = omega0*time + y1./R0;
+
+    % Then transform this into cartesian coordinates for plotting:
+    x = R.*cos(phi);
+    y = R.*sin(phi);
+
+    figure(f); clf; f=f+1;
+    hold on
+    plot(x0,y0,'REPLACE_WITH_DASH_DASHr')  %First we plot the background circular orbit in red dotted line
+    plot(x,y,'b')  % Then plot the perturbed orbit
+    axis([-1.5*R0 1.5*R0 -1.5*R0  1.5*R0])
+    axis square
+    title('Epicyclic orbit with background circ. orbit')
+    xlabel('x')
+    ylabel('y')
+end
+##### SOURCE END #####
+-->
+   </body>
+</html>

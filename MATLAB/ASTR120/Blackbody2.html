@@ -1,0 +1,296 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Blackbody2, 5-2-10</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-05-03">
+      <meta name="m-file" content="Blackbody2, 5-2-10"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Black body curves using MATLAB</a></li>
+               <li><a href="#2">1) Basic blackbody spectra</a></li>
+               <li><a href="#4">2)  Normalized blackbody spectra</a></li>
+               <li><a href="#5">Exercises</a></li>
+            </ul>
+         </div>
+         <h2>Black body curves using MATLAB<a name="1"></a></h2>
+         <p>A.J. Melhus, 5/2/10  This script gives two types of plots for Planck's Law blackbody irradiance  curves.  This script uses
+            2 function m-files, <a href="IL.m">IL.m</a> and <a href="Iv.m">Iv.m</a> (Planck's  law in wavelength/freq. domains)
+         </p><pre class="codeinput"><span class="comment">% IL and Iv give the spectral energy density, with units of</span>
+<span class="comment">%energy per unit volume per unit wavelength/frequency</span>
+<span class="comment">% i.e. J/m^3/m or J/m^3/Hz</span>
+</pre><h2>1) Basic blackbody spectra<a name="2"></a></h2>
+         <p>In this set of plots, we see how the spectra have lower peaks and become more "diffuse" with decreasing temperature</p><pre class="codeinput"><span class="comment">% Constants in the functions/formulas:</span>
+h = 6.626069e-34;    <span class="comment">% Planck's constant, units of J*s</span>
+c = 299792458;      <span class="comment">% speed of light, units of m/s</span>
+kb = 1.38065e-23;    <span class="comment">% Boltzmann constant, units of J/K</span>
+
+L = linspace(1e-9,3000e-9,3000);    <span class="comment">% wavlength, '\lambda', parameters, in m</span>
+v = c./L;    <span class="comment">% frequency, '\nu', parameters, in Hz</span>
+
+<span class="comment">% Plot wavelength and frequency graphs in</span>
+<span class="comment">% Uses function files IL(wavelength) and Iv(freq.)</span>
+
+T = [3000, 6000, 9000];      <span class="comment">% 3 temperature values, in K (this vector of</span>
+                              <span class="comment">% values gives 3 blackbody curves)</span>
+<span class="comment">% (I)</span>
+figure(1); clf
+<span class="comment">% make vectors for 3 temperatures in T</span>
+IL1 = IL(L,T(:,1));
+IL2 = IL(L,T(:,2));
+IL3 = IL(L,T(:,3));
+
+plot(L,IL1,<span class="string">'k'</span>)    <span class="comment">% plot spectrum @ 3,000 K, black line</span>
+hold <span class="string">on</span>      <span class="comment">% toggle figure action</span>
+plot(L,IL2,<span class="string">'g'</span>)    <span class="comment">% plot spectrum @ 6,000 K, green line</span>
+plot(L,IL3,<span class="string">'b'</span>)    <span class="comment">% plot spectrum @ 9,000 K, blue line</span>
+text(.6e-6, .3e6,<span class="string">'3,000 K'</span>)    <span class="comment">% text marker</span>
+text(.4e-6, 1.2*max(IL2),<span class="string">'6,000 K'</span>)
+text(.5e-6, 8e6,<span class="string">'9,000 K'</span>)
+title(<span class="string">'3 Blackbody spectra in \lambda space'</span>)
+xlabel(<span class="string">'\lambda , m'</span>)
+ylabel(<span class="string">'Irradiance'</span>)
+<span class="comment">% fix the x-axis at 2,000 nm</span>
+axis([1e-9 2000e-9 0 1.05*max(IL3)])
+<span class="comment">% note:  if you produce spectra for different temps than those listed in T,</span>
+<span class="comment">% you will probably have to fiddle with the axis parameters to actually see the spectra</span>
+hold <span class="string">off</span>    <span class="comment">% release figure toggle</span>
+</pre><img vspace="5" hspace="5" src="Blackbody2, 5-2-10_01.png"> <pre class="codeinput"><span class="comment">% (II)</span>
+figure; clf
+<span class="comment">% make vectors for 3 temperatures in T</span>
+Iv1 = Iv(v,T(:,1));
+Iv2 = Iv(v,T(:,2));
+Iv3 = Iv(v,T(:,3));
+
+plot(v,Iv1,<span class="string">'k'</span>) <span class="comment">% 3,000 K spectrum, from above, in freq. space</span>
+hold <span class="string">on</span>
+plot(v,Iv2,<span class="string">'g'</span>) <span class="comment">% 6,000 K spectrum, from above, in freq. space</span>
+plot(v,Iv3,<span class="string">'b'</span>) <span class="comment">% 9,000 K spectrum, from above, in freq. space</span>
+text(2e14,1.75*max(Iv1),<span class="string">'3,000 K'</span>)
+text(4e14,1.15*max(Iv2),<span class="string">'6,000 K'</span>)
+text(5e14,.95*max(Iv3),<span class="string">'9,000 K'</span>)
+title(<span class="string">'3 Blackbody spectra in \nu (freq.) space'</span>)
+xlabel(<span class="string">'\nu , Hz'</span>)
+ylabel(<span class="string">'Irradiance'</span>)
+<span class="comment">% fix the x-axis at 900 THz (UV-A radiation)</span>
+axis([1e14 9e14 0 1.05*max(Iv3)])
+hold <span class="string">off</span>
+
+<span class="comment">%  Notice how the spectra progress in each plot:</span>
+<span class="comment">% (I) The wavlength spectra go: blue-green-black</span>
+<span class="comment">% i.e. hot-med-cold</span>
+
+<span class="comment">% (II) The freq. spectra go: black-green-blue (opposite of I)</span>
+<span class="comment">% i.e. cold-med-hot</span>
+
+<span class="comment">% Wavelength and frequency spectra have opposite peak progression.</span>
+</pre><img vspace="5" hspace="5" src="Blackbody2, 5-2-10_02.png"> <h2>2)  Normalized blackbody spectra<a name="4"></a></h2>
+         <p>In this set of plots, we see how the spectrum peak moves (in wavelength) with changes in temperature</p><pre class="codeinput"><span class="comment">% Normalize each spectrum (to better see peak shift)</span>
+normIL1 = IL(L,T(:,1))/max(IL(L,T(:,1)));
+normIL2 = IL(L,T(:,2))/max(IL(L,T(:,2)));
+normIL3 = IL(L,T(:,3))/max(IL(L,T(:,3)));
+
+figure; clf
+plot(L,normIL1,<span class="string">'k'</span>)  <span class="comment">% normalized spectrum @ 3,000 K</span>
+hold <span class="string">on</span>
+plot(L,normIL2,<span class="string">'g'</span>)   <span class="comment">% normalized spectrum @ 6,000 K</span>
+plot(L,normIL3,<span class="string">'b'</span>)   <span class="comment">% normalized spectrum @ 9,000 K</span>
+text(.9e-6,1.05*max(normIL1),<span class="string">'3,000 K'</span>)
+text(.5e-6,1.05*max(normIL2),<span class="string">'6,000 K'</span>)
+text(.2e-6,1.05*max(normIL3),<span class="string">'9,000 K'</span>)
+title(<span class="string">'3 Normalized blackbody spectra in \lambda space'</span>)
+xlabel(<span class="string">'\lambda , m'</span>)
+ylabel(<span class="string">'Normalized irradiance'</span>)
+<span class="comment">% fix x-axis at 1500 nm</span>
+axis([0 1500e-9 0 1.2])
+hold <span class="string">off</span>
+
+<span class="comment">% As you should see, the spectrum peak moves</span>
+<span class="comment">% left (in '\lambda') with increasing temperature</span>
+</pre><img vspace="5" hspace="5" src="Blackbody2, 5-2-10_03.png"> <h2>Exercises<a name="5"></a></h2>
+         <p>Now try plotting a set of graphs for 3 new temperatures with blackbody peaks outside the range of visible light.</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Black body curves using MATLAB
+% A.J. Melhus, 5/2/10
+%  This script gives two types of plots for Planck's Law blackbody irradiance 
+%  curves.  This script uses 2 function m-files, <IL.m> and <Iv.m> (Planck's 
+%  law in wavelength/freq. domains)
+  
+% IL and Iv give the spectral energy density, with units of 
+%energy per unit volume per unit wavelength/frequency
+% i.e. J/m^3/m or J/m^3/Hz
+  
+%% 1) Basic blackbody spectra
+% In this set of plots, we see how the spectra have lower
+% peaks and become more "diffuse" with decreasing temperature
+ 
+% Constants in the functions/formulas:
+h = 6.626069e-34;    % Planck's constant, units of J*s
+c = 299792458;      % speed of light, units of m/s
+kb = 1.38065e-23;    % Boltzmann constant, units of J/K
+ 
+L = linspace(1e-9,3000e-9,3000);    % wavlength, '\lambda', parameters, in m
+v = c./L;    % frequency, '\nu', parameters, in Hz
+ 
+% Plot wavelength and frequency graphs in
+% Uses function files IL(wavelength) and Iv(freq.)
+  
+T = [3000, 6000, 9000];      % 3 temperature values, in K (this vector of 
+                              % values gives 3 blackbody curves)
+% (I) 
+figure(1); clf
+% make vectors for 3 temperatures in T
+IL1 = IL(L,T(:,1));
+IL2 = IL(L,T(:,2));
+IL3 = IL(L,T(:,3));
+
+plot(L,IL1,'k')    % plot spectrum @ 3,000 K, black line
+hold on      % toggle figure action
+plot(L,IL2,'g')    % plot spectrum @ 6,000 K, green line
+plot(L,IL3,'b')    % plot spectrum @ 9,000 K, blue line
+text(.6e-6, .3e6,'3,000 K')    % text marker
+text(.4e-6, 1.2*max(IL2),'6,000 K')
+text(.5e-6, 8e6,'9,000 K')
+title('3 Blackbody spectra in \lambda space')
+xlabel('\lambda , m')
+ylabel('Irradiance')
+% fix the x-axis at 2,000 nm
+axis([1e-9 2000e-9 0 1.05*max(IL3)])
+% note:  if you produce spectra for different temps than those listed in T, 
+% you will probably have to fiddle with the axis parameters to actually see the spectra
+hold off    % release figure toggle
+%%
+
+% (II)
+figure; clf
+% make vectors for 3 temperatures in T
+Iv1 = Iv(v,T(:,1));
+Iv2 = Iv(v,T(:,2));
+Iv3 = Iv(v,T(:,3));
+
+plot(v,Iv1,'k') % 3,000 K spectrum, from above, in freq. space
+hold on
+plot(v,Iv2,'g') % 6,000 K spectrum, from above, in freq. space
+plot(v,Iv3,'b') % 9,000 K spectrum, from above, in freq. space
+text(2e14,1.75*max(Iv1),'3,000 K')
+text(4e14,1.15*max(Iv2),'6,000 K')
+text(5e14,.95*max(Iv3),'9,000 K')
+title('3 Blackbody spectra in \nu (freq.) space')
+xlabel('\nu , Hz')
+ylabel('Irradiance')
+% fix the x-axis at 900 THz (UV-A radiation)
+axis([1e14 9e14 0 1.05*max(Iv3)])       
+hold off 
+
+%  Notice how the spectra progress in each plot:
+% (I) The wavlength spectra go: blue-green-black
+% i.e. hot-med-cold
+
+% (II) The freq. spectra go: black-green-blue (opposite of I)
+% i.e. cold-med-hot
+
+% Wavelength and frequency spectra have opposite peak progression.
+
+%% 2)  Normalized blackbody spectra
+% In this set of plots, we see how the spectrum peak 
+% moves (in wavelength) with changes in temperature
+
+% Normalize each spectrum (to better see peak shift)
+normIL1 = IL(L,T(:,1))/max(IL(L,T(:,1)));
+normIL2 = IL(L,T(:,2))/max(IL(L,T(:,2)));
+normIL3 = IL(L,T(:,3))/max(IL(L,T(:,3)));
+
+figure; clf
+plot(L,normIL1,'k')  % normalized spectrum @ 3,000 K
+hold on
+plot(L,normIL2,'g')   % normalized spectrum @ 6,000 K
+plot(L,normIL3,'b')   % normalized spectrum @ 9,000 K 
+text(.9e-6,1.05*max(normIL1),'3,000 K')
+text(.5e-6,1.05*max(normIL2),'6,000 K')
+text(.2e-6,1.05*max(normIL3),'9,000 K')
+title('3 Normalized blackbody spectra in \lambda space')
+xlabel('\lambda , m')
+ylabel('Normalized irradiance')
+% fix x-axis at 1500 nm
+axis([0 1500e-9 0 1.2])
+hold off  
+
+% As you should see, the spectrum peak moves
+% left (in '\lambda') with increasing temperature
+ 
+ 
+%% Exercises
+% Now try plotting a set of graphs for 3 new temperatures 
+% with blackbody peaks outside the range of visible light.
+##### SOURCE END #####
+-->
+   </body>
+</html>

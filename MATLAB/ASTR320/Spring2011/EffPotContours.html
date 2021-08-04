@@ -1,0 +1,144 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>The Reduced 3-Body Effective Potential: Plotting contours</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-06-24">
+      <meta name="m-file" content="EffPotContours"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>The Reduced 3-Body Effective Potential: Plotting contours</h1>
+         <!--introduction-->
+         <p>Plotting contours</p>
+         <!--/introduction--><pre class="codeinput">m1 = 1;
+m2 = .5;
+m = m1+m2;
+omegasq = m;
+a =1;
+a1 = m2/m;
+a2 = a-a1;
+x1 = -a1;
+x2 = a2;
+y1=0;
+y2=0;
+
+phieff =@(x,y) -.5*(x.^2 + y.^2)*omegasq - m1./sqrt((x-x1).^2+(y-y1).^2) - m2./sqrt((x-x2).^2+(y-y2).^2);
+x = linspace(-2.,2,400);
+y = linspace(-2.,2,400)';
+
+i = ones(400,1);
+matx = kron(i,x);
+maty = -matx';
+
+tryd = phieff(matx,maty);
+<span class="comment">%surf(tryd)</span>
+<span class="comment">%plot(tryd(:,100))</span>
+    <span class="comment">%plot(phieffmat)</span>
+<span class="comment">%plot(x,phieff(x,0))</span>
+contour(tryd,linspace(-6,5, 100))
+<span class="comment">%axis([90 110 80 100])</span>
+</pre><img vspace="5" hspace="5" src="EffPotContours_01.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% The Reduced 3-Body Effective Potential: Plotting contours
+% INTRODUCTORY TEXT
+%%
+
+
+m1 = 1;
+m2 = .5;
+m = m1+m2;
+omegasq = m;
+a =1;
+a1 = m2/m;
+a2 = a-a1;
+x1 = -a1;
+x2 = a2;
+y1=0;
+y2=0;
+
+phieff =@(x,y) -.5*(x.^2 + y.^2)*omegasq - m1./sqrt((x-x1).^2+(y-y1).^2) - m2./sqrt((x-x2).^2+(y-y2).^2);
+x = linspace(-2.,2,400);
+y = linspace(-2.,2,400)';
+
+i = ones(400,1);
+matx = kron(i,x);
+maty = -matx';
+
+tryd = phieff(matx,maty);
+%surf(tryd)
+%plot(tryd(:,100))
+    %plot(phieffmat)
+%plot(x,phieff(x,0))
+contour(tryd,linspace(-6,5, 100))
+%axis([90 110 80 100])
+##### SOURCE END #####
+-->
+   </body>
+</html>

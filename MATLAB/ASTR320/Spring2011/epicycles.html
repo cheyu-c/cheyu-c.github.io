@@ -1,0 +1,204 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Keplerian Epicycles</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-06-24">
+      <meta name="m-file" content="epicycles"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Keplerian Epicycles</h1>
+         <!--introduction-->
+         <p>To study the evolution of keplerian orbits (Newtonian gravity) with small eccentricities it is possible to find an approximate
+            solution using a newtonian expansion to low order in eccentricity. In some circumstances this makes plotting an orbit simpler.
+         </p>
+         <p>In this example, consider a test particle in a low-eccentricity (nearly circular) orbit with epicyclic perturbations <img src="epicycles_eq81432.png" alt="$x_1=\ ^\_ \ A\sin{\Omega t}$"> and <img src="epicycles_eq27675.png" alt="$y_1=2A\cos{\Omega t}$">, where <img src="epicycles_eq38569.png" alt="$R=R_0+x_1$"> and <img src="epicycles_eq88846.png" alt="$\phi=\ ^\_ \ \Omega t+y_1/R_0$">. Taking <img src="epicycles_eq13454.png" alt="$A=0.2R_0$"> we can plot the epicycle in the frame of the guiding center (i.e. <img src="epicycles_eq14804.png" alt="$(R_0+x_1,y_1)$">) and as viewed by a distant observer.
+         </p>
+         <p>For more on epicycles in potentials other than a Newtonian point mass see <a href="../../GalacticOrbits/html/galorbs.html">../../GalacticOrbits/html/galorbs.html</a>.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Frame of Guiding Center</a></li>
+               <li><a href="#2">Frame of Distant Observer</a></li>
+            </ul>
+         </div>
+         <h2>Frame of Guiding Center<a name="1"></a></h2><pre class="codeinput"><span class="comment">% Initial parameter values</span>
+R0 = 1;
+A = 0.2*R0;
+omegaT = linspace(0,2*pi,200);  <span class="comment">%values of omega*t for full orbit</span>
+
+<span class="comment">% Now I specify the background circular orbit</span>
+x0 = R0*cos(omegaT);
+y0 = R0*sin(omegaT);
+
+<span class="comment">% And then specify the epicyclic perturbation:</span>
+x1 = -A*sin(omegaT);
+y1 = 2.0 *A*cos(omegaT);
+
+<span class="comment">% Our first orbit to plot has x and y as:</span>
+x = R0 + x1;
+y = y1;
+
+figure(1); clf
+plot(x,y)
+axis([R0-3*A R0+3*A  -3*A  3*A])
+axis <span class="string">square</span>
+title(<span class="string">'Epicyclic orbit as seen in frame of Guiding Center'</span>)
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'y'</span>)
+</pre><img vspace="5" hspace="5" src="epicycles_01.png" alt=""> <h2>Frame of Distant Observer<a name="2"></a></h2>
+         <p>Now we consider the full epicyclic orbit with the circular orbit background:</p><pre class="codeinput"><span class="comment">% First we consider the position of the perturbed orbti in circular coords:</span>
+R = R0 + x1;
+phi = -omegaT + y1/R0;
+
+<span class="comment">% Then transform this into cartesian coordinates for plotting:</span>
+x = R.*cos(phi);
+y = R.*sin(phi);
+
+figure(2); clf
+hold <span class="string">on</span>
+plot(x0,y0,<span class="string">'--r'</span>)  <span class="comment">%First we plot the background circular orbit in red dotted line</span>
+plot(x,y,<span class="string">'b'</span>)  <span class="comment">% Then plot the perturbed orbit</span>
+axis([-1.5*R0 1.5*R0 -1.5*R0  1.5*R0])
+axis <span class="string">square</span>
+title(<span class="string">'Epicyclic orbit with background circ. orbit'</span>)
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'y'</span>)
+</pre><img vspace="5" hspace="5" src="epicycles_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Keplerian Epicycles
+% To study the evolution of keplerian orbits (Newtonian gravity) with small
+% eccentricities it is possible to find an approximate solution using a
+% newtonian expansion to low order in eccentricity. In some circumstances
+% this makes plotting an orbit simpler.
+%
+% In this example, consider a test particle in a low-eccentricity (nearly
+% circular) orbit with epicyclic perturbations $x_1=\ ^\_ \ A\sin{\Omega t}$ and
+% $y_1=2A\cos{\Omega t}$, where $R=R_0+x_1$ and $\phi=\ ^\_ \ \Omega t+y_1/R_0$.
+% Taking $A=0.2R_0$ we can plot the epicycle in the frame of the guiding
+% center (i.e. $(R_0+x_1,y_1)$) and as viewed by a distant observer. 
+%
+% For more on epicycles in potentials other than a Newtonian point mass see
+% <../../GalacticOrbits/html/galorbs.html>.
+%% Frame of Guiding Center
+
+% Initial parameter values
+R0 = 1;
+A = 0.2*R0;
+omegaT = linspace(0,2*pi,200);  %values of omega*t for full orbit
+
+% Now I specify the background circular orbit 
+x0 = R0*cos(omegaT);
+y0 = R0*sin(omegaT);
+
+% And then specify the epicyclic perturbation:
+x1 = -A*sin(omegaT);
+y1 = 2.0 *A*cos(omegaT);
+
+% Our first orbit to plot has x and y as:
+x = R0 + x1;
+y = y1;
+
+figure(1); clf
+plot(x,y)
+axis([R0-3*A R0+3*A  -3*A  3*A])
+axis square
+title('Epicyclic orbit as seen in frame of Guiding Center')
+xlabel('x')
+ylabel('y')
+
+%% Frame of Distant Observer
+% Now we consider the full epicyclic orbit with the circular orbit
+% background:
+
+% First we consider the position of the perturbed orbti in circular coords:
+R = R0 + x1;
+phi = -omegaT + y1/R0;
+
+% Then transform this into cartesian coordinates for plotting:
+x = R.*cos(phi);
+y = R.*sin(phi);
+
+figure(2); clf
+hold on
+plot(x0,y0,'REPLACE_WITH_DASH_DASHr')  %First we plot the background circular orbit in red dotted line
+plot(x,y,'b')  % Then plot the perturbed orbit
+axis([-1.5*R0 1.5*R0 -1.5*R0  1.5*R0])
+axis square
+title('Epicyclic orbit with background circ. orbit')
+xlabel('x')
+ylabel('y')
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
