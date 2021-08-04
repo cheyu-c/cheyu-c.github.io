@@ -1,0 +1,211 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Image Processing: Flip and Rotate</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-08-18">
+      <meta name="m-file" content="images01"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Image Processing: Flip and Rotate</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Flipping Images</a></li>
+               <li><a href="#7">Transpose</a></li>
+               <li><a href="#10">Rotate</a></li>
+               <li><a href="#14">Exercise</a></li>
+            </ul>
+         </div>
+         <p>Here we use a sample data array <b><tt>A</tt></b> as our example. The image of <b><tt>A</tt></b> is
+         </p><pre class="codeinput">imagesc(A)
+</pre><img vspace="5" hspace="5" src="images01_01.png"> <h2>Flipping Images<a name="2"></a></h2>
+         <p>Flipping images is easy and straightforward in MATLAB. If you want to flip your array up to down, use <b><tt>flipud</tt></b>:
+         </p><pre class="codeinput">udA = flipud(A);
+imagesc(udA)
+</pre><img vspace="5" hspace="5" src="images01_02.png"> <p>Or you can simply type</p><pre class="codeinput">imagesc(flipud(A))
+</pre><p>to make the image of <b><tt>A</tt></b> upside down.
+         </p>
+         <p>Similarly, to flip your array or image left to right, use</p><pre class="codeinput">lrA = fliplr(A);
+imagesc(lrA)
+</pre><img vspace="5" hspace="5" src="images01_04.png"> <p>or just</p><pre class="codeinput">imagesc(fliplr(A))
+</pre><p>which will return the same result.</p>
+         <h2>Transpose<a name="7"></a></h2>
+         <p>The transpose of a MxN matrix (or array) is a NxM matrix with its <b>(i, j)</b> element equals to the <b>(j, i)</b> element of the original matrix. MATLAB provides the arithmetic operator <b><tt>'</tt></b> to calculate the transpose of a matrix or array:
+         </p><pre class="codeinput">SampleArray
+</pre><pre class="codeoutput">
+SampleArray =
+
+     1     3     5
+     2     4     6
+
+</pre><pre class="codeinput">SampleArray'
+</pre><pre class="codeoutput">
+ans =
+
+     1     2
+     3     4
+     5     6
+
+</pre><p>This can be used to "transpose" images:</p><pre class="codeinput">imagesc(A')
+</pre><img vspace="5" hspace="5" src="images01_06.png"> <h2>Rotate<a name="10"></a></h2>
+         <p>Flipping and transposing both belong to image rotation, with rotating angle <tt>90</tt>, <tt>180</tt>, or <tt>270</tt> (equals to <tt>-90</tt>) degrees. Sometimes we may want to rotate our images by some arbitrary degrees. This can be done by calling the MATLAB internal
+            function <b><tt>imrotate(array, angle)</tt></b>.
+         </p>
+         <p>First of all, we must rotate the data array which generates the image:</p><pre class="codeinput">RotateA = imrotate(A, 45);
+</pre><p>This means we want to rotate data array <b><tt>A</tt></b> by <b><tt>45</tt></b> degrees and save it in array <b><tt>RotateA</tt></b>. Note that the rotation is in a counterclockwise direction around the array's center point. You can specify a negative value
+            for <b><tt>angle</tt></b> to rotate the image clockwise.
+         </p>
+         <p>We can now plot <b><tt>RotateA</tt></b> to see the rotated image:
+         </p><pre class="codeinput">imagesc(RotateA)
+</pre><img vspace="5" hspace="5" src="images01_07.png"> <p>You may notice that the image is still rectangular; this is because the function <b><tt>imrotate</tt></b> makes the output array large enough to contain the entire rotated image by setting the values of pixels in <b><tt>RotateA</tt></b> that are outside the rotated image to zero.
+         </p>
+         <p>You may also notice that the shape of pixels changed. To enforce the pixels to be square, type</p><pre class="codeinput">axis <span class="string">image</span>;
+</pre><img vspace="5" hspace="5" src="images01_08.png"> <p>after your <b><tt>imagesc</tt></b> command. This sets the aspect ratio so that the data units are the same in every direction, and makes the plot box fit tightly
+            around the data.
+         </p>
+         <h2>Exercise<a name="14"></a></h2>
+         <p>If you <b><tt>imrotate</tt></b> the rotated array <b><tt>RotateA</tt></b> by <b><tt>-45</tt></b> degrees, what will the image look like? Is it the same as the image produced by <b><tt>A</tt></b>?
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Image Processing: Flip and Rotate
+%%
+% Here we use a sample data array *|A|* as our example. The image of *|A|*
+% is
+imagesc(A)
+%% Flipping Images
+% Flipping images is easy and straightforward in MATLAB. If you want to 
+% flip your array up to down, use *|flipud|*:
+udA = flipud(A);
+imagesc(udA)
+%%
+% Or you can simply type 
+imagesc(flipud(A))
+%%
+% to make the image of *|A|* upside down.
+%
+% Similarly, to flip your array or image left to right, use
+lrA = fliplr(A);
+imagesc(lrA)
+%%
+% or just
+imagesc(fliplr(A))
+%%
+% will return the same result.
+%% Transpose
+% The transpose of a MxN matrix (or array) is a NxM matrix with its *(i, j)*
+% element equals to the *(j, i)* element of the original matrix. MATLAB
+% provides the arithmetic operator *|'|* to calculate the transpose of a
+% matrix or array:
+SampleArray
+%%
+SampleArray'
+%%
+% This can be used to "transpose" images:
+imagesc(A')
+%% Rotate
+% Flipping and transposing both belong to image rotation, with rotating
+% angle |90|, |180|, or |270| (equals to |-90|) degrees. Sometimes we may
+% want to rotate our images by some arbitrary degrees. This can be done by
+% calling the MATLAB internal function *|imrotate(array, angle)|*.
+%
+% First of all, we must rotate the data array which generates the image:
+RotateA = imrotate(A, 45);
+%%
+% This means we want to rotate data array *|A|* by *|45|* degrees and save it
+% in array *|RotateA|*. Note that the rotation is in a counterclockwise
+% direction around the array's center point. You can specify a negative
+% value for *|angle|* to rotate the image clockwise.
+%
+% We can now plot *|RotateA|* to see the rotated image:
+imagesc(RotateA)
+%%
+% You may notice that the image is still rectangular; this is because the
+% function *|imrotate|* makes the output array large enough to contain the
+% entire rotated image by setting the values of pixels in *|RotateA|* that
+% are outside the rotated image to zero.
+%
+% You may also notice that the shape of pixels changed. To enforce the
+% pixels to be square, type
+axis image;
+%%
+% after your *|imagesc|* command. This sets the aspect ratio so that the
+% data units are the same in every direction, and makes the plot box fit
+% tightly around the data.
+%% Exercise
+% If you *|imrotate|* the rotated array *|RotateA|* by *|-45|* degrees,
+% what will the image look like? Is it the same as the image produced by
+% *|A|*?
+##### SOURCE END #####
+-->
+   </body>
+</html>

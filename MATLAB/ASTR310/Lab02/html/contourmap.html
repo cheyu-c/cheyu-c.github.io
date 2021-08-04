@@ -1,0 +1,211 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Contour maps</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-09-20">
+      <meta name="m-file" content="contourmap"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Contour maps</h1>
+         <p>To display isolines of an image array, MATLAB has provided a handy function <b><tt>contour</tt></b>. Assuming <b><tt>PNE</tt></b> is our image array:
+         </p><pre class="codeinput">imagesc(PNE)
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_01.png" alt=""> <p><i>Don't forget to add <b><tt>axis image</tt></b> to avoid distortion!</i></p>
+         <p>Let's try make a contour image:</p><pre class="codeinput">contour(PNE)
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_02.png" alt=""> <p><i>Note that image created by <b><tt>imagesc</tt></b> is flipped up-side-down compared to the one created by <b><tt>contour</tt></b>!</i></p>
+         <p>You may find out that this takes a long long time, maybe forever. Also, it looks messy! This is because when the values of
+            the level curves and/or the number of contour lines are not specified by the user, <b><tt>contour</tt></b> will choose these values automatically. In our case, the emission from the object (the PNe) is not too much stronger than
+            background (the sky); therefore even the weak fluctuations on the sky are shown in the contour map, which is not what we want.
+         </p>
+         <p>One way to improve this contour map is to specify how many contour levels will be shown in the map:</p><pre class="codeinput">contour(PNE, 5)
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_03.png" alt=""> <p>Then the messy background went away. However, the structure in the PNe also disappeared, because there's not enough contour
+            level.
+         </p>
+         <p>If we want to focus on the PNe itself, we might want to specify all values of the contour lines. First we'll need to know
+            what's the range of the PNe emission; the easiest way to do so is to use <b><tt>colormap</tt></b>:
+         </p><pre class="codeinput">imagesc(PNE)
+axis <span class="string">image</span>
+colorbar
+</pre><img vspace="5" hspace="5" src="contourmap_04.png" alt=""> <p>Let's say we decide the range of values to be <b>150</b> to <b>250</b>. Now we need a vector to include all values we want for the contour level, which are between <b>150</b> and <b>250</b>. This can be easily achieved by using <b><tt>linspace</tt></b>:
+         </p><pre class="codeinput">help <span class="string">linspace</span>
+</pre><pre class="codeoutput"> LINSPACE Linearly spaced vector.
+    LINSPACE(X1, X2) generates a row vector of 100 linearly
+    equally spaced points between X1 and X2.
+ 
+    LINSPACE(X1, X2, N) generates N points between X1 and X2.
+    For N &lt; 2, LINSPACE returns X2.
+
+</pre><p>Assuming now we have a vector <b><tt>V</tt></b> from <b><tt>V = linspace(...)</tt></b>. Now we can re-make our contour map:
+         </p><pre class="codeinput">contour(PNE, V)
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_05.png" alt=""> <p>You can also add labels to each contour level. However, the numbers might be hard to see in this map, because the object is
+            too small. Let's try make another map using <b><tt>ginput</tt></b> to define the area:
+         </p><pre class="codeinput">[a, b] = ginput(2)
+</pre><pre class="codeoutput">
+a =
+
+   54.8971
+  127.2052
+
+
+b =
+
+   81.7359
+  189.6570
+
+</pre><p>(note that integers are reaured when used as indices)</p><pre class="codeinput">PNE_zoomIn = PNE(82:190, 55:127);
+imagesc(PNE_zoomIn)
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_06.png" alt=""> <p>Now we can add the labels to our contour map. To do this you'll need a slightly different command to create the contour map,
+            because now we need to generate a contour matrix first:
+         </p><pre class="codeinput">[C, h] = contour(PNE_zoomIn, V);
+axis <span class="string">image</span>
+</pre><img vspace="5" hspace="5" src="contourmap_07.png" alt=""> <p>The matrix <b><tt>C</tt></b> includes info which can be used in <b><tt>clabel</tt></b>:
+         </p><pre class="codeinput">clabel(C,h);
+</pre><img vspace="5" hspace="5" src="contourmap_08.png" alt=""> <p>Now all contour lines are marked by their values.</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Contour maps
+% To display isolines of an image array, MATLAB has provided a handy
+% function *|contour|*. Assuming *|PNE|* is our image array:
+imagesc(PNE)
+axis image
+%%
+% _Don't forget to add *|axis image|* to avoid distortion!_
+%
+% Let's try make a contour image:
+contour(PNE)
+axis image
+%%
+% _Note that image created by *|imagesc|* is flipped up-side-down compared
+% to the one created by *|contour|*!_
+%
+% You may find out that this takes a long long time, maybe forever. Also,
+% it looks messy! This is because when the values of the level curves 
+% and/or the number of contour lines are not specified by the user, *|contour|* 
+% will choose these values automatically. In our case, the emission from 
+% the object (the PNe) is not too much stronger than background (the sky); 
+% therefore even the weak fluctuations on the sky are shown in the contour 
+% map, which is not what we want.
+%
+% One way to improve this contour map is to specify how many contour levels
+% will be shown in the map:
+contour(PNE, 5)
+axis image
+%%
+% Then the messy background went away. However, the structure in the PNe
+% also disappeared, because there's not enough contour level. 
+%
+% If we want to focus on the PNe itself, we might want to specify all
+% values of the contour lines. First we'll need to know what's the range of
+% the PNe emission; the easiest way to do so is to use *|colormap|*:
+imagesc(PNE)
+axis image
+colorbar
+%%
+% Let's say we decide the range of values to be *150* to *250*. Now we need
+% a vector to include all values we want for the contour level, which are
+% between *150* and *250*. This can be easily achieved by using
+% *|linspace|*:
+help linspace
+%%
+% Assuming now we have a vector *|V|* from *|V = linspace(...)|*. Now we
+% can re-make our contour map:
+contour(PNE, V)
+axis image
+%%
+% You can also add labels to each contour level. However, the numbers might
+% be hard to see in this map, because the object is too small. Let's try
+% make another map using *|ginput|* to define the area:
+[a, b] = ginput(2)
+%%
+% (note that integers are reaured when used as indices)
+PNE_zoomIn = PNE(82:190, 55:127);
+imagesc(PNE_zoomIn)
+axis image
+%%
+% Now we can add the labels to our contour map. To do this you'll need a
+% slightly different command to create the contour map, because now we need
+% to generate a contour matrix first:
+[C, h] = contour(PNE_zoomIn, V);
+axis image
+%%
+% The matrix *|C|* includes info which can be used in *|clabel|*:
+clabel(C,h);
+%%
+% Now all contour lines are marked by their values. 
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,231 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Image Processing: Shifting Images</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-13">
+      <meta name="m-file" content="imshift_intro"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Image Processing: Shifting Images</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Finding the difference in coordinates</a></li>
+               <li><a href="#12">Calling the function 'imshift'</a></li>
+            </ul>
+         </div>
+         <p>Assuming we have two images of the same object, but not aligned properly:</p><pre class="codeinput">imagesc(im1), imagesc(im2);
+</pre>
+<table>
+<tr>
+<td><img src="imshift_intro_01.png" width="450" /></td>
+<td><img src="imshift_intro_02.png" width="450" /></td>
+</tr>
+</table>
+ <h2>Finding the difference in coordinates<a name="3"></a></h2>
+         <p>You must be careful when choosing the reference points. Here we use the end points of the major axis in the denser (red) region
+            and average over them. We now type <b><tt>ginput</tt></b> to find the coordinates of the rings:
+         </p><pre class="codeinput">imagesc(im1)
+[x1, y1] = ginput(2)
+</pre><pre class="codeoutput">
+x1 =
+
+   49.7200
+   77.0104
+
+
+y1 =
+
+   65.4430
+   78.3728
+
+</pre><p>Then do the same thing to <b><tt>im2</tt></b>:
+         </p><pre class="codeinput">imagesc(im2)
+[x2, y2] = ginput(2)
+</pre><pre class="codeoutput">
+x2 =
+
+   79.6094
+  108.5242
+
+
+y2 =
+
+   94.2412
+  111.2851
+
+</pre><p>Assuming we want to keep <b><tt>im1</tt></b> unchanged and shift <b><tt>im2</tt></b> to fit <b><tt>im1</tt></b>. Then we calculate the difference in coordinates:
+         </p><pre class="codeinput">Diffx = x1 - x2
+</pre><pre class="codeoutput">
+Diffx =
+
+  -29.8894
+  -31.5138
+
+</pre><pre class="codeinput">Diffy = y1 - y2
+</pre><pre class="codeoutput">
+Diffy =
+
+  -28.7982
+  -32.9123
+
+</pre><p>Averaging over the two points we have</p><pre class="codeinput">Dx = mean(Diffx)
+</pre><pre class="codeoutput">
+Dx =
+
+  -30.7016
+
+</pre><pre class="codeinput">Dy = mean(Diffy)
+</pre><pre class="codeoutput">
+Dy =
+
+  -30.8553
+
+</pre><p>Remember that the <i>rows</i> are in the <i>y</i>-direction and the <i>columns</i> are in the <i>x</i>-direction, and the pixel indices should be integer. Therefore the number of rows and columns over which <b><tt>im2</tt></b> must be shifted, are
+         </p><pre class="codeinput">Nrow = round(Dy)
+</pre><pre class="codeoutput">
+Nrow =
+
+   -31
+
+</pre><pre class="codeinput">Ncol = round(Dx)
+</pre><pre class="codeoutput">
+Ncol =
+
+   -31
+
+</pre><p>The <b><tt>round()</tt></b> function returns value to the nearest integer.
+         </p>
+         <h2>Calling the function 'imshift'<a name="12"></a></h2>
+         <p>To call the function, type the following command:</p><pre class="codeinput">imr=imshift(im2,Nrow,Ncol);
+</pre><p>Now the shifted <b><tt>im2</tt></b> (i.e. <b><tt>imr</tt></b>) should be aligned with <b><tt>im1</tt></b>:
+         </p><pre class="codeinput">imagesc(imr), imagesc(im1);
+</pre>
+<table>
+<tr>
+<td><img src="imshift_intro_06.png" width="450" /></td>
+<td><img src="imshift_intro_01.png" width="450" /></td>
+</tr>
+</table>
+
+<p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Shifting Images
+%%
+% Assuming we have two images of the same object, but not aligned properly:
+imagesc(im1)
+%%
+imagesc(im2)
+%% Finding the difference in coordinates
+% You must be careful when choosing the reference points. Here we use the
+% end points of the major axis in the denser (red) region and average over
+% them. We now type *|ginput|* to find the coordinates of the rings:
+imagesc(im1)
+[x1, y1] = ginput(2)
+%%
+% Then do the same thing to *|im2|*:
+imagesc(im2)
+[x2, y2] = ginput(2)
+%%
+% Assuming we want to keep *|im1|* unchanged and shift *|im2|* to fit
+% *|im1|*. Then we calculate the difference in coordinates:
+Diffx = x1 - x2
+%%
+Diffy = y1 - y2
+%%
+% Averaging over the two points we have
+Dx = mean(Diffx)
+%%
+Dy = mean(Diffy)
+%%
+% Remember that the _rows_ are in the _y_-direction and the _columns_ are
+% in the _x_-direction, and the pixel indices should be integer. Therefore
+% the number of rows and columns over which *|im2|* must be shifted, are
+Nrow = round(Dy)
+%%
+Ncol = round(Dx)
+%%
+% The *|round()|* function returns value to the nearest integer.
+%% Calling the function 'imshift'
+% To call the function, type the following command:
+%% 
+imr=imshift(im2,Nrow,Ncol);
+%%
+% Then we can compare the shifted *|im2|* (i.e. *|imr|*) with *|im1|*:
+imagesc(im1)
+%%
+imagesc(imr)
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

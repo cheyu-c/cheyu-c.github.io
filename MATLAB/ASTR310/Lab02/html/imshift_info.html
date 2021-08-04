@@ -1,0 +1,215 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>function imr=imshift(im,nr,nc)</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-13">
+      <meta name="m-file" content="imshift_info"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>function imr=imshift(im,nr,nc)</h1>
+         <introduction>
+            <p>The function <b><tt>imshift(im,nr,nc)</tt></b> shifts an image <b><tt>im</tt></b> by <b><tt>nr</tt></b> rows and <b><tt>nc</tt></b> columns (which can be either positive or negative). The shifted image is saved as <b><tt>imr</tt></b>.
+            </p>
+         </introduction>
+         <p>In this example, we are trying to shift the image <b><tt>im</tt></b> so that the structure is located at the center. To do this, we have found <b><tt>nr=-5</tt></b> and <b><tt>nc=5</tt></b>.
+         </p><pre class="codeinput">imagesc(im)
+</pre><img vspace="5" hspace="5" src="imshift_info_01.png"> <p>First step is to find the size of the input image <b><tt>im</tt></b> so we can allocate necessary space for the output (shifted) image <b><tt>imr</tt></b>:
+         </p><pre class="codeinput">[a,b]=size(im)
+</pre><pre class="codeoutput">
+a =
+
+   100
+
+
+b =
+
+   100
+
+</pre><p>Construct a zero array for <b><tt>imr</tt></b>:
+         </p><pre class="codeinput">imr=zeros(size(im));
+</pre><p>Now we need to find the indices of the "useful" part of <b><tt>im</tt></b>. We calculate the shifted row indices of <b><tt>im</tt></b> first:
+         </p><pre class="codeinput">tr=(1:a)-nr;
+</pre><p>This is equivalent to moving the image vertically, and every index with value smaller than zero or larger than the size of
+            the box is outside the image boundary. Therefore we need to find where are those "meaningful" row indices:
+         </p><pre class="codeinput">ix=find((tr&gt;0)&amp;(tr&lt;=a));
+</pre><p>Note that every element of <b><tt>ix</tt></b> is an index of a "meaningful" element of <b><tt>tr</tt></b>, and every element of <b><tt>tr</tt></b> is an index of the original image <b><tt>im</tt></b>.
+         </p>
+         <p>We therefore define a new <b><tt>tr</tt></b> with these elements only:
+         </p><pre class="codeinput">tr=tr(ix);
+</pre><p>This is the row indices of the "useful" part of <b><tt>im</tt></b>.
+         </p>
+         <p>We now apply the same procedure to the column indices:</p><pre class="codeinput">tc=(1:b)-nc;
+ix=find((tc&gt;0)&amp;(tc&lt;=b));
+tc=tc(ix);
+</pre><p>Therefore <b><tt>tc</tt></b> is the column indices of the "useful" part of <b><tt>im</tt></b>.
+         </p>
+         <p>Another important thing is to find the correct location for the "useful" part of <b><tt>im</tt></b>. The boundary at the top is <b><tt>1</tt></b> if the original image is shifting upward (<b><tt>nr</tt></b> negative) and <b><tt>1+nr</tt></b> if it's shifting downward (<b><tt>nr</tt></b> positive), so we have
+         </p><pre class="codeinput">r1=max([1,nr+1])
+</pre><pre class="codeoutput">
+r1 =
+
+     1
+
+</pre><p>Similarly, the boundary at the bottom should be <b><tt>a+nr</tt></b> if the original image is shifting upward (<b><tt>nr</tt></b> negative) and <b><tt>a</tt></b> if it's shifting downward (<b><tt>nr</tt></b> positive), so we have
+         </p><pre class="codeinput">r2=min([a,nr+a])
+</pre><pre class="codeoutput">
+r2 =
+
+    95
+
+</pre><p>Do the same job to the column indices:</p><pre class="codeinput">c1=max([1,nc+1])
+</pre><pre class="codeoutput">
+c1 =
+
+     6
+
+</pre><pre class="codeinput">c2=min([b,nc+b])
+</pre><pre class="codeoutput">
+c2 =
+
+   100
+
+</pre><p>We can now assign the "useful" part of <b><tt>im</tt></b> to the correct location of <b><tt>imr</tt></b>. Recall that the default value of <b><tt>imr</tt></b> is zero, so every pixel beyond the range <b><tt>(r1:r2, c1:c2)</tt></b> will be zero.
+         </p><pre class="codeinput">imr(r1:r2,c1:c2)=im(tr(1):tr(end),tc(1):tc(end));
+</pre><p>The shifted image is</p><pre class="codeinput">imagesc(imr)
+</pre><img vspace="5" hspace="5" src="imshift_info_02.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% function imr=imshift(im,nr,nc)
+% 
+% The function *|imshift(im,nr,nc)|* shifts an image *|im|* by *|nr|* rows 
+% and *|nc|* columns (which can be either positive or negative). The shifted 
+% image is saved as *|imr|*.
+%%
+% In this example, we are trying to shift the image *|im|* so that the 
+% structure is located at the center. To do this, we have found *|nr=-5|*
+% and *|nc=5|*.
+imagesc(im)
+%%
+% First step is to find the size of the input image *|im|* so we can
+% allocate necessary space for the output (shifted) image *|imr|*:
+[a,b]=size(im)
+%%
+% Construct a zero array for *|imr|*:
+imr=zeros(size(im));
+%%
+% Now we need to find the indices of the "useful" part of *|im|*. We
+% calculate the shifted row indices of *|im|* first:
+tr=(1:a)-nr;
+%%
+% This is equivalent to moving the image vertically, and every index with
+% value smaller than zero or larger than the size of the box is outside the
+% image boundary. Therefore we need to find where are those "meaningful"
+% row indices:
+ix=find((tr>0)&(tr<=a));
+%%
+% Note that every element of *|ix|* is an index of a "meaningful" element
+% of *|tr|*, and every element of *|tr|* is an index of the original image
+% *|im|*.
+%
+% We therefore define a new *|tr|* with these elements only:
+tr=tr(ix);
+%%
+% This is the row indices of the "useful" part of *|im|*. 
+%
+% We now apply the same procedure to the column indices:
+tc=(1:b)-nc;
+ix=find((tc>0)&(tc<=b));
+tc=tc(ix);
+%%
+% Therefore *|tc|* is the column indices of the "useful" part of *|im|*.
+%
+% Another important thing is to find the correct location for the "useful"
+% part of *|im|*. The boundary at the top is *|1|* if the original image is
+% shifting upward (*|nr|* negative) and *|1+nr|* if it's shifting downward 
+% (*|nr|* positive), so we have
+r1=max([1,nr+1])
+%%
+% Similarly, the boundary at the bottom should be *|a+nr|* if the original
+% image is shifting upward (*|nr|* negative) and *|a|* if it's shifting
+% downward (*|nr|* positive), so we have
+r2=min([a,nr+a])
+%%
+% Do the same job to the column indices:
+c1=max([1,nc+1])
+%%
+c2=min([b,nc+b])
+%%
+% We can now assign the "useful" part of *|im|* to the correct location of
+% *|imr|*. Recall that the default value of *|imr|* is zero, so every pixel
+% beyond the range *|(r1:r2, c1:c2)|* will be zero.
+imr(r1:r2,c1:c2)=im(tr(1):tr(end),tc(1):tc(end));
+%%
+% The shifted image is
+imagesc(imr)
+##### SOURCE END #####
+-->
+   </body>
+</html>
