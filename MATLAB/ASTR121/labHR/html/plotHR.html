@@ -1,0 +1,122 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting the HR diagram</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-01-31">
+      <meta name="m-file" content="plotHR"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting the HR diagram</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>In order to plot the HR diagrams for the clusters we first want to extract the relevant data for clarity. We want two arrays
+            containing the red and green magnitudes:
+         </p><pre class="codeinput">g1 = cluster1data(...);
+r1 = cluster1data(...);
+</pre><p>Now we can make the HR diagram by using these two sets:</p><pre class="codeinput">figure(1)
+plot(g1-r1, r1,<span class="string">'b.'</span>)
+xlabel(<span class="string">'g-r magnitude'</span>)
+ylabel(<span class="string">'r magnitude'</span>)
+</pre><img vspace="5" hspace="5" src="plotHR_01.png" alt=""> <p>Note that, because of the reverse nature of magnitudes (brighter object has lower value) we need to reverse the y axis:</p><pre class="codeinput">set(gca, <span class="string">'YDir'</span>, <span class="string">'reverse'</span>)
+</pre><img vspace="5" hspace="5" src="plotHR_02.png" alt=""> <p>You can also overplot the second cluster with different color:</p><pre class="codeinput">g2 = ...;
+r2 = ...;
+hold <span class="string">on</span>;
+plot(g2-r2, r2,<span class="string">'r.'</span>)
+</pre><img vspace="5" hspace="5" src="plotHR_03.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting the HR diagram
+%%
+% In order to plot the HR diagrams for the clusters we first want to 
+% extract the relevant data for clarity. We want two arrays containing the 
+% red and green magnitudes:
+g1 = cluster1data(:,11);
+r1 = cluster1data(:,12);
+%%
+% Now we can make the HR diagram by using these two sets:
+figure(1)
+plot(g1-r1, r1,'b.')
+xlabel('g-r magnitude')
+ylabel('r magnitude')
+%%
+% Note that, because of the reverse nature of magnitudes (brighter object 
+% has lower value) we need to reverse the y axis:
+set(gca, 'YDir', 'reverse')
+%%
+% You can also overplot the second cluster with different color:
+g2 = cluster2data(:,11);
+r2 = cluster2data(:,12);
+hold on;
+plot(g2-r2, r2,'r.')
+%%
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,165 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Age of cluster</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-02">
+      <meta name="m-file" content="clusterHR"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Age of cluster</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Cluster HR Diagram</a></li>
+               <li><a href="#3">Isochrone Matching</a></li>
+            </ul>
+         </div>
+         <h2>Cluster HR Diagram<a name="1"></a></h2>
+         <p>Now you should have both the isochrones and data from cluster NGC 188. To remind you what are the variables, use</p><pre class="codeinput">whos
+</pre><pre class="codeoutput">
+  Name           Size             Bytes  Class     Attributes
+
+  isoc           1x1             144232  struct              
+  myCluster      1x1             469052  struct              
+
+</pre><p>Let's make a HR diagram for NGC 188 by plotting <b><tt>V</tt></b> vs. <b><tt>B-V</tt></b> (don't forget to reverse the y-coordinate):
+         </p><pre class="codeinput">figure(3); clf;
+plot(...);
+set(gca, ...);
+title(<span class="string">'NGC 188'</span>);
+xlabel(<span class="string">'B-V'</span>); ylabel(<span class="string">'V'</span>);
+</pre><img vspace="5" hspace="5" src="clusterHR_01.png" alt=""> <h2>Isochrone Matching<a name="3"></a></h2>
+         <p>Look carefully at the turning point of the main sequence, compare with your isochrones, and find out which isochrone has the
+            same <b><tt>B-V</tt></b> value of the turning point.
+         </p><pre class="codeinput">figure(4); clf; hold <span class="string">on</span>;
+plot(..., <span class="string">'m+'</span>);
+plot(..., <span class="string">'r+'</span>);
+plot(..., <span class="string">'y+'</span>);
+
+... ...
+
+</pre><img vspace="5" hspace="5" src="clusterHR_02.png" alt=""> <p>Now, consider the difference in <b><tt>V</tt></b> value between cluster NGC 188 and the isochrone you chose. Move the isochrone up and down to find the best matching:
+         </p><pre class="codeinput">figure(5); clf; hold <span class="string">on</span>;
+plot(..., <span class="string">'bo'</span>);
+plot(isoc. ... .B-isoc. ... .V, isoc. ... .V+10, <span class="string">'m+'</span>);
+plot(..., isoc. ... .V+11, <span class="string">'r+'</span>);
+plot(..., isoc. ... .V+12, <span class="string">'y+'</span>);
+
+... ...
+
+</pre><img vspace="5" hspace="5" src="clusterHR_03.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Age of cluster
+%% Cluster HR Diagram
+% Now you should have both the isochrones and data from cluster NGC 188. To
+% remind you what are the variables, use
+who
+%%
+% Let's make a HR diagram for NGC 188 by plotting *|V|* vs. *|B-V|* (don't
+% forget to reverse the y-coordinate):
+figure(3); clf;
+plot(B-V, V, 'bo');
+set(gca, 'YDir', 'reverse');
+title('NGC 188');
+xlabel('B-V'); ylabel('V');
+%% Isochrone Matching
+% Look carefully at the turning point of the main sequence, compare with
+% your isochrones, and find out which isochrone has the same *|B-V|* value
+% of the turning point. 
+figure(4); clf; hold on;
+plot(isoc.e9.five.B-isoc.e9.five.V, isoc.e9.five.V, 'm+');
+plot(isoc.e9.eight.B-isoc.e9.eight.V, isoc.e9.eight.V, 'r+');
+plot(isoc.e9.ten.B-isoc.e9.ten.V, isoc.e9.ten.V, 'y+');
+set(gca, 'YDir', 'reverse');
+legend('5e9 yr', '8e9 yr', '1e10 yr', 'Location', 'SouthWest');
+title('isochrones');
+xlabel('B-V'); ylabel('V');
+xlim([-0.5 2]);
+%%
+% Now, consider the difference in *|V|* value between cluster NGC 188 and
+% the isochrone you chose. Move the isochrone up and down to find the best
+% matching:
+figure(5); clf; hold on; 
+plot(B-V, V, 'bo');
+plot(isoc.e9.eight.B-isoc.e9.eight.V, isoc.e9.eight.V+10, 'm+');
+plot(isoc.e9.eight.B-isoc.e9.eight.V, isoc.e9.eight.V+11, 'r+');
+plot(isoc.e9.eight.B-isoc.e9.eight.V, isoc.e9.eight.V+12, 'y+');
+set(gca, 'YDir', 'reverse');
+legend('NGC 188', 'V+10', 'V+11', 'V+12', 'Location','NorthWest');
+xlabel('B-V'); ylabel('V');
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

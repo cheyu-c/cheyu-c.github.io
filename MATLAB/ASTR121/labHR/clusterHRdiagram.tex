@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+
+\textheight 22cm
+\textwidth  16cm
+\hoffset= -0.6in 
+\voffset= -0.5in   
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{10pt plus 2pt minus 2pt}
+\pagenumbering{roman} 
+\setcounter{page}{-9}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bd}{\begin{displaymath}}
+\newcommand{\ed}{\end{displaymath}}
+\begin{document}
+
+\title{Astrophysics II: Laboratory 5}
+\author{\Large Cluster HR Diagrams}
+\maketitle
+
+\baselineskip 15pt
+
+\section{\bf Objectives}
+\begin{itemize}
+\item Use SDSS skyserver to download SDSS data for a cluster.	
+\item Plot a cluster HR diagram in Matlab.
+\item Compare cluster HR diagrams to determine relative age.
+\end{itemize}
+
+\section{\bf Procedure:}
+
+Part I:\\
+You will be using data from the Sloan Digital Sky Survey to measure
+the magnitudes of stars in a star cluster in different filters.  A
+handy tool for visualizing the public Sloan data is at the website {\it
+  http://skyserver.sdss.org/dr1/en/tools/chart/navi.asp}.  Your task
+will be to plot the magnitude in the r filter versus the difference
+between the g and r magnitudes to construct an HR diagram using Matlab.
+
+1 - Load the website using a web browser available on your computer
+and also open matlab, which you will be using for plotting the data you collect from the images at this website.
+
+2 - Set the viewer (on the website) to display the coordinates - RA:
+229.0128, Dec: -0.1082.
+
+3 - Select {\it InvertImage} in the lower left hand corner, this
+should make it easier to see the fainter objects. It does not particularly matter which way you view the field.
+
+4 - Compare the current field, containing the star cluster, to another
+field.  Change the declination by 0.3$^o$.  What differences do you
+see between the fields?
+
+5 - Now, move back to the original coordinates.
+
+6 - Use the controls on the left to Zoom Out 3 times; the star cluster
+should now become apparent. Take note of what you see.
+
+7 - Return to the original Zoom of the field.  Then, try left clicking
+on an object in the field, you will be given the coordinates, type
+(star or galaxy), and the magnitude of the object in 5 separate
+filters, in the upper right hand corner.
+
+8 - Now you want to collect the color magnitudes for as many of the stars in this cluster as possible. In the top left corner of the webpage click on the SDSS logo to link to the SkyServer homepage. On the left side of the page select SEARCH $-->$ Radial. Fill in the coordinates of the cluster given above in RA and dec and approximate the radius of the cluster (being conservative here is fine). Do not check any of the boxes beside the filter selections, and set the min and max magnitudes to something like 0 and 30 (whatever you set the limits to, be sure to try to avoid selecting foreground stars and select stars with magnitude greater than $\sim$24). Return all entries; Format as CSV. SUBMIT. You should save the file to the desktop and name it something like cluster1.dat
+
+Import this data using the GUI you can select on the File menu in Matlab, specifying `,' delimeter and 1 row of header. Matlab will create three variables but only the one which is a matrix containing the data of the file is important here.
+
+9 - You can now create an HR Diagram plotting r on the Y axis and g-r on the X axis. To do this you must first find out which column of the data matrix is which. Double click on the `colheaders' variable in the Workspace window to open it in the Variable Editor. Each column here contains the label matching the data in the same column in the data matrix. (g: 11, r: 12).
+
+Make sure you label each axis correctly and that the values run in the
+correct direction. Consult http://www.astro.umd.edu/~mavara/matlab/HR.html for an example of how to reverse an axis. Also, title your graph with the coordinates of
+the cluster.  Why are we plotting r and g-r on their respective axis?
+What physical properties does each value represent?
+
+10 - Draw a sketch of what you see. On your HR diagram, mark where the Main Sequence lies as well as any other apparent features.
+
+12 - The lab instructions ask you to use the g and r magnitudes only,
+but the SDSS measure magnitudes through 5 separate filters.  Could
+other combinations have been used?  Why?
+
+Part II:\\  
+
+You will now be use the magnitudes of
+stars in a different star cluster to plot another HR diagram to compare.
+
+1 - This time use coordinates RA: 151.3801, Dec: 0.072. Try viewing this cluster. Note that it is fainter and smaller on the sky.
+
+2 - To acquire a measurement of a particular star, left click on a star and note its particular magnitudes, etc.
+
+3 - Follow the same procedure as in Part I as many stars as possible and plot the HR diagram of r vs g-r.
+
+{\bf Questions}
+
+1 - Why are the plots you generate equivalent to HR diagrams, which
+are normally plots of luminosity versus temperature? What are you
+assuming about all the stars to make this analogy work?
+
+2 - What color are the brightest stars on the Main Sequence in each
+cluster (are they bluer or redder)?  What does this tell you about the
+age of the clusters?  Which is older? Can you explain your answer?
+
+3 - What type of cluster is each, globular or open?  Why?
+
+4 - Suppose you were told that the brightest stars on the Main
+Sequence of the first cluster (from Part I) had an absolute magnitude
+in r of 6.  How far is the cluster from Earth in parsecs?  Show your work.
+
+\end{document}
+

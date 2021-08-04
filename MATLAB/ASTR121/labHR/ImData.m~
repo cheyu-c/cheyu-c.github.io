@@ -1,0 +1,11 @@
+%% Importing data
+%%
+% The data file downloaded from SkyServer can be imported using MATLAB
+% internal function *|importdata|*. Use *|help|* to view the 
+help importdata
+%%
+% For the sample file |cluster1.dat|, we have one line of header text, and
+% the file uses comma as the column separator. Therefore, to properly load
+% the file, try
+dat1 = importdata('cluster1.dat', ',', 1);
+%%

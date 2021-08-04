@@ -1,0 +1,196 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Cluster HR Diagrams</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2011-03-29">
+      <meta name="m-file" content="clusterHRdiagram"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Cluster HR Diagrams</h1>
+         <!--introduction-->
+         <p>In this script HR diagrams are plotted for two globular clusters with magnitudes obtained from the SDSS online tool SkyServer.
+            See the ASTR 121 lab Cluster HR Diagrams for a description of how to obtain the data at SkyServer.
+         </p>
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Import Data</a></li>
+               <li><a href="#2">Plotting the HR diagrams</a></li>
+               <li><a href="#3">Interpreting HR diagrams</a></li>
+            </ul>
+         </div>
+         <h2>Import Data<a name="1"></a></h2>
+         <p>The data file downloaded from SkyServer can be imported using</p><pre class="codeinput">dat1 = importdata(<span class="string">'cluster1.dat'</span>, <span class="string">','</span>, 1); <span class="comment">% the ',' specifies the delimeter and the number 1 specifies the number of header lines</span>
+                                           <span class="comment">% This is the Palomar 5 cluster</span>
+<span class="comment">% Now view the header line to see the order of parameters (what each column</span>
+<span class="comment">% in the data matrix is):</span>
+
+dat1.textdata;
+
+<span class="comment">% and create a matrix containing the data only</span>
+
+cluster1data = dat1.data;
+
+<span class="comment">% Now do the same for the second cluster:</span>
+dat2 = importdata(<span class="string">'cluster2.dat'</span>, <span class="string">','</span>, 1); <span class="comment">% Palomar 6 Cluster</span>
+cluster2data = dat2.data;
+
+<span class="comment">% Note that the g column is the 11th and the r column is the 12.</span>
+</pre><h2>Plotting the HR diagrams<a name="2"></a></h2>
+         <p>In order to plot the HR diagrams for the clusters we first want to extract the relevant data for clarity. We want two arrays
+            containing the read and blue magnitudes.
+         </p><pre class="codeinput">g1 = cluster1data(:,11);
+r1 = cluster1data(:,12);
+g2 = cluster2data(:,11);
+r2 = cluster2data(:,12);
+
+<span class="comment">% Now we can plot the two HR diagrams simultaneously:</span>
+figure;
+
+set(axes, <span class="string">'YDir'</span>, <span class="string">'reverse'</span>) <span class="comment">% Because of the reverse nature of magnitudes (brighter object has lower value) we reverse the y axis</span>
+hold <span class="string">on</span>;
+plot(g1-r1, r1,<span class="string">'g.'</span>) <span class="comment">% Plots the stellar magnitudes of the first cluster with green points</span>
+plot(g2-r2, r2,<span class="string">'r.'</span>) <span class="comment">% plots the second cluster with red points</span>
+xlabel(<span class="string">'g-r magnitude'</span>)
+ylabel(<span class="string">'r magnitude'</span>)
+</pre><img vspace="5" hspace="5" src="clusterHRdiagram_01.png" alt=""> <h2>Interpreting HR diagrams<a name="3"></a></h2><pre class="codeinput"><span class="comment">% Notice that the Palomar 3 SDSS field has very few stars. There is a</span>
+<span class="comment">% semblance of the main-sequence turnoff point, but it is unclear. Sadly,</span>
+<span class="comment">% there are only two clusters resolved in the SDSS field of view, as so</span>
+<span class="comment">% these are the only two in the archive. Go to the Hipparcos data archive</span>
+<span class="comment">% online for a more complete collection of magnitudes for stars in clusters</span>
+<span class="comment">% (Hipparcos covered a larger area of the sky).</span>
+
+<span class="comment">% Note that these clusters are not at the same distance. How does this</span>
+<span class="comment">% affect the normalization of the y axis? Could you tell the relative age</span>
+<span class="comment">% without more information, assuming the main-sequence turnoff is resolved?</span>
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Cluster HR Diagrams
+% In this script HR diagrams are plotted for two globular clusters with
+% magnitudes obtained from the SDSS online tool SkyServer. See the ASTR 121
+% lab Cluster HR Diagrams for a description of how to obtain the data at
+% SkyServer.
+%% Import Data
+% The data file downloaded from SkyServer can be imported using
+dat1 = importdata('cluster1.dat', ',', 1); % the ',' specifies the delimeter and the number 1 specifies the number of header lines
+                                           % This is the Palomar 5 cluster
+% Now view the header line to see the order of parameters (what each column
+% in the data matrix is):
+
+dat1.textdata;
+
+% and create a matrix containing the data only
+
+cluster1data = dat1.data;
+
+% Now do the same for the second cluster:
+dat2 = importdata('cluster2.dat', ',', 1); % Palomar 6 Cluster
+cluster2data = dat2.data;
+
+% Note that the g column is the 11th and the r column is the 12.
+
+%% Plotting the HR diagrams
+% In order to plot the HR diagrams for the clusters we first want to
+% extract the relevant data for clarity. We want two arrays containing the
+% read and blue magnitudes.
+
+g1 = cluster1data(:,11);
+r1 = cluster1data(:,12);
+g2 = cluster2data(:,11);
+r2 = cluster2data(:,12);
+
+% Now we can plot the two HR diagrams simultaneously:
+figure;
+
+set(axes, 'YDir', 'reverse') % Because of the reverse nature of magnitudes (brighter object has lower value) we reverse the y axis
+hold on;
+plot(g1-r1, r1,'g.') % Plots the stellar magnitudes of the first cluster with green points
+plot(g2-r2, r2,'r.') % plots the second cluster with red points
+xlabel('g-r magnitude')
+ylabel('r magnitude')
+%% Interpreting HR diagrams
+
+% Notice that the Palomar 3 SDSS field has very few stars. There is a
+% semblance of the main-sequence turnoff point, but it is unclear. Sadly,
+% there are only two clusters resolved in the SDSS field of view, as so
+% these are the only two in the archive. Go to the Hipparcos data archive
+% online for a more complete collection of magnitudes for stars in clusters
+% (Hipparcos covered a larger area of the sky).
+
+% Note that these clusters are not at the same distance. How does this
+% affect the normalization of the y axis? Could you tell the relative age
+% without more information, assuming the main-sequence turnoff is resolved?
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

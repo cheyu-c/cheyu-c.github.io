@@ -1,0 +1,212 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Hubble's Law</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-29">
+      <meta name="m-file" content="hubble"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Hubble's Law</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>By completing Project CLEA, you should now be able to write three arrays that include your measured data:</p><pre class="codeinput">klines = [4474,4474, ... ];
+hlines = [4514,4514, ... ];
+appm = [16.6,16.8, ... ];
+</pre><p>Let's calculate the redshift from the wavelength measurements:</p><pre class="codeinput">zk = (klines- ... ) ... ;
+zh = ... ;
+</pre><p>From the redshift, we can calculate the recessional velocities:</p><pre class="codeinput">vh = 2.99792e5* ... ;
+vk = ... ;
+</pre><p>Take the average for each galaxy:</p><pre class="codeinput">avgv = ... ;
+</pre><p>Assuming that each galaxy has the same absolute magnitude, <b>M=-22</b>:
+         </p><pre class="codeinput">M = ... ;
+</pre><p>Using the apparent magnitudes you recorded, the distance to all of the galaxies can be calculated:</p><pre class="codeinput">dist = 10.^( ... );
+</pre><p>in the unit of <b>pc</b>. Or, in the unit of <b>Mpc</b>:
+         </p><pre class="codeinput">distmpc = ... ;
+</pre><p>Now you should have a redshift-distance relation for all galaxies:</p><pre class="codeinput">figure(1); clf;
+plot( ... <span class="string">'k+'</span>, <span class="string">'LineWidth'</span>, 1.2, <span class="string">'MarkerSize'</span>, 7)
+...
+title(<span class="string">'Hubble''s law'</span>)
+</pre><img vspace="5" hspace="5" src="hubble_01.png" alt=""> <p><i>(Note the way I put <b>Hubble's law</b> in the title!)</i></p>
+         <p>Hubble's law tells us that our data can be fitted by a straight line, i.e., a polynomial with degree <b>1</b>:
+         </p><pre class="codeinput">p = polyfit( ... )
+</pre><pre class="codeoutput">
+p =
+
+   ...  ...
+
+</pre><p>This gives us a fitted line of our data if we put <b><tt>p</tt></b> into the function <b><tt>polyval</tt></b>. Note that, since the data array <b><tt>distmpc</tt></b> is not sorted in ascending or descending way, if you just use:
+         </p><pre class="codeinput">vfit = polyval(p, distmpc);
+</pre><p>to evaluate the fitted function, when you make plot of <b><tt>vfit</tt></b> using lines, it will look weird. The better way is to define a new array for the distance:
+         </p><pre class="codeinput">newdist = linspace( ... );
+vfit = polyval(p, newdist);
+</pre><p>Now we can compare the fit to original data:</p><pre class="codeinput">hold <span class="string">on</span>;
+plot( ... )
+...
+</pre><img vspace="5" hspace="5" src="hubble_02.png" alt=""> <p>This is the best fit of our data. However, note that the y-intercept is not zero, which is inconsistent with the idea of Hubble's
+            law.
+         </p>
+         <p>Alternatively, as described in the handout, we can apply the magic of matrix math here to find the best slope of the Hubble's
+            law:
+         </p><pre class="codeinput">a = ...
+</pre><pre class="codeoutput">
+a =
+
+   ...
+
+</pre><p><i>(Basically, in MATLAB, if matrices <b><tt>A</tt></b> and <b><tt>B</tt></b> don't have the right dimensions to perform matrix division (e.g., <b><tt>A</tt></b> is not square), the right division <b><tt>X = B/A</tt></b> will be considered to be the solution in the least squares sense to the system of equations <b><tt>XA = B</tt></b>.)</i></p>
+         <p>Therefore, the solution <b><tt>a</tt></b> provides the slope we want:
+         </p><pre class="codeinput">plot(newdist, a*newdist, <span class="string">'r--'</span>)
+legend( ... );
+</pre><img vspace="5" hspace="5" src="hubble_03.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Hubble's Law
+%%
+% By completing Project CLEA, you should now be able to write three arrays
+% that include your measured data:
+klines = [4474,4474,4476,4134,4136,4134,4022,4025,4024,4452,4452,4448,4214,4218,4220];
+hlines = [4514,4514,4512,4172,4170,4172,4058,4058,4058,4490,4492,4492,4256,4256,4258];
+appm = [16.6,16.8,16.8,14.5,14.7,14.6,12.8,12.5,12.7,16.5,16.8,16.7,15.4,15.5,15.1];
+%%
+% Let's calculate the redshift from the wavelength measurements:
+zk = (klines-3933.7)./3933.7;
+zh = (hlines-3968.5)./3968.5;
+%%
+% From the redshift, we can calculate the recessional velocities:
+vh = 2.99792e5.*zh;
+vk = 2.99792e5.*zk;
+%%
+% Take the average for each galaxy:
+avgv = (vh + vk)./2;
+%%
+% Assuming that each galaxy has the same absolute magnitude, *M=22*:
+M = -22;
+%%
+% Using the apparent magnitudes you recorded, the distance to all of the
+% galaxies can be calculated:
+dist = 10.^((appm-M+5)/5);
+%%
+% in the unit of *pc*. Or, in the unit of *Mpc*:
+distmpc = dist./1e6;
+%%
+% Now you should have a redshift-distance relation for all galaxies:
+figure(1); clf;
+plot(distmpc,avgv,'k+', 'LineWidth', 1.2, 'MarkerSize', 7)
+xlabel('Dist (Mpc)')
+ylabel('Velocity (km/s)')
+title('Hubble''s law')
+xlim([0 600]); ylim([0 45000]);
+%%
+% _(Note the way I put *Hubble's law* in the title!)_
+%
+% Hubble's law tells us that our data can be fitted by a straight line,
+% i.e., a polynomial with degree *1*:
+p = polyfit(distmpc,avgv,1)
+%%
+% This gives us a fitted line of our data if we put *|p|* into the function
+% *|polyval|*. Note that, since the data array *|distmpc|* is not sorted in
+% ascending or descending way, if you just use:
+vfit = polyval(p, distmpc);
+%%
+% to evaluate the fitted function, when you make plot of *|vfit|* using
+% lines, it will look weird. The better way is to define a new array for
+% the distance:
+newdist = linspace(0, 600, 200);
+vfit = polyval(p, newdist);
+%%
+% Now we can compare the fit to original data:
+hold on;
+plot(newdist, vfit, 'b:', 'LineWidth',2)
+legend('measured', 'fit', 'Location', 'NorthWest');
+%%
+% This is the best fit of our data. However, note that the y-intercept is
+% not zero, which is inconsistent with the idea of Hubble's law.
+% 
+% Alternatively, as described in the handout, we can apply the magic of 
+% matrix math here to find the best slope of the Hubble's law:
+a = avgv/distmpc
+%%
+% _(Basically, in MATLAB, if matrices *|A|* and *|B|* don't have the right
+% dimensions to perform matrix division (e.g., *|A|* is not square), the
+% right division *|X = B/A|* will be considered to be the solution in the
+% least squares sense to the system of equations *|XA = B|*.)_
+%
+% Therefore, the solution *|a|* provides the slope we want:
+plot(newdist, a*newdist, 'rREPLACE_WITH_DASH_DASH')
+legend('measured', 'fit1', 'fit2', 'Location', 'NorthWest');
+%%
+%
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

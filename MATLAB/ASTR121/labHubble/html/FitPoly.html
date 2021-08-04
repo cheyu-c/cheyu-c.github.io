@@ -1,0 +1,137 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Fitting polynomial to data</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-29">
+      <meta name="m-file" content="FitPoly"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Fitting polynomial to data</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">'polyfit'</a></li>
+               <li><a href="#4">'polyval'</a></li>
+            </ul>
+         </div>
+         <h2>'polyfit'<a name="1"></a></h2>
+         <p>Assuming that you have a data set <b><tt>x</tt></b> and <b><tt>y</tt></b> which looks like this:
+         </p><pre class="codeinput">plot(x, y, <span class="string">'+'</span>, <span class="string">'LineWidth'</span>, 1.5, <span class="string">'MarkerSize'</span>, 7)
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'y'</span>); title(<span class="string">'some data'</span>);
+</pre><img vspace="5" hspace="5" src="FitPoly_01.png" alt=""> <p>You need to find the best polynomial fit <b><tt>p(x)</tt></b> for <b><tt>y</tt></b>, and you know that the polynomial <b><tt>p(x)</tt></b> must have degree <b>3</b>. The MATLAB internal function <b><tt>polyfit</tt></b> can help you to find the coefficients of polynomial <b><tt>p(x)</tt></b>:
+         </p><pre class="codeinput">p = polyfit(x, y, 3)
+</pre><pre class="codeoutput">
+p =
+
+    0.1515   -1.0472    2.1072   -0.1305
+
+</pre><p>The result <b><tt>p</tt></b> is a row vector of length <b>3+1=4</b> containing the polynomial coefficients in descending powers.
+         </p>
+         <h2>'polyval'<a name="4"></a></h2>
+         <p>To see how good the fit is, we want to plot <b><tt>p(x)</tt></b>; i.e., we need values of the polynomial (with coefficients described in <b><tt>p</tt></b>) evaluated at <b><tt>x</tt></b>. In MATLAB, simply use the function <b><tt>polyval</tt></b>:
+         </p><pre class="codeinput">yfit = polyval(p, x);
+</pre><p>and repeat the <b><tt>plot</tt></b> command:
+         </p><pre class="codeinput">hold <span class="string">on</span>;
+plot(x, yfit, <span class="string">'k--'</span>)
+legend(<span class="string">'data'</span>,<span class="string">'fit'</span>,<span class="string">'Location'</span>,<span class="string">'NorthWest'</span>)
+</pre><img vspace="5" hspace="5" src="FitPoly_02.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Fitting polynomial to data
+%% 'polyfit'
+% Assuming that you have a data set *|x|* and *|y|* which looks like this:
+plot(x, y, '+', 'LineWidth', 1.5, 'MarkerSize', 7)
+xlabel('x'); ylabel('y'); title('some data');
+%%
+% You need to find the best polynomial fit *|p(x)|* for *|y|*, and you know
+% that the polynomial *|p(x)|* must have degree *3*. The MATLAB internal 
+% function *|polyfit|* can help you to find the coefficients of polynomial 
+% *|p(x)|*:
+p = polyfit(x, y, 3)
+%%
+% The result *|p|* is a row vector of length *3+1=4* containing the
+% polynomial coefficients in descending powers. 
+%% 'polyval'
+% To see how good the fit is, we want to plot *|p(x)|*; i.e., we need
+% values of the polynomial (with coefficients described in *|p|*) evaluated
+% at *|x|*. In MATLAB, simply use the function *|polyval|*:
+yfit = polyval(p, x);
+%%
+% and repeat the *|plot|* command:
+hold on;
+plot(x, yfit, 'kREPLACE_WITH_DASH_DASH')
+legend('data','fit','Location','NorthWest')
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -1,0 +1,32 @@
+%% Tab-delimited Files
+%%
+% Sometimes the file includes both text and numbers so the commands
+% *|load|* and *|fscanf|* don't work. In this case, MATLAB provides other
+% choices for file input, like *|caseread|*, *|tblread|*, and the one we 
+% are going to use here, *|tdfread|*.
+%
+% Basically, *|tdfread|* means it reads Tab-Delimited Files, and the files 
+% must have variable names in the first row. The syntax is simple:
+tdfread('ngc188.txt')
+%%
+% As you can see, *|tdfread|* creates variable (using the first row) for
+% each column of the file. More importantly, *|tdfread|* can automatically
+% decide the type of variables (double, char, etc.) based on the data in 
+% the second and following rows. For example, the variable *|MAIN_ID|* is a
+% *|char|* array:
+MAIN_ID
+%%
+% and the variable *|B|* is a numeric vector:
+B
+%%
+% Note that *|NaN|* means "not a number"; when you see this in *|B|* means
+% we are missing the B-band data from some objects.
+%
+% In fact, *|tdfread|* can also read files with other delimiters. To read 
+% the file *|cluster1.dat|* (you can find it on the website) which uses 
+% comma to separate columns, just add *|','|* or *|'comma'|* to specify the
+% delimiter:
+tdfread('cluster1.dat',',')
+%%
+% Other accepted values for delimiter include *|' '|* or *|'space'|*,
+% *|';'|* or *|'semi'|*, and *'|'* or *|'bar'|*.

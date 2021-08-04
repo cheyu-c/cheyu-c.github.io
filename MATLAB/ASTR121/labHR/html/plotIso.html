@@ -1,0 +1,198 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting the isochrones</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-01">
+      <meta name="m-file" content="plotIso"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting the isochrones</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>First, issue the command</p><pre class="codeinput">load <span class="string">isochrones.mat</span>
+</pre><p>to load the isochrones. In your workspace, you will see that a new variable, a 1x1 struct, called <b><tt>isoc</tt></b> exists. Give the command
+         </p><pre class="codeinput">isoc
+</pre><pre class="codeoutput">
+isoc = 
+
+    e8: [1x1 struct]
+    e9: [1x1 struct]
+
+</pre><p>tells you that <b><tt>isoc</tt></b> is composed of two more structs called <b><tt>e8</tt></b> and <b><tt>e9</tt></b>. Now try
+         </p><pre class="codeinput">isoc.e8
+</pre><pre class="codeoutput">
+ans = 
+
+      one: [1x1 struct]
+      two: [1x1 struct]
+    three: [1x1 struct]
+     four: [1x1 struct]
+     five: [1x1 struct]
+      six: [1x1 struct]
+    seven: [1x1 struct]
+    eight: [1x1 struct]
+     nine: [1x1 struct]
+
+</pre><p>and you'll see that <b><tt>isoc.e8</tt></b> is further composed of 9 more structs, called <b><tt>one</tt></b>, <b><tt>two</tt></b>, and so on. Now look at
+         </p><pre class="codeinput">isoc.e8.one
+</pre><pre class="codeoutput">
+ans = 
+
+         B: [132x1 double]
+         V: [132x1 double]
+    logage: [132x1 double]
+
+</pre><p>which is composed of 3 arrays of double precision numbers, containing the B magnitudes and V magnitudes of every star in the
+            model, and the log10 of the age of the stars in years.
+         </p>
+         <p>Remember, these isochrones are named to make clear what age each isochrone represents. Calling it <b><tt>isoc</tt></b> reminds you that these are isochrones. Breaking it into <b><tt>e8</tt></b> and <b><tt>e9</tt></b> is to separate the isochrones for hundreds of millions of years (hence e8) from the billions of years (e9). Then <b><tt>isoc.e8</tt></b> and <b><tt>isoc.e9</tt></b> are further broken down, separating each isochrone from each other. Thus <b><tt>isoc.e8.one</tt></b> represents the data necessary for the 100 millions years isochrone, while <b><tt>isoc.e9.ten</tt></b> represents the 10 billion years isochrone. You'll also notice names like <b><tt>isoc.e9.sevenpt5</tt></b>, which represents 7.5 billion years.
+         </p>
+         <p>Let's plot <b><tt>isoc.e9.five</tt></b> as an example. For HR diagram, we'll be plotting V (y-axis) vs. B-V (x-axis):
+         </p><pre class="codeinput">figure(1); clf;
+plot(isoc.e9.five.B - isoc.e9.five.V, isoc.e9.five.V, <span class="string">'bo'</span>)
+xlabel(<span class="string">'B - V'</span>)
+ylabel(<span class="string">'V'</span>)
+title(<span class="string">'5 billion years isochrone'</span>)
+</pre><img vspace="5" hspace="5" src="plotIso_01.png" alt=""> <p>Remember that the magnitude system is backwards</p><pre class="codeinput">set(gca, <span class="string">'YDir'</span>, <span class="string">'reverse'</span>)
+</pre><img vspace="5" hspace="5" src="plotIso_02.png" alt=""> <p>You may want to overplot several isochrones in one figure to see the difference. Here's an example:</p><pre class="codeinput">figure(2); clf; hold <span class="string">on</span>;
+set(gca, <span class="string">'YDir'</span>, <span class="string">'reverse'</span>);
+plot( isoc.e8.one.B - isoc.e8.one.V,   isoc.e8.one.V, <span class="string">'k+'</span>)
+plot(isoc.e8.five.B - isoc.e8.five.V, isoc.e8.five.V, <span class="string">'b+'</span>)
+plot( isoc.e9.one.B - isoc.e9.one.V,   isoc.e9.one.V, <span class="string">'m+'</span>)
+plot(isoc.e9.five.B - isoc.e9.five.V, isoc.e9.five.V, <span class="string">'r+'</span>)
+plot( isoc.e9.ten.B - isoc.e9.ten.V,   isoc.e9.ten.V, <span class="string">'y+'</span>)
+xlabel(<span class="string">'B - V'</span>)
+ylabel(<span class="string">'V'</span>)
+</pre><img vspace="5" hspace="5" src="plotIso_03.png" alt=""> <p>Don't forget to add the graph legend:</p><pre class="codeinput">legend(<span class="string">'1e8 yr'</span>, <span class="string">'5e8 yr'</span>, <span class="string">'1e9 yr'</span>, <span class="string">'5e9 yr'</span>, <span class="string">'1e10 yr'</span>, <span class="string">'Location'</span>, <span class="string">'NorthEastOutside'</span>);
+</pre><img vspace="5" hspace="5" src="plotIso_04.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting the isochrones
+%%
+% First, issue the command
+load isochrones.mat
+%%
+% to load the isochrones. In your workspace, you will see that a new 
+% variable, a 1x1 struct, called *|isoc|* exists. Give the command
+isoc
+%%
+% tells you that *|isoc|* is composed of two more structs called *|e8|* and
+% *|e9|*. Now try
+isoc.e8
+%%
+% and you'll see that *|isoc.e8|* is further composed of 9 more structs, called
+% *|one|*, *|two|*, and so on. Now look at
+isoc.e8.one
+%%
+% which is composed of 3 arrays of double precision numbers, containing the
+% B magnitudes and V magnitudes of every star in the model, and the log10 of 
+% the age of the stars in years.
+%
+% Remember, these isochrones are named to make clear what age each
+% isochrone represents. Calling it *|isoc|* reminds you that these are 
+% isochrones. Breaking it into *|e8|* and *|e9|* is to separate the 
+% isochrones for hundreds of millions of years (hence e8) from the billions 
+% of years (e9). Then *|isoc.e8|* and *|isoc.e9|* are further broken down, 
+% separating each isochrone from each other. Thus *|isoc.e8.one|* 
+% represents the data necessary for the 100 millions years isochrone, while 
+% *|isoc.e9.ten|* represents the 10 billion years isochrone. You'll also 
+% notice names like *|isoc.e9.sevenpt5|*, which represents 7.5 billion years.
+%
+% Let's plot *|isoc.e9.five|* as an example. For HR diagram, we'll be
+% plotting V (y-axis) vs. B-V (x-axis):
+figure(1); clf;
+plot(isoc.e9.five.B - isoc.e9.five.V, isoc.e9.five.V, 'bo')
+xlabel('B - V')
+ylabel('V')
+title('5 billion years isochrone')
+%%
+% Remember that the magnitude system is backwards
+set(gca, 'YDir', 'reverse')
+%%
+% You may want to overplot several isochrones in one figure to see the
+% difference. Here's an example:
+figure(2); clf; hold on;
+set(gca, 'YDir', 'reverse');
+plot( isoc.e8.one.B - isoc.e8.one.V,   isoc.e8.one.V, 'k+')
+plot(isoc.e8.five.B - isoc.e8.five.V, isoc.e8.five.V, 'b+')
+plot( isoc.e9.one.B - isoc.e9.one.V,   isoc.e9.one.V, 'm+')
+plot(isoc.e9.five.B - isoc.e9.five.V, isoc.e9.five.V, 'r+')
+plot( isoc.e9.ten.B - isoc.e9.ten.V,   isoc.e9.ten.V, 'y+')
+xlabel('B - V')
+ylabel('V')
+%%
+% Don't forget to add the graph legend:
+legend('1e8 yr', '5e8 yr', '1e9 yr', '5e9 yr', '1e10 yr', 'Location', 'NorthEastOutside');
+%%
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

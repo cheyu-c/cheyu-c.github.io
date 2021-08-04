@@ -1,0 +1,159 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Importing data</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-01-17">
+      <meta name="m-file" content="ImData"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Importing data</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>The data file downloaded from SkyServer can be imported using MATLAB internal function <b><tt>importdata</tt></b>. Use <b><tt>help</tt></b> to view detailed specifications:
+         </p><pre class="codeinput">help <span class="string">importdata</span>
+</pre><pre class="codeoutput"> IMPORTDATA Load data from a file into MATLAB.
+ 
+  IMPORTDATA(FILENAME) loads data from FILENAME into the workspace.
+ 
+  A = IMPORTDATA(FILENAME) loads data from FILENAME into A.
+ 
+  IMPORTDATA(FILENAME, DELIM) loads data from FILENAME using DELIM as 
+  the column separator. DELIM must be a string. Use '\t' for tab.
+ 
+  IMPORTDATA(FILENAME, DELIM, HLINE) where HLINE is a number that
+  indicates on which line of the file the header text is located, 
+  loads data from line HLINE+1 to the end of the file.
+
+  ... ...
+ 
+</pre><p>For the sample file <tt>cluster1.dat</tt>, we have one line of header text, and the file uses comma as the column separator. Therefore, to properly load the file,
+            try
+         </p><pre class="codeinput">dat1 = importdata(<span class="string">'cluster1.dat'</span>, <span class="string">','</span>, 1);
+</pre><p>The variable <b><tt>dat1</tt></b> now contains three part:
+         </p><pre class="codeinput">dat1
+</pre><pre class="codeoutput">
+dat1 = 
+
+          data: [1180x19 double]
+      textdata: {1x19 cell}
+    colheaders: {1x19 cell}
+
+</pre><p>You can view the header text (i.e., <b><tt>textdata</tt></b>) to see the order of parameters by typing
+         </p><pre class="codeinput">dat1.textdata
+</pre><pre class="codeoutput">
+ans = 
+
+  Columns 1 through 10
+
+    'objid'    'run'    'rerun'    'camcol'    'field'    'obj'    'type'    'ra'    'dec'    'u'
+
+  Columns 11 through 19
+
+    'g'    'r'    'i'    'z'    'Err_u'    'Err_g'    'Err_r'    'Err_i'    'Err_z'
+
+</pre><p>This tells us what each column in the data matrix is. Note that the <b><tt>g</tt></b> column is the 11th and the <b><tt>r</tt></b> column is the 12.
+         </p>
+         <p>Now, create a matrix containing the data (i.e., <b><tt>data</tt></b> in <b><tt>dat1</tt></b>) only:
+         </p><pre class="codeinput">cluster1data = dat1.data;
+</pre><p>This is the matrix with data from stars in the cluster (one star in each row).</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Importing data
+%%
+% The data file downloaded from SkyServer can be imported using MATLAB
+% internal function *|importdata|*. Use *|help|* to view detailed
+% specifications:
+help importdata
+%%
+% For the sample file |cluster1.dat|, we have one line of header text, and
+% the file uses comma as the column separator. Therefore, to properly load
+% the file, try
+dat1 = importdata('cluster1.dat', ',', 1);
+%%
+% The variable *|dat1|* now contains three part:
+dat1
+%%
+% You can view the header text (i.e., *|textdata|*) to see the order of
+% parameters by typing
+dat1.textdata
+%%
+% This tells us what each column in the data matrix is. Note that the *|g|*
+% column is the 11th and the *|r|* column is the 12.
+%
+% Now, create a matrix containing the data (i.e., *|data|* in *|dat1|*) only:
+cluster1data = dat1.data;
+%%
+% This is the matrix with data from stars in the cluster (one star in each
+% row).
+##### SOURCE END #####
+-->
+   </body>
+</html>

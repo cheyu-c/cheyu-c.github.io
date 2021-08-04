@@ -1,0 +1,174 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Orbital velocity of the cloud</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-25">
+      <meta name="m-file" content="orbVel"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Orbital velocity of the cloud</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Load and read data</a></li>
+               <li><a href="#5">Save to .mat file</a></li>
+               <li><a href="#7">The orbital velocity</a></li>
+            </ul>
+         </div>
+         <h2>Load and read data<a name="1"></a></h2>
+         <p>This lab, very similar to Lab 3, requires you to 1) load <b><tt>.dat</tt></b> files to MATLAB and make plots, 2) use <b><tt>ginput</tt></b> to pull out some info from your plot, and 3) use MATLAB as a calculator to get some science ideas.
+         </p>
+         <p>Let's load the data first:</p><pre class="codeinput">lon17 = load( ... );
+</pre><p>The first column in <b><tt>lon17</tt></b> is the frequency channels used in the observation, and the second column is the relative strength of the H-alpha line. Let's
+            take a look on this spectrum:
+         </p><pre class="codeinput">figure(1); clf;
+plot( ... );
+...
+</pre><img vspace="5" hspace="5" src="orbVel_01.png" alt=""> <p>Remember, the smallest frequency represents the largest redshift, which gives us the tangent velocity. Recall your knowledge
+            about <b><tt>ginput</tt></b>:
+         </p><pre class="codeinput">[x(1), y(1)] = ginput(1);
+</pre><p>By doing this, you can build up an array of frequencies (<b><tt>x</tt></b>) using <b><tt>x(1)</tt></b>, <b><tt>x(2)</tt></b>, etc, increasing the number as you go through the files.
+         </p>
+         <h2>Save to .mat file<a name="5"></a></h2>
+         <p>You can also save the array so you have a record of them:</p><pre class="codeinput">save <span class="string">frequency.mat</span> <span class="string">x</span>
+</pre><p>which will save the variable <b><tt>x</tt></b> in the file <b><tt>frequency.mat</tt></b>, exactly as you had it stored in your workspace (make sure you include the <b><tt>.mat</tt></b> ending on the filename). That way, you can continue your unfinished work anytime by loading the <b><tt>.mat</tt></b> file:
+         </p><pre class="codeinput">load <span class="string">frequency.mat</span>
+</pre><h2>The orbital velocity<a name="7"></a></h2>
+         <p>Back to the <b><tt>lon17</tt></b> case. Now <b><tt>x(1)</tt></b> is the smallest frequency we want. Use the redshift equation provided in the handout:
+         </p><pre class="codeinput">c = ... ;      <span class="comment">% in km/s</span>
+f_rest = ... ;   <span class="comment">% in MHz</span>
+vt = ... ;
+</pre><p>And the orbital velocity is: (note that you need to convert the longitude from degree to rad before you put it in the <b><tt>sin</tt></b> function!)
+         </p><pre class="codeinput">v_sun = ... ;         <span class="comment">% in km/s</span>
+vorb = ...
+</pre><pre class="codeoutput">
+vorb =
+
+  215.1332
+
+</pre><p>in unit of <b>km/s</b>.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Orbital velocity of the cloud
+%% Load and read data
+% This lab, very similar to Lab 3, requires you to 1) load *|.dat|* files
+% to MATLAB and make plots, 2) use *|ginput|* to pull out some info from 
+% your plot, and 3) use MATLAB as a calculator to get some science ideas.
+%
+% Let's load the data first:
+lon17 = load('lon17.dat');
+%%
+% The first column in *|lon17|* is the frequency channels used in the
+% observation, and the second column is the relative strength of the 
+% H-alpha line. Let's take a look on this spectrum:
+figure(1); clf;
+plot(lon17(:,1), lon17(:,2), 'b-');
+xlabel('frequency'); ylabel('relative intensity');
+title('Galactic Longitude = 17 (deg)');
+%%
+% Remember, the smallest frequency represents the largest redshift, which
+% gives us the tangent velocity. Recall your knowledge about *|ginput|*:
+[x(1), y(1)] = ginput(1);
+%%
+% By doing this, you can build up an array of frequencies (*|x|*) using
+% *|x(1)|*, *|x(2)|*, etc, increasing the number as you go through the 
+% files. 
+%% Save to .mat file
+% You can also save the array so you have a record of them:
+save frequency.mat x
+%%
+% which will save the variable *|x|* in the file *|frequency.mat|*, exactly
+% as you had it stored in your workspace (make sure you include the 
+% *|.mat|* ending on the filename). That way, you can continue your
+% unfinished work anytime by loading the *|.mat|* file:
+load frequency.mat
+%% The orbital velocity
+% Back to the *|lon17|* case. Now *|x(1)|* is the smallest frequency we 
+% want. Use the redshift equation
+% provided in the handout:
+c = 2.997925e5;      % in km/s
+f_rest = 1420.406;   % in MHz
+vt = c*(f_rest - x(1))/x(1);
+%%
+% And the orbital velocity is: (note that you need to convert the longitude
+% from degree to rad before you put it in the *|sin|* function!)
+v_sun = 220;         % in km/s
+vorb = vt + v_sun*sin(17*pi/180)
+%%
+% in unit of *km/s*.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

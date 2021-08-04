@@ -1,0 +1,211 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Tab-delimited Files</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-03-01">
+      <meta name="m-file" content="tdfiles"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Tab-delimited Files</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>Sometimes the file includes both text and numbers so the commands <b><tt>load</tt></b> and <b><tt>fscanf</tt></b> don't work. In this case, MATLAB provides other choices for file input, like <b><tt>caseread</tt></b>, <b><tt>tblread</tt></b>, and the one we are going to use here, <b><tt>tdfread</tt></b>.
+         </p>
+         <p>Basically, <b><tt>tdfread</tt></b> means it reads Tab-Delimited Files, and the files must have variable names in the first row. The syntax is simple: (you can
+            use whatever you want to substitute for <b><tt>myCluster</tt></b>; typically we use the file name or object name, like <b><tt>ngc188</tt></b>)
+         </p><pre class="codeinput">myCluster = tdfread(<span class="string">'ngc188.txt'</span>)
+</pre><pre class="codeoutput">
+myCluster = 
+
+           MAIN_ID: [1977x21 char]
+             OTYPE: [1977x5 char]
+                RA: [1977x3 double]
+               DEC: [1977x3 double]
+      COO_ERR_MAJA: [1977x1 double]
+      COO_ERR_MINA: [1977x1 double]
+     COO_ERR_ANGLE: [1977x1 double]
+              PMRA: [1977x1 double]
+             PMDEC: [1977x1 double]
+                 B: [1977x1 double]
+                 V: [1977x1 double]
+                 R: [1977x1 double]
+                 J: [1977x1 double]
+                 H: [1977x1 double]
+                 K: [1977x1 double]
+           SP_TYPE: [1977x8 char]
+    GALDIM_MAJAXIS: [1977x1 double]
+    GALDIM_MINAXIS: [1977x1 double]
+      GALDIM_ANGLE: [1977x1 double]
+           BIBLIST: [1977x1 double]
+
+</pre><p>As you can see, <b><tt>tdfread</tt></b> creates a structure <b><tt>myCluster</tt></b>, which contains fields from each column of the file <b><tt>ngc188.txt</tt></b>, named after the first row. More importantly, <b><tt>tdfread</tt></b> can automatically decide the type of variables (<b><tt>double</tt></b>, <b><tt>char</tt></b>, etc.) based on the data in the second and following rows.
+         </p>
+         <p>For example, the field <b><tt>myCluster.MAIN_ID</tt></b> is a <b><tt>char</tt></b> array: (recall the syntax <b><tt>s.a</tt></b> means field <b><tt>a</tt></b> of structure <b><tt>s</tt></b>)
+         </p><pre class="codeinput">myCluster.MAIN_ID
+</pre><pre class="codeoutput">
+ans =
+
+Cl* NGC 188 FTS 5    
+Cl* NGC 188 FTS 1    
+Cl* NGC 188 FTS 6    
+Cl* NGC 188 FTS 7    
+Cl* NGC 188 FTS 29   
+Cl* NGC 188 FTS 20   
+
+... ...
+
+</pre><p>and the variable <b><tt>myCluster.B</tt></b> is a numeric vector:
+         </p><pre class="codeinput">myCluster.B
+</pre><pre class="codeoutput">
+ans =
+
+   13.5900
+   13.0700
+   13.4900
+   13.7900
+   14.7900
+   14.7300
+   
+   ... ...
+
+</pre><p>Note that <b><tt>NaN</tt></b> means "not a number"; when you see this in <b><tt>myCluster.B</tt></b> means we are missing the B-band data from some objects.
+         </p>
+         <p>In fact, <b><tt>tdfread</tt></b> can also read files with other delimiters. To read the file <b><tt>cluster1.dat</tt></b> (you can find it on the website) which uses comma to separate columns, just add <b><tt>','</tt></b> or <b><tt>'comma'</tt></b> to specify the delimiter:
+         </p><pre class="codeinput">myCluster2 = tdfread(<span class="string">'cluster1.dat'</span>,<span class="string">','</span>)
+</pre><pre class="codeoutput">
+myCluster2 = 
+
+     objid: [1180x1 double]
+       run: [1180x1 double]
+     rerun: [1180x1 double]
+    camcol: [1180x1 double]
+     field: [1180x1 double]
+       obj: [1180x1 double]
+      type: [1180x1 double]
+        ra: [1180x1 double]
+       dec: [1180x1 double]
+         u: [1180x1 double]
+         g: [1180x1 double]
+         r: [1180x1 double]
+         i: [1180x1 double]
+         z: [1180x1 double]
+     Err_u: [1180x1 double]
+     Err_g: [1180x1 double]
+     Err_r: [1180x1 double]
+     Err_i: [1180x1 double]
+     Err_z: [1180x1 double]
+
+</pre><p>Other accepted values for delimiter include <b><tt>' '</tt></b> or <b><tt>'space'</tt></b>, <b><tt>';'</tt></b> or <b><tt>'semi'</tt></b>, and <b>'|'</b> or <b><tt>'bar'</tt></b>.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Tab-delimited Files
+%%
+% Sometimes the file includes both text and numbers so the commands
+% *|load|* and *|fscanf|* don't work. In this case, MATLAB provides other
+% choices for file input, like *|caseread|*, *|tblread|*, and the one we 
+% are going to use here, *|tdfread|*.
+%
+% Basically, *|tdfread|* means it reads Tab-Delimited Files, and the files 
+% must have variable names in the first row. The syntax is simple: (you can
+% use whatever you want to substitute for *|myCluster|*; typically we use
+% the file name or object name, like *|ngc188|*)
+myCluster = tdfread('ngc188.txt')
+%%
+% As you can see, *|tdfread|* creates a structure *|myCluster|*, which 
+% contains fields from each column of the file *|ngc188.txt|*, named after 
+% the first row. More importantly, *|tdfread|* can automatically decide the 
+% type of variables (*|double|*, *|char|*, etc.) based on the data in the 
+% second and following rows. 
+%
+% For example, the field *|myCluster.MAIN_ID|* is a *|char|* array: (recall
+% the syntax *|s.a|* means field *|a|* of structure *|s|*)
+myCluster.MAIN_ID
+%%
+% and the variable *|myCluster.B|* is a numeric vector:
+myCluster.B
+%%
+% Note that *|NaN|* means "not a number"; when you see this in 
+% *|myCluster.B|* means we are missing the B-band data from some objects.
+%
+% In fact, *|tdfread|* can also read files with other delimiters. To read 
+% the file *|cluster1.dat|* (you can find it on the website) which uses 
+% comma to separate columns, just add *|','|* or *|'comma'|* to specify the
+% delimiter:
+myCluster2 = tdfread('cluster1.dat',',')
+%%
+% Other accepted values for delimiter include *|' '|* or *|'space'|*,
+% *|';'|* or *|'semi'|*, and *'|'* or *|'bar'|*.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
