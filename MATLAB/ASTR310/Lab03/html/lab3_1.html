@@ -1,0 +1,171 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Finding stars</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-19">
+      <meta name="m-file" content="lab3_1"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Finding stars</h1>
+         <introduction></introduction>
+         <p>Assuming you have a m-file <b><tt>read_images.m</tt></b> that reads in <b><tt>.fit</tt></b> files and gives you the image <b><tt>im</tt></b> which is bias corrected and flat fielded:
+         </p><pre class="codeinput">read_images;
+</pre><p>Now we can use the function <b><tt>findstars</tt></b> to locate stars in the image <b><tt>im</tt></b>. Let's start with the "minimum value above background" = 500:
+         </p><pre class="codeinput">findstars(<span class="string">'im.out'</span>, im, 500, 10);
+</pre><pre class="codeoutput">Source 1: ampl=7542.4, x=106.8, y=270.0
+Source 2: ampl=3823.7, x=432.9, y=171.3
+Source 3: ampl=2969.4, x=287.9, y=194.5
+Source 4: ampl=2246.2, x=186.2, y=126.4
+Source 5: ampl=1080.3, x=40.4, y=104.6
+Source 6: ampl=1076.2, x=265.3, y=8.3
+Source 7: ampl=612.6, x=94.6, y=95.2
+Total 7 sources
+Returning table of: 
+center X, center Y, amplitude, major axis, minor axis, position angle
+See also file im.out
+</pre><img vspace="5" hspace="5" src="lab3_1_01.png"> <p>Obviously, only a few stars are located. Therefore we must run <b><tt>findstars</tt></b> again with lower value of the cutoff value, e.g.
+         </p><pre class="codeinput">findstars(<span class="string">'im.out'</span>, im, 300, 10);
+</pre><pre class="codeoutput">Source 1: ampl=7542.4, x=106.8, y=270.0
+Source 2: ampl=3823.7, x=432.9, y=171.3
+Source 3: ampl=2969.4, x=287.9, y=194.5
+Source 4: ampl=2246.2, x=186.2, y=126.4
+Source 5: ampl=1080.3, x=40.4, y=104.6
+Source 6: ampl=1076.2, x=265.3, y=8.3
+Source 7: ampl=612.7, x=94.6, y=95.2
+Source 8: ampl=457.0, x=360.2, y=301.3
+Source 9: ampl=373.3, x=391.2, y=297.7
+Source 10: ampl=331.5, x=44.4, y=192.6
+Source 11: ampl=331.9, x=43.1, y=207.8
+Source 12: ampl=301.8, x=24.5, y=105.8
+Source 13: ampl=345.3, x=222.1, y=241.2
+Source 14: ampl=313.2, x=92.1, y=68.6
+Source 15: ampl=319.4, x=397.6, y=57.9
+Source 16: ampl=298.3, x=286.0, y=112.0
+Source 17: ampl=184.7, x=258.4, y=277.4
+Source 18: ampl=289.7, x=474.0, y=248.9
+Total 18 sources
+Returning table of: 
+center X, center Y, amplitude, major axis, minor axis, position angle
+See also file im.out
+</pre><img vspace="5" hspace="5" src="lab3_1_02.png"> <p>More stars are found, but there still are many faint stars unidentified. Keep trying different values until you feel like
+            you've included all stars in the image.
+         </p>
+         <p>The output is also saved in the file <b><tt>im.out</tt></b>; you can use <b><tt>type</tt></b> to see the contents of this file:
+         </p><pre class="codeinput">type <span class="string">im.out</span>
+</pre><pre class="codeoutput">
+%    X        Y         Amp       Maj        Min      PA
+  106.82    269.99   7542.36      6.99      5.22    157.25  
+  432.89    171.25   3823.74      7.06      5.29    156.44  
+  287.88    194.47   2969.39      7.03      5.26    156.17  
+  186.17    126.41   2246.22      7.12      5.30    153.49  
+   40.45    104.62   1080.26      7.00      5.23    156.85  
+  265.35      8.29   1076.21      6.94      5.22    154.95  
+   94.58     95.19    612.66      8.70      5.86    130.28  
+  360.19    301.27    457.04      7.02      5.33    157.32  
+  391.20    297.68    373.25      6.94      5.18    157.61  
+   44.36    192.61    331.46      6.83      5.13    159.83  
+   43.09    207.82    331.86      6.82      5.29    163.21  
+   24.54    105.75    301.79      7.16      5.28    163.39  
+  222.13    241.19    345.27      7.02      5.18    157.06  
+   92.08     68.64    313.16      6.93      5.13    156.23  
+  397.59     57.85    319.44      6.91      5.25    158.90  
+  285.99    112.01    298.32      6.92      5.23    156.65  
+  258.42    277.40    184.70     19.97      5.88    127.53  
+  474.00    248.93    289.68      6.97      5.21    159.39  
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Finding stars
+%%
+% Assuming you have a m-file *|read_images.m|* that reads in *|.fit|* files 
+% and gives you the image *|im|* which is bias corrected and flat fielded:
+m67;
+%%
+% Now we can use the function *|findstars|* to locate stars in the image
+% *|im|*. Let's start with the "minimum value above background" = 500:
+findstars('im.out', im, 500, 10);
+%%
+% Obviously, only a few stars are located. Therefore we must run
+% *|findstars|* again with lower value of the cutoff value, e.g.
+findstars('im.out', im, 300, 10);
+%%
+% More stars are found, but there still are many faint stars unidentified. 
+% Keep trying different values until you feel like you've included all
+% stars in the image. 
+%
+% The output is also saved in the file *|im.out|*; you can use *|type|* 
+% to see the contents of this file:
+type im.out
+%%
+##### SOURCE END #####
+-->
+   </body>
+</html>

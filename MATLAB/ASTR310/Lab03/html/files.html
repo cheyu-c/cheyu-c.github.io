@@ -1,0 +1,279 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Input and Output</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-19">
+      <meta name="m-file" content="files"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Input and Output</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Writing a file -- 'save'</a></li>
+               <li><a href="#4">Writing a file -- 'fprintf'</a></li>
+               <li><a href="#8">Displaying a file</a></li>
+               <li><a href="#10">Reading a file in column format -- 'load'</a></li>
+               <li><a href="#12">Reading a file in column format -- 'fscanf'</a></li>
+            </ul>
+         </div>
+         <p>The simplest format for data is text files. These files are frequently also called ASCII files (ASCII -- pronounced aski --
+            stands for American Standard Code for Information Interchange, a standard for numerically representing alphabets developed
+            in the 1960s). There is more than one way to save the arrays we created above onto a text file.
+         </p>
+         <h2>Writing a file -- 'save'<a name="2"></a></h2>
+         <p>The simplest (and least flexible) is to use an option of the command <b><tt>save</tt></b>. Assuming we want to save the data array <b><tt>m</tt></b>:
+         </p><pre class="codeinput">u=1:10; v=rand(1,length(u));
+m = [u;v]'
+</pre><pre class="codeoutput">
+m =
+
+    1.0000    0.1622
+    2.0000    0.7943
+    3.0000    0.3112
+    4.0000    0.5285
+    5.0000    0.1656
+    6.0000    0.6020
+    7.0000    0.2630
+    8.0000    0.6541
+    9.0000    0.6892
+   10.0000    0.7482
+
+</pre><p>The command <b><tt>save</tt></b> tells MATLAB to save the contents of the variable <b><tt>m</tt></b> in text format in the file <b><tt>testdata.txt</tt></b>,  in 8-digit ASCII format:
+         </p><pre class="codeinput">save <span class="string">testdata.txt</span> <span class="string">-ascii</span> <span class="string">m</span>
+</pre><h2>Writing a file -- 'fprintf'<a name="4"></a></h2>
+         <p>The second option is to use the C-like mechanism of <b><tt>fprintf</tt></b>. This allows for arbitrary output formats, so it is infinitely flexible. First, we must open the file <b><tt>testdata2.txt</tt></b> for writing (the old contents are erased):
+         </p><pre class="codeinput">fout = fopen(<span class="string">'testdata2.txt'</span>,<span class="string">'w'</span>);
+</pre><p>the permission argument <b><tt>'w'</tt></b> will discard any existing contents in the file <b><tt>testdata2.txt</tt></b>. To append data to the end of the file, use <b><tt>'a'</tt></b>.
+         </p>
+         <p>We then use a vectorized version of the C <b><tt>fprintf</tt></b> statement: the format string is applied to all values in the matrix <b><tt>m</tt></b> starting by column order (i.e., the row index is the fast-changing index. This is the MATLAB convention.) That is why <b><tt>m</tt></b> has to be transposed first.
+         </p><pre class="codeinput">fprintf(fout,<span class="string">'%f %f \n'</span>,m');
+</pre><p>The conversion character <b><tt>%f</tt></b> stands for floating-point numbers. Other choices are <b><tt>%d</tt></b> (integers), <b><tt>%c</tt></b> (sequence of characters), etc.
+         </p>
+         <p>Note that you can try to output the numbers to the screen by using a <b><tt>fprintf</tt></b> instruction with <b><tt>fout</tt></b> set to 1:
+         </p><pre class="codeinput">fprintf(1,<span class="string">'%f %f \n'</span>,m');
+</pre><pre class="codeoutput">1.000000 0.162182 
+2.000000 0.794285 
+3.000000 0.311215 
+4.000000 0.528533 
+5.000000 0.165649 
+6.000000 0.601982 
+7.000000 0.262971 
+8.000000 0.654079 
+9.000000 0.689215 
+10.000000 0.748152 
+</pre><p>After we finished writing, we use <b><tt>fclose</tt></b> to close the file.
+         </p><pre class="codeinput">fclose(fout);
+</pre><h2>Displaying a file<a name="8"></a></h2>
+         <p>The MATLAB command <b><tt>type</tt></b> shows us what is inside a text file:
+         </p><pre class="codeinput">type <span class="string">testdata.txt</span>
+</pre><pre class="codeoutput">
+   1.0000000e+00   1.6218231e-01
+   2.0000000e+00   7.9428454e-01
+   3.0000000e+00   3.1121504e-01
+   4.0000000e+00   5.2853314e-01
+   5.0000000e+00   1.6564873e-01
+   6.0000000e+00   6.0198194e-01
+   7.0000000e+00   2.6297128e-01
+   8.0000000e+00   6.5407910e-01
+   9.0000000e+00   6.8921450e-01
+   1.0000000e+01   7.4815159e-01
+
+</pre><p>This is equivalent to the UNIX command <b><tt>cat</tt></b>.
+         </p>
+         <h2>Reading a file in column format -- 'load'<a name="10"></a></h2>
+         <p>The simplest way of reading a file in column format, such as the one we have just written, is to use the <b><tt>load</tt></b> command. This command will automatically recognize the file as a text file, read the columns and rows, and return a matrix.
+         </p><pre class="codeinput">n = load(<span class="string">'testdata.txt'</span>)
+</pre><pre class="codeoutput">
+n =
+
+    1.0000    0.1622
+    2.0000    0.7943
+    3.0000    0.3112
+    4.0000    0.5285
+    5.0000    0.1656
+    6.0000    0.6020
+    7.0000    0.2630
+    8.0000    0.6541
+    9.0000    0.6892
+   10.0000    0.7482
+
+</pre><p>Note that you can insert comment lines in the file (i.e., lines that begin with the MATLAB comment character, the percent
+            % sign) and they will be ignored by <b><tt>load</tt></b>.
+         </p>
+         <h2>Reading a file in column format -- 'fscanf'<a name="12"></a></h2>
+         <p>To parse more complex file formats MATLAB provides the commands <b><tt>fscanf</tt></b>. Similar to <b><tt>fprintf</tt></b>, we must open the file first:
+         </p><pre class="codeinput">fin = fopen(<span class="string">'testdata2.txt'</span>,<span class="string">'r'</span>);
+</pre><p>the permission argument is now set to <b><tt>'r'</tt></b>, means the file is opened for reading.
+         </p>
+         <p>The <b><tt>fscanf</tt></b> reads data from the file, converts it according to the specified format string, and returns it in matrix <b><tt>n2</tt></b>:
+         </p><pre class="codeinput">n2 = fscanf(fin, <span class="string">'%f %f'</span>, [2 inf]);
+</pre><p>Again, <b><tt>%f</tt></b> means reading floating-point numbers only. The last argument determines the size of <b><tt>n2</tt></b> and how much data is read. If the size is defined as <b><tt>[a,b]</tt></b>, <b><tt>fscanf</tt></b> will fill a matrix of at most <b><tt>a</tt></b> rows in column order. <b><tt>b</tt></b> can be <b><tt>inf</tt></b>, but <b><tt>a</tt></b> cannot. This is why we need to make <b><tt>n2</tt></b> to have two rows first, then transpose it:
+         </p><pre class="codeinput">n2'
+</pre><pre class="codeoutput">
+ans =
+
+    1.0000    0.1622
+    2.0000    0.7943
+    3.0000    0.3112
+    4.0000    0.5285
+    5.0000    0.1656
+    6.0000    0.6020
+    7.0000    0.2630
+    8.0000    0.6541
+    9.0000    0.6892
+   10.0000    0.7482
+
+</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Input and Output
+%%
+% The simplest format for data is text files. These files are frequently
+% also called ASCII files (ASCII REPLACE_WITH_DASH_DASH pronounced aski REPLACE_WITH_DASH_DASH stands for American
+% Standard Code for Information Interchange, a standard for numerically 
+% representing alphabets developed in the 1960s). There is more than one
+% way to save the arrays we created above onto a text file.
+%
+%% Writing a file REPLACE_WITH_DASH_DASH 'save'
+% The simplest (and least flexible) is to use an option of the command
+% *|save|*. Assuming we want to save the data array *|m|*:
+u=1:10; v=rand(1,length(u));
+m = [u;v]'
+%%
+% The command *|save|* tells MATLAB to save the contents of the variable
+% *|m|* in text format in the file *|testdata.txt|*,  in 8-digit ASCII
+% format:
+save testdata.txt -ascii m
+%% Writing a file REPLACE_WITH_DASH_DASH 'fprintf'
+% The second option is to use the C-like mechanism of *|fprintf|*. This allows
+% for arbitrary output formats, so it is infinitely flexible. First, we
+% must open the file *|testdata2.txt|* for writing (the old contents are
+% erased):
+fout = fopen('testdata2.txt','w');
+%%
+% the permission argument *|'w'|* will discard any existing contents in the
+% file *|testdata2.txt|*. To append data to the end of the file, use
+% *|'a'|*.
+%
+% We then use a vectorized version of the C *|fprintf|* statement: the format
+% string is applied to all values in the matrix *|m|* starting by column order
+% (i.e., the row index is the fast-changing index. This is the MATLAB 
+% convention.) That is why *|m|* has to be transposed first.
+fprintf(fout,'%f %f \n',m'); 
+%%
+% The conversion character *|%f|* stands for floating-point numbers. Other
+% choices are *|%d|* (integers), *|%c|* (sequence of characters), etc.
+%
+% Note that you can try to output the numbers to the screen by using a
+% *|fprintf|* instruction with *|fout|* set to 1:
+fprintf(1,'%f %f \n',m'); 
+%%
+% After we finished writing, we use *|fclose|* to close the file.
+fclose(fout);
+%% Displaying a file
+% The MATLAB command *|type|* shows us what is inside a text file:
+type testdata.txt
+%%
+% This is equivalent to the UNIX command *|cat|*.
+%% Reading a file in column format REPLACE_WITH_DASH_DASH 'load'
+% The simplest way of reading a file in column format, such as the one we
+% have just written, is to use the *|load|* command. This command will
+% automatically recognize the file as a text file, read the columns and 
+% rows, and return a matrix. 
+n = load('testdata.txt')
+%%
+% Note that you can insert comment lines in the file (i.e., lines that
+% begin with the MATLAB comment character, the percent % sign) and they
+% will be ignored by *|load|*.
+%% Reading a file in column format REPLACE_WITH_DASH_DASH 'fscanf'
+% To parse more complex file formats MATLAB provides the commands
+% *|fscanf|*. Similar to *|fprintf|*, we must open the file first:
+fin = fopen('testdata2.txt','r');
+%%
+% the permission argument is now set to *|'r'|*, means the file is opened
+% for reading.
+%
+% The *|fscanf|* reads data from the file, converts it according to the 
+% specified format string, and returns it in matrix *|n2|*:
+n2 = fscanf(fin, '%f %f', [2 inf]);
+%%
+% Again, *|%f|* means reading floating-point numbers only. The last
+% argument determines the size of *|n2|* and how much data is read. If the
+% size is defined as *|[a,b]|*, *|fscanf|* will fill a matrix of at most
+% *|a|* rows in column order. *|b|* can be *|inf|*, but *|a|* cannot. This
+% is why we need to make *|n2|* to have two rows first, then transpose it:
+n2'
+%%
+##### SOURCE END #####
+-->
+   </body>
+</html>
