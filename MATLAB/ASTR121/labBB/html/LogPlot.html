@@ -1,0 +1,209 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Log-log Plot</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-17">
+      <meta name="m-file" content="LogPlot"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Log-log Plot</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">Why log-log plot?</a></li>
+               <li><a href="#7">Log-log plot</a></li>
+               <li><a href="#9">Log-space</a></li>
+            </ul>
+         </div>
+         <p>Assuming that you already wrote a functional m-file called <b><tt>planck.m</tt></b>, which takes 2 input parameters (wavelength <img src="LogPlot_eq23351.png" alt="$\lambda$"> and temperature <img src="LogPlot_eq57315.png" alt="$T$">) and output the intensity (<img src="LogPlot_eq35427.png" alt="$I$">). Now, let's plot the Planck function vs. wavelength, and see how the curve varies with different temperature.
+         </p>
+         <p>Remember to set the temperature in Kelvin:</p><pre class="codeinput">T = 5.7e3;
+</pre><p>Here we choose the effective Black Body temperature of the Sun, 5700K.</p>
+         <h2>Why log-log plot?<a name="3"></a></h2>
+         <p>In astronomy, we are interested in a wide range of wavelengths, say, <img src="LogPlot_eq69943.png" alt="$10^{-10}$"> to <img src="LogPlot_eq90800.png" alt="$10^3$"> m. To plot the Planck Function as a function of wavelength in this range, first we create a "wavelength vector" using this
+            range:
+         </p><pre class="codeinput">LinearLam = linspace(1e-10, 1e3, 100);
+</pre><p>In case you don't remember, <b><tt>linspace(low, high, N)</tt></b> creates a vector from <b><tt>low</tt></b> to <b><tt>high</tt></b> with <b><tt>N</tt></b> elements equally spaced.
+         </p>
+         <p>Now you can call the function <b><tt>planck.m</tt></b> and get the intensity as a function of wavelength:
+         </p><pre class="codeinput">LinearI = planck(LinearLam,T);
+</pre><p>Then we can make the plot:</p><pre class="codeinput">figure(1); clf;
+plot(LinearLam, LinearI, <span class="string">'b.'</span>)
+xlabel(<span class="string">'wavelength (m)'</span>)
+ylabel(<span class="string">'Intensity (W / m / sr / m^2)'</span>)
+title(<span class="string">'Planck Function'</span>)
+</pre><img vspace="5" hspace="5" src="LogPlot_01.png" alt=""> <p>Since this is a large range of numbers (in both <b><tt>x</tt></b>- and <b><tt>y</tt></b>-directions), no structure can be observed in the linearly-spaced plot.
+         </p>
+         <h2>Log-log plot<a name="7"></a></h2>
+         <p>This is the reason to use log-log plot: when you are handling numbers with a wide range.</p>
+         <p>The function <b><tt>loglog()</tt></b> is similar to <b><tt>plot()</tt></b>, but it plots the data on a grid log spaced in both <b><tt>x</tt></b> and <b><tt>y</tt></b>:
+         </p><pre class="codeinput">figure(1); clf;
+loglog(LinearLam, LinearI, <span class="string">'b.'</span>)
+xlabel(<span class="string">'wavelength (m)'</span>)
+ylabel(<span class="string">'Intensity (W / m / sr / m^2)'</span>)
+title(<span class="string">'Planck Function'</span>)
+</pre><img vspace="5" hspace="5" src="LogPlot_02.png" alt=""> <p>The plot looks much better, but there's still a problem: When we use <b><tt>linspace</tt></b>, most of the elements in the vector are on the high-end of the range. If you check the vector <b><tt>LinearLam</tt></b>, except the first element (<img src="LogPlot_eq69943.png" alt="$10^{-10}$">), all elements are around <img src="LogPlot_eq34286.png" alt="$10^{3}$">. Therefore, we are missing structure for the low-end.
+         </p>
+         <h2>Log-space<a name="9"></a></h2>
+         <p>The solution is to use <b><tt>logspace</tt></b> instead of <b><tt>linspace</tt></b>. Similar to <b><tt>linspace</tt></b>, <b><tt>logspace(low, high, N)</tt></b> creates a vector, from <img src="LogPlot_eq64139.png" alt="$10^\mathrm{low}$"> to <img src="LogPlot_eq17074.png" alt="$10^\mathrm{high}$">, with <b><tt>N</tt></b> elements distributed equally in the log space
+         </p><pre class="codeinput">Lam = logspace(-10, 3, 100);
+Intensity = planck(Lam, T);
+</pre><p>The Planck function now looks much better:</p><pre class="codeinput">figure(1); clf;
+loglog(Lam, Intensity, <span class="string">'b.'</span>)
+xlabel(<span class="string">'wavelength (m)'</span>)
+ylabel(<span class="string">'Intensity (W / m / sr / m^2)'</span>)
+title(<span class="string">'Planck Function'</span>)
+</pre><img vspace="5" hspace="5" src="LogPlot_03.png" alt=""> <p>Sometimes we would like to focus on part of our plots to investigate the structure. You can use <b><tt>xlim</tt></b> and <b><tt>ylim</tt></b> to set which part of the parameter space you want to plot. For example, if we want to focus on the part with maximum intensity:
+         </p><pre class="codeinput">ylim([1e-15 1e15])
+</pre><img vspace="5" hspace="5" src="LogPlot_04.png" alt=""> <p>The syntax of <b><tt>xlim</tt></b> is similar: <b><tt>xlim([min max])</tt></b>.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Log-log Plot
+%%
+% Assuming that you already wrote a functional m-file called *|planck.m|*,
+% which takes 2 input parameters (wavelength $\lambda$ and temperature $T$) and
+% output the intensity ($I$). Now, let's plot the Planck function vs. 
+% wavelength, and see how the curve varies with different temperature.
+%
+% Remember to set the temperature in Kelvin:
+T = 5.7e3;
+%%
+% Here we choose the effective Black Body temperature of the Sun, 5700K.
+%% Why log-log plot?
+% In astronomy, we are interested in a wide range of wavelengths, say,
+% $10^{-10}$ to $10^3$ m. To plot the Planck Function as a function of
+% wavelength in this range, first we create a "wavelength vector" using this 
+% range:
+LinearLam = linspace(1e-10, 1e3, 100);
+%%
+% In case you don't remember, *|linspace(low, high, N)|* creates a vector
+% from *|low|* to *|high|* with *|N|* elements equally spaced. 
+%
+% Now you can call the function *|planck.m|* and get the intensity as a
+% function of wavelength:
+LinearI = planck(LinearLam,T);
+%% 
+% Then we can make the plot:
+figure(1); clf;
+plot(LinearLam, LinearI, 'b.')
+xlabel('wavelength (m)')
+ylabel('Intensity (W / m / sr / m^2)')
+title('Planck Function')
+%%
+% Since this is a large range of numbers (in both *|x|*- and
+% *|y|*-directions), no structure can be observed in the linearly-spaced
+% plot.
+%% Log-log plot
+% This is the reason to use log-log plot: when you are handling numbers
+% with a wide range. 
+%
+% The function *|loglog()|* is similar to *|plot()|*, but it plots the data 
+% on a grid log spaced in both *|x|* and *|y|*:
+figure(1); clf;
+loglog(LinearLam, LinearI, 'b.')
+xlabel('wavelength (m)')
+ylabel('Intensity (W / m / sr / m^2)')
+title('Planck Function')
+%%
+% The plot looks much better, but there's still a problem: When we use
+% *|linspace|*, most of the elements in the vector are on the high-end of
+% the range. If you check the vector *|LinearLam|*, except the first element
+% ($10^{-10}$), all elements are around $10^{3}$. Therefore, we are missing 
+% structure for the low-end.
+%% Log-space
+% The solution is to use *|logspace|* instead of *|linspace|*. Similar to
+% *|linspace|*, *|logspace(low, high, N)|* creates a vector, from
+% $10^\mathrm{low}$ to $10^\mathrm{high}$, with *|N|* elements distributed
+% equally in the log space
+Lam = logspace(-10, 3, 100);
+Intensity = planck(Lam, T);
+%%
+% The Planck function now looks much better:
+figure(1); clf;
+loglog(Lam, Intensity, 'b.')
+xlabel('wavelength (m)')
+ylabel('Intensity (W / m / sr / m^2)')
+title('Planck Function')
+%% 
+% Sometimes we would like to focus on part of our plots to investigate the
+% structure. You can use *|xlim|* and *|ylim|* to set which part of the 
+% parameter space you want to plot. For example, if we want to focus on the
+% part with maximum intensity:
+ylim([1e-15 1e15])
+%%
+% The syntax of *|xlim|* is similar: *|xlim([min max])|*.
+##### SOURCE END #####
+-->
+   </body>
+</html>

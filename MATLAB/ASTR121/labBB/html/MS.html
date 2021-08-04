@@ -1,0 +1,161 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>The Main Sequence</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-19">
+      <meta name="m-file" content="MS"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>The Main Sequence</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <p>This is the reference that you can use to check your work. Some parts of the code are blocked (using <b><tt>...</tt></b>) for you to figure out yourself.
+         </p>
+         <p>You should have a vector of 100 different values of temperature between 3000K and 30000K:</p><pre class="codeinput">temp = linspace( ... );
+</pre><p>Consider two astronomical filters, B (4360 Angstroms) and V (5450 Angstroms). Don't forget to transfer the wavelengths from
+            Angstroms to meters:
+         </p><pre class="codeinput">lamB = 4360* ... ;
+lamV = 5450* ... ;
+</pre><p>The intensities in B and V bands are:</p><pre class="codeinput">IB = planck(lamB,temp);
+IV = planck( ... );
+</pre><p>The TOTAL intensities in B and V bands are:</p><pre class="codeinput">ItotB = IB*940* ... ;
+ItotV = IV* ... ;
+</pre><p>The color index is roughly</p><pre class="codeinput">BminusV = 2.5*log10( ... );
+</pre><p>A HR diagram can be made by plotting luminosity vs. color index. Since the luminosity scales as <b><tt>log(I)</tt></b>, we can use the intensity in V band to calculate a scale-free relative measure of luminosity:
+         </p><pre class="codeinput">Lv = log10(ItotV);
+</pre><p>If you did everything properly, your data points should look like the main sequence of the HR diagram.</p><pre class="codeinput">figure(1); clf
+plot( ... )
+...(<span class="string">'B-V'</span>);
+...(<span class="string">'Some kind of Luminosity'</span>)
+...(<span class="string">'Main Sequence?'</span>)
+</pre><img vspace="5" hspace="5" src="MS_01.png" alt=""> <p>Note: the color index scales with reverse of temperature, i.e. <b><tt>BminusV</tt></b> <img src="MS_eq50551.png" alt="$\propto$"> <b><tt>1/temp</tt></b>. You can try to plot it out to see this behavior:
+         </p><pre class="codeinput">figure(2); clf;
+plot(BminusV, temp)
+...
+</pre><img vspace="5" hspace="5" src="MS_02.png" alt=""> <p>Keep this in mind and look at your theoretical HR diagram again. Which end of the x-coordinate represents stars with higher
+            surface temperature?
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% The Main Sequence
+%%
+% This is the reference that you can use to check your work. Some parts of 
+% the code are blocked (using *|...|*) for you to figure out yourself.
+%
+% You should have a vector of 100 different values of temperature between 
+% 3000K and 30000K:
+temp = linspace(3000, 30000, 100);
+%%
+% Consider two astronomical filters, B (4360 Angstroms) and V 
+% (5450 Angstroms). Don't forget to transfer the wavelengths from Angstroms 
+% to meters:
+lamB = 4360*1e-10;
+lamV = 5450*1e-10;
+%%
+% The intensities in B and V bands are:
+IB = planck(lamB,temp);
+IV = planck(lamV,temp);
+%%
+% The TOTAL intensities in B and V bands are:
+ItotB = IB*940*1e-10;
+ItotV = IV*850*1e-10;
+%%
+% The color index is roughly
+BminusV = -2.5*log10(ItotB./ItotV);
+%%
+% A HR diagram can be made by plotting luminosity vs. color index. Since
+% the luminosity scales as *|log(I)|*, we can use the intensity in V band
+% to calculate a scale-free relative measure of luminosity:
+Lv = log10(ItotV);
+%%
+% If you did everything properly, your data points should look like the
+% main sequence of the HR diagram.
+figure(1); clf
+plot(BminusV, Lv,'o')
+xlabel('B-V');
+ylabel('Some kind of Luminosity')
+title('Main Sequence?')
+%%
+% Note: the color index scales with reverse of temperature, i.e.
+% *|BminusV|* $\propto$ *|1/temp|*. You can try to plot it out to see this
+% behavior:
+figure(2); clf;
+plot(BminusV, temp)
+xlabel('Color Index')
+ylabel('T (K)');
+title('Proper Title')
+%%
+% Keep this in mind and look at your theoretical HR diagram again. Which
+% end of the x-coordinate represents stars with higher surface temperature?
+##### SOURCE END #####
+-->
+   </body>
+</html>

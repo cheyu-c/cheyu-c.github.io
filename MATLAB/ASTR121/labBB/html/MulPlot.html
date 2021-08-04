@@ -1,0 +1,249 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Multiple Plots</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-19">
+      <meta name="m-file" content="MulPlot"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Multiple Plots</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#6">Line Specification</a></li>
+               <li><a href="#11">Graph Legend</a></li>
+            </ul>
+         </div>
+         <p>The easist way to compare two or more figures is to overplot them on the same figure. Let's try to call <b><tt>functionExample</tt></b> with different input:
+         </p><pre class="codeinput">x = linspace(-1,1,200);
+y1 = 1;
+y2 = -0.5;
+out1 = functionExample(x, y1);
+out2 = functionExample(x, y2);
+</pre><p>We can plot <b><tt>out1</tt></b> first:
+         </p><pre class="codeinput">figure(1); clf;
+plot(x, out1);
+xlabel(<span class="string">'x-axis label'</span>);
+ylabel(<span class="string">'functionExample'</span>);
+title(<span class="string">'a plot of functionExample'</span>);
+</pre><img vspace="5" hspace="5" src="MulPlot_01.png" alt=""> <p>To overplot another curve on the original one, remember to use</p><pre class="codeinput">hold <span class="string">on</span>;
+</pre><p>so the next <b><tt>plot</tt></b> command won't clean up the previous <b><tt>plot</tt></b> command. Then you can draw another curve
+         </p><pre class="codeinput">plot(x, out2)
+</pre><img vspace="5" hspace="5" src="MulPlot_03.png" alt=""> <p>Now there's a problem: how can we tell which line is which? Here we introduce the third parameter of <b><tt>plot</tt></b> command, which is used to specify a color and/or point marker type.
+         </p>
+         <h2>Line Specification<a name="6"></a></h2>
+         <p>To make the overplotted figure easier to read, you may want to change the line specification, e.g. line style, color, and
+            line width. Here are some examples:
+         </p>
+         <p>1) Change the line style</p><pre class="codeinput">figure(1); clf; hold <span class="string">on</span>;
+plot(x, out1)
+plot(x, out2, <span class="string">'--'</span>)
+xlabel(<span class="string">'x-axis label'</span>);
+ylabel(<span class="string">'functionExample'</span>);
+title(<span class="string">'a plot of functionExample'</span>);
+</pre><img vspace="5" hspace="5" src="MulPlot_04.png" alt=""> <p>2) Change the color:</p><pre class="codeinput">figure(1); clf; hold <span class="string">on</span>;
+plot(x, out1, <span class="string">'k'</span>)
+plot(x, out2, <span class="string">'c'</span>)
+xlabel(<span class="string">'x-axis label'</span>);
+ylabel(<span class="string">'functionExample'</span>);
+title(<span class="string">'a plot of functionExample'</span>);
+</pre><img vspace="5" hspace="5" src="MulPlot_05.png" alt=""> <p>3) Change the line width:</p><pre class="codeinput">figure(1); clf; hold <span class="string">on</span>;
+plot(x, out1, <span class="string">'LineWidth'</span>, 2)
+plot(x, out2)
+xlabel(<span class="string">'x-axis label'</span>);
+ylabel(<span class="string">'functionExample'</span>);
+title(<span class="string">'a plot of functionExample'</span>);
+</pre><img vspace="5" hspace="5" src="MulPlot_06.png" alt=""> <p>You can type</p><pre class="codeinput">help <span class="string">plot</span>
+</pre><pre class="codeoutput"> PLOT   Linear plot. 
+
+    ... ...
+
+    Various line types, plot symbols and colors may be obtained with
+    PLOT(X,Y,S) where S is a character string made from one element
+    from any or all the following 3 columns:
+ 
+           b     blue          .     point              -     solid
+           g     green         o     circle             :     dotted
+           r     red           x     x-mark             -.    dashdot 
+           c     cyan          +     plus               --    dashed   
+           m     magenta       *     star             (none)  no line
+           y     yellow        s     square
+           k     black         d     diamond
+           w     white         v     triangle (down)
+                               ^     triangle (up)
+                               &lt;     triangle (left)
+                               &gt;     triangle (right)
+                               p     pentagram
+                               h     hexagram
+
+    ... ...
+                          
+</pre><p>in the Command Window to find more options. Note that the default value is blue solid line (<b><tt>'b-'</tt></b>)
+         </p>
+         <h2>Graph Legend<a name="11"></a></h2>
+         <p>When there are more than one line, you'll need to include graph legend for lines to remind yourself which one represents what
+            data set. The syntax is simple:
+         </p><pre class="codeinput">legend(<span class="string">'y = 1'</span>, <span class="string">'y = -0.5'</span>, <span class="string">'Location'</span>, <span class="string">'NorthEastOutside'</span>);
+</pre><img vspace="5" hspace="5" src="MulPlot_07.png" alt=""> <p>Note that we wrote <b><tt>y = 1</tt></b> first because we plotted <b><tt>out1</tt></b> first. The last parameter (<b><tt>'Location'</tt></b>) gives the specified location of the legend box (<b><tt>'NorthEastOutside'</tt></b>) with respect to the axes. You can type
+         </p><pre class="codeinput">help <span class="string">legend</span>
+</pre><pre class="codeoutput"> LEGEND Display legend.
+    LEGEND(string1,string2,string3, ...) puts a legend on the current plot
+    using the specified strings as labels. LEGEND works on line graphs,
+    bar graphs, pie graphs, ribbon plots, etc.  You can label any
+    solid-colored patch or surface object.  The fontsize and fontname for
+    the legend strings matches the axes fontsize and fontname.
+    
+    ... ...
+    
+</pre><p>in the Command Window to see more options.</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Multiple Plots
+%%
+% The easist way to compare two or more figures is to overplot them on the 
+% same figure. Let's try to call *|functionExample|* with different input:
+x = linspace(-1,1,200);
+y1 = 1;
+y2 = -0.5;
+out1 = functionExample(x, y1);
+out2 = functionExample(x, y2);
+%%
+% We can plot *|out1|* first:
+figure(1); clf;
+plot(x, out1);
+xlabel('x-axis label');
+ylabel('functionExample');
+title('a plot of functionExample');
+%%
+% To overplot another curve on the original one, remember to use
+hold on;
+%%
+% so the next *|plot|* command won't clean up the previous *|plot|*
+% command. Then you can draw another curve
+plot(x, out2)
+%%
+% Now there's a problem: how can we tell which line is which? Here we
+% introduce the third parameter of *|plot|* command, which is used to 
+% specify a color and/or point marker type.
+%% Line Specification
+% To make the overplotted figure easier to read, you may want to change the
+% line specification, e.g. line style, color, and line width. Here are some
+% examples:
+%
+% 1) Change the line style
+figure(1); clf; hold on;
+plot(x, out1)
+plot(x, out2, 'REPLACE_WITH_DASH_DASH')
+xlabel('x-axis label');
+ylabel('functionExample');
+title('a plot of functionExample');
+%%
+% 2) Change the color:
+figure(1); clf; hold on;
+plot(x, out1, 'k')
+plot(x, out2, 'c')
+xlabel('x-axis label');
+ylabel('functionExample');
+title('a plot of functionExample');
+%%
+% 3) Change the line width:
+figure(1); clf; hold on;
+plot(x, out1, 'LineWidth', 2)
+plot(x, out2)
+xlabel('x-axis label');
+ylabel('functionExample');
+title('a plot of functionExample');
+%%
+% You can type
+help plot
+%%
+% in the Command Window to find more options. Note that the default value
+% is blue solid line (*|'b-'|*)
+%% Graph Legend
+% When there are more than one line, you'll need to include graph legend 
+% for lines to remind yourself which one represents what data set. The 
+% syntax is simple:
+legend('y = 1', 'y = -0.5', 'Location', 'NorthEastOutside');
+%%
+% Note that we wrote *|y = 1|* first because we plotted *|out1|* first.
+% The last parameter (*|'Location'|*) gives the specified location of the 
+% legend box (*|'NorthEastOutside'|*) with respect to the axes. You can 
+% type
+help legend
+%%
+% in the Command Window to see more options.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

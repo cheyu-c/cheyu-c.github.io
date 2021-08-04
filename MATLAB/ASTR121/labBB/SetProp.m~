@@ -1,0 +1,46 @@
+%% Set Graphic Object Properties
+%% Set axis limits
+% Sometimes we would like to focus on part of our plots to investigate the
+% structure. You can use *|xlim|* and *|ylim|* to set which part of the
+% parameter space you want to plot. 
+% 
+% For example, the previous version of the Planck function:
+loglog(nu, Intensity, 'b.')
+%%
+% If we want to focus on the part with maximum intensity:
+ylim([1e-20 1e-3])
+%%
+% The syntax of *|xlim|* is similar: *|xlim([min max])|*.
+%%  
+% With a simple conversion of frequency to wavelength (in angstroms) we can
+% replot our graph in an easier way to interpret in the context of optical
+% observations (for temp = 0.3*T):
+c = 2.998e10;
+wavelength = c./nu / 1e-8;
+figure(2); clf
+loglog(wavelength,y3,'.r')
+set(gca,'XDir','rev')
+xlim([c/5e17/1e-8 c/1e5/1e-8])
+ylim([1e-20 1e-3])
+xlabel('wavelength (angstroms)');
+ylabel('Intensity erg /s /Hz / str / cm^2')
+title('Planck Function')
+%%
+% Here we have wavelength on the x axis. Temperature T is the effective
+% Black Body temperature of the Sun, a star on the main sequence, and if we
+% plot the BB curve for this temperature and focus, using our Xlim values,
+% on the peak, we can see how the Sun approximately irradiates in the
+% visible light band (~3900 - 7500 Angstroms):
+figure(3); clf
+loglog(wavelength,y1,'.')
+set(gca,'XDir','rev')
+xlim([300 90000])
+ylim([1e-20 1e-3])
+grid on
+hold on
+loglog(wavelength,y2,'.g')
+loglog(wavelength,y3,'.r')
+xlabel('wavelength (angstroms)');
+ylabel('Intensity erg /s /Hz / str / cm^2')
+title('Visible Spectrum from Planck Function for Stellar Surface Temp.')
+%%

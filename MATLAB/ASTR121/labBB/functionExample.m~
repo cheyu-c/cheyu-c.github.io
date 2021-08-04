@@ -1,0 +1,11 @@
+% Example of a function
+% ---------------------
+% This function takes a single input: x
+% NOTE: x may be a vector
+
+function f = functionExample(x)     % define the function
+f = x.^2;                           % calculate f, the returned value, from x
+%
+% Note that the exponentiation is written as .^ (dot carat);
+% this way it will operate on each element of an input vector x.
+% Element-by-element multiplication would be .*, division ./, etc.

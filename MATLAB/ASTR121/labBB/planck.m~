@@ -1,0 +1,14 @@
+% This function file defines the Planck function to be used in the BB and
+% HR diagram lab:
+
+function f = planck(x);     % define the function
+h = 6.626e-27 % erg s
+c = 2.998e10 % cm /s
+
+
+
+f = x.^2;                   % calculate f, the returned value, from x
+
+% Note that the exponentiation is written as .^ (dot carat);
+% this way it will operate on each element of an input vector x.
+% Element-by-element multiplication would be .*, division ./, etc.

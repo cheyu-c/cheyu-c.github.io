@@ -1,0 +1,229 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Plotting residuals and Writing script m-file</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-19">
+      <meta name="m-file" content="plotR"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Plotting residuals and Writing script m-file</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Calculate the residuals</a></li>
+               <li><a href="#6">Using script m-file</a></li>
+            </ul>
+         </div>
+         <h2>Calculate the residuals<a name="1"></a></h2>
+         <p>A good way to compare the unknown and standard spectra is using the idea of residuals. First, remind yourself about how these
+            following commands work: (note that you may have to change the slash to the backslash if you are using Windows!)
+         </p><pre class="codeinput">unkn = load(<span class="string">'unknowns/unknown1.txt'</span>);
+stdd = load(<span class="string">'standards/a1.txt'</span>);
+figure(1); clf; hold <span class="string">on</span>;
+plot(stdd(:,1), ... )
+plot(unkn(:,1), ... )
+xlabel(<span class="string">' ... '</span>);
+ylabel(<span class="string">' ... '</span>);
+title(<span class="string">' ... '</span>);
+legend( ... );
+</pre><img vspace="5" hspace="5" src="plotR_01.png" alt=""> <p>Basically, residual is the difference between the two data sets you are comparing:</p><pre class="codeinput">resd = unkn(:,2) - stdd(:,2);
+</pre><p>You can plot <b><tt>resd</tt></b> to see its behavior:
+         </p><pre class="codeinput">figure(2); clf;
+plot(unkn(:,1), resd, <span class="string">'k-'</span>);
+xlabel(<span class="string">' ... '</span>);
+ylabel(<span class="string">' ... '</span>);
+title(<span class="string">' ... '</span>);
+</pre><img vspace="5" hspace="5" src="plotR_02.png" alt=""> <p>Obviousely, we must look for a specific standard spectrum which has <b><tt>resd</tt></b> around zero, without any peaks. To compare <b><tt>resd</tt></b> from different standard spectra easily, you should keep the range of the y-axis constant, and centered at y=0:
+         </p><pre class="codeinput">ylim([-0.5 0.5])
+</pre><img vspace="5" hspace="5" src="plotR_03.png" alt=""> <p>Therefore, you can quickly figure out whether these unknown and standard spectra are the same spectrum type.</p>
+         <h2>Using script m-file<a name="6"></a></h2>
+         <p>Now you are a master of comparing data. However, in this lab, you are asked to compare 5 unknown spectra to 13 standard spectra,
+            which means that you might have to make 5x13=65 figures to find out the spectrum type for each unknown spectrum! You surely
+            do not want to type <b><tt>plot(...)</tt></b> 65x2=130 times in the Command Window.
+         </p>
+         <p>Instead, we can write a simple script m-file
+            to include all plotting commands, and all you need to do is change the filename in the <b><tt>load</tt></b> command each time you consider a different spectrum.
+         </p>
+         <p>Be sure to add</p><pre class="codeinput">clear;
+</pre><p>as the first line of your m-file, so the previous run won't affect the current one. Then your m-file should simply include
+            two lines of loading files:
+         </p><pre class="codeinput">unkn = load( ... );
+stdd = load( ... );
+</pre><p>and one line about setting the figure:</p><pre class="codeinput">figure(1); clf; hold <span class="string">on</span>
+</pre><p>and two lines of plotting (choose your favorite line specification!) and the graph labels/title/legend:</p><pre class="codeinput">plot( ... )
+plot( ... )
+xlabel( ... );
+ylabel( ... );
+title( ... );
+legend( ... );
+</pre><p>To show the residuals, set up another figure window:</p><pre class="codeinput">figure(2); clf;
+</pre><p>and plot your residuals, set up y-coordinate limit, and maybe give it labels and a title:</p><pre class="codeinput">plot( ... );
+ylim( ... );
+xlabel( ... );
+ylabel( ... );
+title( ... );
+</pre><p>Finally, don't forget to add <b><tt>.m</tt></b> when you save your m-file!
+         </p>
+         <p>Once you have your <b><tt>.m</tt></b> file, go to <tt>Cell</tt> -&gt; <tt>Evaluate Current Cell</tt> to run it, or find the icon <img src="runMfile.jpg" alt=""> in the Toolbar. Now you can see why script M-files are important: just change
+            the file name and run the <b><tt>.m</tt></b> file and your figures will show!
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Plotting residuals
+%% Calculate the residuals
+% A good way to compare the unknown and standard spectra is using the idea
+% of residuals. First, remind yourself about how these following
+% commands work:
+unkn = load('SP/unknowns/unknown1.txt');
+stdd = load('SP/standards/a1.txt');
+figure(1); clf; hold on;
+plot(stdd(:,1), stdd(:,2),'k', 'LineWidth', 2)
+plot(unkn(:,1), unkn(:,2), 'b')
+xlabel('\lambda');
+ylabel('scaled intensity');
+title('spectra');
+legend('standard', 'unknown', 'Location', 'NorthEastOutside');
+%%
+% Basically, residual is the difference between the two data sets you are 
+% comparing:
+resd = unkn(:,2) - stdd(:,2);
+%%
+% You can plot *|resd|* to see its behavior:
+figure(2); clf;
+plot(unkn(:,1), resd, 'k-');
+xlabel('\lambda');
+ylabel('y-axis label');
+title('resd');
+%%
+% Obviousely, we must look for a specific standard spectrum which has
+% *|resd|* around zero, without any peaks. To compare *|resd|* from
+% different standard spectra easily, you should keep the range of the 
+% y-axis constant, and centered at y=0:
+ylim([-0.5 0.5])
+%%
+% Therefore, you can quickly figure out whether these unknown and standard
+% spectra are the same spectrum type.
+%% Using function m-file
+% Now you are a master of comparing data. However, in this lab, you are
+% asked to compare 5 unknown spectra to 13 standard spectra, which means
+% that you might have to make 5x13=65 figures to find out the spectrum type
+% for each unknown spectrum! You surely do not want to type *|plot(...)|*
+% 65x2=130 times in the Command Window. 
+%
+% In the beginning of this lab, you learned how to write and run m-files in
+% MATLAB. Similarly, we can write a simple m-file to include all plotting
+% commands, and all you need to do is change the filename in the *|load|*
+% command each time you consider a different spectrum.
+%
+% Be sure to add
+clear;
+%%
+% as the first line of your m-file, so the previous run won't affect the
+% current one. Then your m-file should simply include two lines of loading
+% files:
+unkn = load('SP/unknowns/unknown1.txt');
+stdd = load('SP/standards/a1.txt');
+%%
+% and one line about setting the figure:
+figure(1); clf; hold on
+%%
+% and two lines of plotting (choose your favorite line specification!) and
+% the graph legend:
+plot(stdd(:,1), stdd(:,2),'k', 'LineWidth', 2)
+plot(unkn(:,1), unkn(:,2), 'b')
+xlabel('\lambda');
+ylabel('scaled intensity');
+title('spectra');
+legend('standard', 'unknown', 'Location', 'NorthEastOutside');
+%%
+% To show the residuals, set up another figure window:
+figure(2); clf;
+%%
+% and plot your residuals, set up y-coordinate limit, and maybe give it a
+% title:
+plot(unkn(:,1), unkn(:,2) - stdd(:,2), 'k-');
+ylim([-0.5 0.5]);
+xlabel('\lambda');
+ylabel('y-axis label');
+title('resd');
+%%
+% Finally, don't forget to add *|.m|* when you save your m-file!
+%
+% Once you have your *|.m|* file, go to |Cell| -> |Evaluate Current Cell|
+% to run it, or find the icon with a green arrow in the Toolbar. Now you
+% can see why script M-files are important: just change the file name and
+% run the *|.m|* file and your figures will show! 
+##### SOURCE END #####
+-->
+   </body>
+</html>

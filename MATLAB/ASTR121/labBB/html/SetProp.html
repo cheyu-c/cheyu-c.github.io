@@ -1,0 +1,189 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Set Graphic Object Properties</title>
+      <meta name="generator" content="MATLAB 7.8">
+      <meta name="date" content="2012-02-02">
+      <meta name="m-file" content="SetProp"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Set Graphic Object Properties</h1>
+         <!--introduction-->
+         <!--/introduction-->
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Set axis limits</a></li>
+               <li><a href="#4">Changing axis direction</a></li>
+            </ul>
+         </div>
+         <h2>Set axis limits<a name="1"></a></h2>
+         <p>Sometimes we would like to focus on part of our plots to investigate the structure. You can use <b><tt>xlim</tt></b> and <b><tt>ylim</tt></b> to set which part of the parameter space you want to plot.
+         </p>
+         <p>For example, the previous version of the Planck function:</p><pre class="codeinput">loglog(Nu, Intensity, <span class="string">'b.'</span>)
+xlabel(<span class="string">'frequency (Hz)'</span>);
+ylabel(<span class="string">'Intensity erg /s /Hz / str / cm^2'</span>)
+title(<span class="string">'Planck Function'</span>)
+</pre><img vspace="5" hspace="5" src="SetProp_01.png" alt=""> <p>If we want to focus on the part with maximum intensity:</p><pre class="codeinput">ylim([1e-20 1e-3])
+</pre><img vspace="5" hspace="5" src="SetProp_02.png" alt=""> <p>The syntax of <b><tt>xlim</tt></b> is similar: <b><tt>xlim([min max])</tt></b>.
+         </p>
+         <h2>Changing axis direction<a name="4"></a></h2>
+         <p>Another way to present the Planck function is to plot it as a function of wavelength:</p><pre class="codeinput">c = 2.998e10;
+wavelength = c./Nu / 1e-8;
+figure(2); clf
+loglog(wavelength, Intensity,<span class="string">'r.'</span>)
+ylim([1e-20 1e-3])
+xlabel(<span class="string">'wavelength (angstroms)'</span>);
+ylabel(<span class="string">'Intensity erg /s /Hz / str / cm^2'</span>)
+title(<span class="string">'Planck Function'</span>)
+</pre><img vspace="5" hspace="5" src="SetProp_03.png" alt=""> <p>The tricky part is that, since wavelength = speed of light / frequency, we must reverse the x-coordinate to make the Planck
+            function looks the same:
+         </p><pre class="codeinput">set(gca,<span class="string">'XDir'</span>,<span class="string">'rev'</span>)
+</pre><img vspace="5" hspace="5" src="SetProp_04.png" alt=""> <p>This command applies to <b><tt>YDir</tt></b>, too.
+         </p>
+         <p>Note that, there are two ways to change the axis direction: <b><tt>set(gca, ...)</tt></b> and <b><tt>set(axes, ...)</tt></b>. When using <b><tt>set(gca, ...)</tt></b> we are modifying the current figure we just drew, so always use <b><tt>set(gca, ...)</tt></b> AFTER you use <b><tt>plot(...)</tt></b>:
+         </p><pre class="codeinput">figure(3); clf;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+set(gca,<span class="string">'YDir'</span>,<span class="string">'rev'</span>);
+</pre><img vspace="5" hspace="5" src="SetProp_05.png" alt=""> <p>However, when using <b><tt>set(axes, ...)</tt></b> we are setting up the graphic environment for the new figure we are going to draw, and it must be called BEFORE the <b><tt>plot</tt></b> command. Also, you'll need to call <b><tt>hold</tt></b> so your <b><tt>plot</tt></b> command won't clean up your <b><tt>set(axes, ...)</tt></b> settings:
+         </p><pre class="codeinput">figure(3); clf;
+set(axes,<span class="string">'YDir'</span>,<span class="string">'rev'</span>);
+hold <span class="string">on</span>;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+</pre><img vspace="5" hspace="5" src="SetProp_06.png" alt=""> <p>In this lab, since we are using log-log plot, it's more complicated to use <b><tt>set(axes, ...)</tt></b> than using <b><tt>set(gca, ...)</tt></b>, because you'll need to include the log-scale setting in your <b><tt>set(axes, ...)</tt></b> command:
+         </p><pre class="codeinput">set(axes, <span class="string">'XScale'</span>, <span class="string">'log'</span>, <span class="string">'YScale'</span>, <span class="string">'log'</span>, <span class="string">'XDir'</span>, <span class="string">'rev'</span>)
+</pre> <p>Therefore, though <b><tt>set(axes, ...)</tt></b> provides more degrees of freedom to set up the axis system, we recommend you to use <b><tt>set(gca, ...)</tt></b> in all labs.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.8<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Set Graphic Object Properties
+%% Set axis limits
+% Sometimes we would like to focus on part of our plots to investigate the
+% structure. You can use *|xlim|* and *|ylim|* to set which part of the
+% parameter space you want to plot. 
+% 
+% For example, the previous version of the Planck function:
+loglog(Nu, Intensity, 'b.')
+xlabel('frequency (Hz)');
+ylabel('Intensity erg /s /Hz / str / cm^2')
+title('Planck Function')
+%%
+% If we want to focus on the part with maximum intensity:
+ylim([1e-20 1e-3])
+%%
+% The syntax of *|xlim|* is similar: *|xlim([min max])|*.
+%% Changing axis direction
+% Another way to present the Planck function is to plot it as a function of
+% wavelength:
+c = 2.998e10;
+wavelength = c./Nu / 1e-8;
+figure(2); clf
+loglog(wavelength, Intensity,'r.')
+ylim([1e-20 1e-3])
+xlabel('wavelength (angstroms)');
+ylabel('Intensity erg /s /Hz / str / cm^2')
+title('Planck Function')
+%%
+% The tricky part is that, since wavelength = speed of light / frequency, 
+% we must reverse the x-coordinate to make the Planck function looks the 
+% same: 
+set(gca,'XDir','rev')
+%%
+% This command applies to *|YDir|*, too.
+%%
+% Note that, there are two ways to change the axis direction: *|set(gca,
+% ...)|* and *|set(axes, ...)|*. When using *|set(gca, ...)|* we are
+% modifying the current figure we just drew, so always use *|set(gca,
+% ...)|* AFTER you use *|plot(...)|*:
+figure(3); clf;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+set(gca,'YDir','rev');
+%%
+% However, when using *|set(axes, ...)|* we are setting up the graphic
+% environment for the new figure we are going to draw, and it must be
+% called BEFORE the *|plot|* command. Also, you'll need to call *|hold|* so
+% your *|plot|* command won't clean up your *|set(axes, ...)|* settings:
+figure(3); clf;
+set(axes,'YDir','rev');
+hold on;
+plot(linspace(0,pi), sin(linspace(0,pi)));
+%%
+% In this lab, since we are using log-log plot, it's more complicated to
+% use *|set(axes, ...)|* than using *|set(gca, ...)|*, because you'll need
+% to include the log-scale setting in your *|set(axes, ...)|* command:
+set(axes, 'XScale', 'log', 'YScale', 'log', 'XDir', 'rev')
+%%
+% Therefore, though *|set(axes, ...)|* provides more degrees of freedom to
+% set up the axis system, we recommend you to use *|set(gca, ...)|* in all
+% labs.
+##### SOURCE END #####
+-->
+   </body>
+</html>
