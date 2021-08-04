@@ -1,0 +1,54 @@
+%% Shape of the Milky Way
+% _This is a reference for you to see if you did everything correctly, what
+% should be on your screen. Note that some commands in this page are
+% blocked (using *|...|*) for you to figure out on your own._
+%%
+% Now we plot the distribution of the same 1777 open clusters, but this 
+% time we have distance information about the clusters and can plot them in 
+% 3-space rather than just their projection onto the celestial sphere as we 
+% did in Part I.
+%
+% First, load the data and save in 
+load clusters_relevantGAL.txt
+crgal = clusters_relevantGAL;
+
+% Load the data in a new, simplfiied, table, where this time the third
+% column gives distance in pc and the coordinates are in galactic
+% coordinates (longitude and latitude both in degrees).
+
+
+% We must change from degrees to radians since we will use cos and sin
+% functions to transform from galactic (i.e. polar) to cartesian
+% coordinates:
+lon = crgal(:,1).*2*pi/360.0;
+lat = crgal(:,2).*2*pi/360.0;
+
+xoc = crgal(:,3).*cos(lat).*cos(lon);
+yoc = crgal(:,3).*cos(lat).*sin(lon);
+zoc = crgal(:,3).*sin(lat);
+
+% Now let's plot the projection of the open clustes onto the x-y plane
+% (distribution as viewed from above galaxy):
+hold off
+figure(2); clf
+plot(xoc,yoc, '.')
+xlabel('x (pc)')
+ylabel('y (pc)')
+
+% Also the projection onto the other two planes intersecting the galactic
+% center, one perpendicular to the line of sight from earth and one
+% parallel:
+figure(3); clf
+plot(xoc,zoc, '.')
+xlabel('x (pc)')
+ylabel('z (pc)')
+
+figure(4); clf
+plot(yoc,zoc, '.')
+xlabel('y (pc)')
+ylabel('z (pc)')
+
+
+
+
+

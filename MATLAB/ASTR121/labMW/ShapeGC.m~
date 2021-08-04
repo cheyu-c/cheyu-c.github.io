@@ -1,0 +1,50 @@
+%% Shape of the Milky Way, Reloaded
+% _This is a reference for you to see if you did everything correctly, what
+% should be on your screen. Note that some commands in this page are
+% blocked (using *|...|*) for you to figure out by yourself._
+%% Read and organize the data
+% Now we load an analagous table of data for globular clusters and plot 
+% them in the same plane projections as we did for the open clusters:
+load mwgc_short_relevant.txt
+galGC = mwgc_short_relevant;
+%%
+% Change from degrees to radians:
+lon = gal(:,1).*2*pi/360.0;
+lat = gal(:,2).*2*pi/360.0;
+%%
+% This time distance is tabulated in kpc, so we must multiply by $10^3$ to 
+% convert from polar (galactic) to cartesian coordinates ($x$, $y$, $z$):
+xgc = 1000.*crgal(:,3).*cos(lat).*cos(lon); 
+ygc = 1000.*crgal(:,3).*cos(lat).*sin(lon);
+zgc = 1000.*crgal(:,3).*sin(lat);
+%% Make the plots
+% Let's plot the projections of the open clusters in blue, and the globular 
+% clusters in red:
+figure(5); clf
+plot(xoc,yoc, 'b.')
+hold on
+plot(xgc,ygc, 'r.')
+xlabel('x (pc)')
+ylabel('y (pc)')
+%%
+figure(6); clf
+plot(xoc,zoc, 'b.')
+hold on
+plot(xgc,zgc, 'r.')
+xlabel('x (pc)')
+ylabel('z (pc)')
+%%
+figure(7); clf
+plot(yoc,zoc, 'b.')
+hold on
+plot(ygc,zgc, 'r.')
+xlabel('y (pc)')
+ylabel('z (pc)')
+%%
+% It is clear that globular clusters are not bound to the plane of the
+% galaxy and trace the dark matter potential well better than open
+% clusters. This picture is also consistent with our knowledge that
+% globular clusters are often much older than open clusters, which much
+% more often form in star-forming regions in the dense planes of galaxies.
+
+

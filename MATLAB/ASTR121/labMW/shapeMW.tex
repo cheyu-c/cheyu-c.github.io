@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\textheight 22cm
+\textwidth  16cm
+\hoffset= -0.6in 
+\voffset= -0.5in   
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{10pt plus 2pt minus 2pt}
+\pagenumbering{roman} 
+\setcounter{page}{-9}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bd}{\begin{displaymath}}
+\newcommand{\ed}{\end{displaymath}}
+\begin{document}
+
+\title{Astrophysics II: Laboratory 6}
+\author{\Large The Shape and Scale of the Milky Way}
+\maketitle
+
+\setlength{\parindent}{0.2pt}
+\setlength{\parskip}{2ex}
+
+\section{{\bf Objectives:}}
+
+{\it The student investigates the shape, structure and scale of the
+ Milky Way using only visible wavelengths using the locations of stellar clusters and compares the galactic distribution of open vs. globular clusters.}
+
+
+\section{{\bf Procedure}}
+
+
+Part I - Open Clusters A: The Orientation of the Milky Way
+
+1) Go to www.astro.iag.usp.br/$\sim$wilton/clusters.txt.  You will see data
+on 1777 Milky Way open clusters.  The format is the following:\\
+column 1 - object name\\
+column 2-4 - right accession (RA) (hours : minutes : seconds)\\
+column 5-7 - declination ($\delta$) (degrees : arc-minutes : arc-seconds)
+
+In order to make importing the part of this information relevant to this lab easier, I have written a python script in order to extract only the values of columns 2-7. This is much easier to import into Matlab. It is not necessary to understand the python script, but if you know python, it is available at http://www.astro.umd.edu/~mavara/matlab/121labs.html
+
+2) Save the simplified data text file to your desktop.
+
+3a) Import the file into Matlab like this:
+$\gg$ load clusters\_relevant.txt
+
+3b) Double click on the clusters\_relevant structure name in the ``Workspace" window to check that this structure is a matrix with the correct information: each row contains locational information for each cluster.
+
+4) Convert the RA and $\delta$ into decimals of hours and degrees with the
+following formulas:
+\begin{equation}
+RA = RA(hr) + \frac{RA(min)}{60 min/hr} + \frac{RA(sec)}{3600 sec/hr} 
+\end{equation}
+\begin{equation}
+\delta = \delta(deg) + \frac{\delta(arcmin)}{60 arcmin/deg} + \frac{\delta(arcsec)}{3600 arcsec/deg}
+\end{equation}
+
+In other words, create a new matrix with each three value set of coordinates transformed into a single value each; so, this new matrix has two columns, the first giving RA and the second giving $\delta$.
+
+5) Plot the $\delta$ (vertical axis) and RA (horizontal axis) of all 1777
+open clusters.  What does this plot tell you about the shape of the
+Milky Way?  Feel free to sketch this out with labels to show or turn in to your TA.  
+
+6) On this plot the ecliptic (plane of the solar system) is a sine
+wave starting at RA = 0 hours, with a period of 24 hours and an
+amplitude of 23 degrees.  Print out your plot and draw the ecliptic.  
+
+Part II - Open Clusters B: The Scale of the Milky Way
+
+1) Go to www.astro.iag.usp.br/$\sim$wilton/clustersGAL.txt.  You will see the data
+on the same 1777 Milky Way open clusters, this time with galactic coordinates.  The format is the following:\\
+column 1 - object name\\
+column 2 - galactic longitude\\
+column 3 - galactic latitude (with sign)\\
+column 4 - classification flag (you will not need this)\\
+column 5 - apparent size (you will not need this either)\\
+column 6 - distance in pc
+
+2) Save the data file clusters\_relevantGAL.txt to your desktop (this file was made from that on the website using clusters2.py).
+
+3) Import this data into a Matlab matrix.  Go ahead and change the values of the first two columns from degrees to radians.
+
+4) Next you will be changing into a Cartesian coordinate system
+centered on the Sun.  To make life easier, the positive x axis points
+towards l=0, b=0. Make three variables which will give cartesian positions in units of distance in parsecs.  Use these formulas to convert from (l,b,d) to (x,y,z):
+\begin{equation}
+x = d cos(b)cos(l)
+\end{equation}
+\begin{equation}
+y = d cos(b)sin(l)
+\end{equation}
+\begin{equation}
+z = d sin(b)
+\end{equation}
+
+5) Make three scatter plots, x verses y, x verses z, and y verses z.
+Based on your plots what is the shape of the Milky Way?  Make sure to
+base your answer only on what you see in your plots, not anything you
+read in the text or on-line.\\  
+
+6) On your plots label the thickness and diameter of the Milky Way in
+parsecs and kiloparsecs.  Where is the center of the Milky Way?\\
+
+Part III - Globular Clusters: The Scale of the Milky Way, Reloaded
+
+1) Go to the Globular Cluster Catalog at
+http://physwww.physics.mcmaster.ca/$\sim$harris/mwgc.dat.  The format is provided
+at the top of the file.  Note, the distances this time are in
+kiloparsecs, not parsecs.
+
+2) Save the simplified file just containing the positions of the clusters, mwgc-short\_relevant.txt, to your desktop. Each row is the (x,y,z) position of the cluster centered on the Sun, in the same format as you put the data in section 2 in, but with distances in kpc now.
+
+3) Load the positions into Matlab vectors for x, y, and z.
+
+5) Plot the positions for the globular
+clusters in the same way you did in Part 2.  What does your plot tell you about the distribution of globular clusters relative to the Milky Way plane?  Where would you
+expect the center of the globular cluster distribution to be?\\
+
+6) Mark the diameter on your plots in kiloparsecs.  Where is the center
+of your distribution (check out x verses y and x verses z for the best
+view of this)?\\
+
+\section{{\bf Questions}}
+
+{\it Answer these questions on a separate sheet of paper and hand them
+  in with your lab}
+
+1) What does your plot from Part I tell you about the orientation of
+the Milky Way plane with respect to the plane of the solar system? 
+
+2) How does the size of the Milky Way you found with the open clusters
+compare to the size you found with the globulars?  What happened to
+the position of the Sun in the galaxy when you used the globular
+clusters?  Which answer is closer to the one given in your book for
+the size of the Milky Way and the Sun's position in it?
+
+3) Which set of objects were better probes of the Milky Way's size?  Why?
+
+4) Which set of objects were better probes of the Milky Way's disk?  Why?   
+
+5) Many of the distance measurements to globulars were initially done
+using Cepheid variables.  Why would Cepheid make such excellent
+standard candles for the Milky Way's globular clusters?
+
+\end{document}
+
