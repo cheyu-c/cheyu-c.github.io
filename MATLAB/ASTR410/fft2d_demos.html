@@ -1,0 +1,228 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>2D FFT demo3</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-03-12">
+      <meta name="m-file" content="fft2d_demos"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>2D FFT demo3</h1>
+         <p>Make a series of plots; hit <a href="return">return</a> to step through
+         </p>
+         <p>AH 2010.3.10</p><pre class="codeinput"><span class="comment">% A rectange at the center of the array</span>
+A = zeros(128, 128);
+A = add_rect(A, 65, 10, 65, 20, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% Add an off-center rectange</span>
+A = add_rect(A, 80, 5, 90, 5, 2);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A pair of points (points are hard to see on the plot)</span>
+A = zeros(128, 128);
+A = add_point(A, 60, 65, 1);
+A = add_point(A, 70, 65, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A triple of points (points are hard to see on the plot)</span>
+A = zeros(128, 128);
+A = add_point(A, 60, 65, 1);
+A = add_point(A, 70, 65, 1);
+A = add_point(A, 65, 80, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A circle at the center of the array</span>
+A = zeros(128, 128);
+A = add_circ(A, 65, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A Gaussian at the center of the array</span>
+A = zeros(128, 128);
+A = add_gaussian(A, 65, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A larger Gaussian at the center of the array</span>
+A = zeros(128, 128);
+A = add_gaussian(A, 65, 65, 16, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A a pair of circles</span>
+A = zeros(128, 128);
+A = add_circ(A, 65-20, 65, 8, 1);
+A = add_circ(A, 65+20, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% A pair of circles, diagonal offset</span>
+A = zeros(128, 128);
+A = add_circ(A, 65-14, 65-14, 8, 1);
+A = add_circ(A, 65+14, 65+14, 8, 1);
+plot_fft2d(A)
+pause()
+
+<span class="comment">% Fill entire array to see where zero lag is</span>
+A = zeros(16, 16)+1;
+plot_fft2d(A)
+pause()
+
+<span class="comment">% Circle for the input to the fft</span>
+A = zeros(128, 128);
+A = fftshift(add_circ(A, 65, 65, 8, 1));
+plot_fft2d(A)
+pause()
+</pre><img vspace="5" hspace="5" src="fft2d_demos_01.png"> <img vspace="5" hspace="5" src="fft2d_demos_02.png"> <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% 2D FFT demo3
+%
+% Make a series of plots; hit <return> to step through
+%
+% AH 2010.3.10
+
+% A rectange at the center of the array
+A = zeros(128, 128);
+A = add_rect(A, 65, 10, 65, 20, 1);
+plot_fft2d(A)
+pause()
+
+% Add an off-center rectange 
+A = add_rect(A, 80, 5, 90, 5, 2);
+plot_fft2d(A)
+pause()
+
+% A pair of points (points are hard to see on the plot)
+A = zeros(128, 128);
+A = add_point(A, 60, 65, 1);
+A = add_point(A, 70, 65, 1);
+plot_fft2d(A)
+pause()
+
+% A triple of points (points are hard to see on the plot)
+A = zeros(128, 128);
+A = add_point(A, 60, 65, 1);
+A = add_point(A, 70, 65, 1);
+A = add_point(A, 65, 80, 1);
+plot_fft2d(A)
+pause()
+
+% A circle at the center of the array
+A = zeros(128, 128);
+A = add_circ(A, 65, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+% A Gaussian at the center of the array
+A = zeros(128, 128);
+A = add_gaussian(A, 65, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+% A larger Gaussian at the center of the array
+A = zeros(128, 128);
+A = add_gaussian(A, 65, 65, 16, 1);
+plot_fft2d(A)
+pause()
+
+% A a pair of circles
+A = zeros(128, 128);
+A = add_circ(A, 65-20, 65, 8, 1);
+A = add_circ(A, 65+20, 65, 8, 1);
+plot_fft2d(A)
+pause()
+
+% A pair of circles, diagonal offset
+A = zeros(128, 128);
+A = add_circ(A, 65-14, 65-14, 8, 1);
+A = add_circ(A, 65+14, 65+14, 8, 1);
+plot_fft2d(A)
+pause()
+
+% Fill entire array to see where zero lag is
+A = zeros(16, 16)+1;
+plot_fft2d(A)
+pause()
+
+% Circle for the input to the fft
+A = zeros(128, 128);
+A = fftshift(add_circ(A, 65, 65, 8, 1));
+plot_fft2d(A)
+pause()
+
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

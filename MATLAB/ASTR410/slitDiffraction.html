@@ -1,0 +1,231 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Script compares single- and double-slit diffraction patterns</title>
+      <meta name="generator" content="MATLAB 7.1">
+      <meta name="date" content="2010-02-02">
+      <meta name="m-file" content="slitDiffraction"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows.  On Gecko-based browsers, the shrink-to-fit doesn't work. */ 
+p,h1,h2,div.content div {
+  /* for MATLAB's browser */
+  width: 600px;
+  /* for Mozilla, but the "width" tag overrides it anyway */
+  max-width: 600px;
+  /* for IE */
+  width:expression(document.body.clientWidth > 620 ? "600px": "auto" );
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Script compares single- and double-slit diffraction patterns</h1>
+         <introduction>
+            <p>Script in <a href="slitDiffraction.m">slitDiffraction.m</a></p>
+            <p>AH 2010.2.2</p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Define geometry and wavelength</a></li>
+               <li><a href="#2">Single slit case</a></li>
+               <li><a href="#3">Double slit case</a></li>
+               <li><a href="#4">Double slit case with component parts</a></li>
+               <li><a href="#5">Compare the patterns from a single slit and two slits</a></li>
+               <li><a href="#6">Question</a></li>
+            </ul>
+         </div>
+         <h2>Define geometry and wavelength<a name="1"></a></h2><pre class="codeinput">D = 1;          <span class="comment">% slit width, in some units</span>
+d = 4;         <span class="comment">% distance between slits, in the same units</span>
+lambda = 0.2;   <span class="comment">% wavelength, in the same units</span>
+</pre><h2>Single slit case<a name="2"></a></h2>
+         <p>First make a function P_s that relates the power pattern to far-field angle, slit width, and wavelength:</p><pre class="codeinput">P_s = @(theta, D, lambda) (sinc(theta.*D./lambda)).^2;
+<span class="comment">% Operators .*, ./, and .^ so variables can be vectors</span>
+<span class="comment">% Note that the MATLAB sinc function is sinc(x) = sinc(pi*x)/(pi*x)</span>
+<span class="comment">% (this scaling is useful in sampling theory)</span>
+
+<span class="comment">% make a vector of data for angle, then evaluate the function at those points</span>
+lims = 0.78;
+theta = linspace(-lims, lims, 501);
+y_s = P_s(theta, D, lambda);
+
+<span class="comment">% then plot</span>
+clf;
+plot(theta, y_s)
+xlabel(<span class="string">'Angle, \lambda/D [rad]'</span>)
+ylabel(<span class="string">'Normalized power'</span>)
+title(<span class="string">'Single slit diffraction pattern'</span>)
+</pre><img vspace="5" hspace="5" src="slitDiffraction_01.png"> <h2>Double slit case<a name="3"></a></h2>
+         <p>Define a function P_d that relates the power pattern to the far-field angle, slit width, and wavelength</p><pre class="codeinput">P_d = @(theta, d, D, lambda) (cos(pi.*theta.*d./lambda).*<span class="keyword">...</span>
+    sinc(theta.*D./lambda)).^2;
+<span class="comment">% .*, ./, and .^ so variables can be vectors</span>
+<span class="comment">% Note that the MATLAB sinc function is sinc(x) = sinc(pi*x)/(pi*x)</span>
+
+<span class="comment">% using angles from above, make a vector of function values</span>
+y_d = P_d(theta, d, D, lambda);
+
+<span class="comment">% then plot</span>
+clf;
+plot(theta, y_d)
+xlabel(<span class="string">'Angle, \lambda/d [rad]'</span>)
+ylabel(<span class="string">'Normalized power'</span>)
+title(<span class="string">'Double slit diffraction pattern'</span>)
+</pre><img vspace="5" hspace="5" src="slitDiffraction_02.png"> <h2>Double slit case with component parts<a name="4"></a></h2><pre class="codeinput">clf;
+hold <span class="string">on</span>
+plot(theta, y_d, <span class="string">'b'</span>)
+plot(theta, y_s, <span class="string">'r--'</span>)
+xlabel(<span class="string">'Angle, \lambda/d [rad]'</span>)
+ylabel(<span class="string">'Normalized power'</span>)
+title(<span class="string">'Double slit diffraction pattern with single slit pattern overlay'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="slitDiffraction_03.png"> <h2>Compare the patterns from a single slit and two slits<a name="5"></a></h2>
+         <p>Make a single slit with width D and a pair of slits separated by D with widths a few percent of the separation:</p><pre class="codeinput"><span class="comment">% plot at previous scale</span>
+y_s = P_s(theta, D, lambda);
+y_d = P_d(theta, D, 0.05*D, lambda);
+<span class="comment">%</span>
+clf;
+plot(theta, y_s, theta, y_d)
+xlabel(<span class="string">'Angle, \lambda/D [rad]'</span>)
+ylabel(<span class="string">'Normalized power'</span>)
+title(<span class="string">'Comparison'</span>)
+</pre><img vspace="5" hspace="5" src="slitDiffraction_04.png"> <h2>Question<a name="6"></a></h2>
+         <p>Why is the single-slit pattern peak wider than the double-slit peak?</p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.1<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Script compares single- and double-slit diffraction patterns
+%
+% Script in <slitDiffraction.m>
+%
+% AH 2010.2.2
+
+%% Define geometry and wavelength
+D = 1;          % slit width, in some units
+d = 4;         % distance between slits, in the same units
+lambda = 0.2;   % wavelength, in the same units
+
+%% Single slit case
+% First make a function P_s that relates the power pattern to 
+% far-field angle, slit width, and wavelength:
+P_s = @(theta, D, lambda) (sinc(theta.*D./lambda)).^2;  
+% Operators .*, ./, and .^ so variables can be vectors
+% Note that the MATLAB sinc function is sinc(x) = sinc(pi*x)/(pi*x)
+% (this scaling is useful in sampling theory)
+
+% make a vector of data for angle, then evaluate the function at those points 
+lims = 0.78;
+theta = linspace(-lims, lims, 501);
+y_s = P_s(theta, D, lambda);
+
+% then plot
+clf;
+plot(theta, y_s)
+xlabel('Angle, \lambda/D [rad]')
+ylabel('Normalized power')
+title('Single slit diffraction pattern')
+
+%% Double slit case
+% Define a function P_d that relates the power pattern to the
+% far-field angle, slit width, and wavelength
+P_d = @(theta, d, D, lambda) (cos(pi.*theta.*d./lambda).*...
+    sinc(theta.*D./lambda)).^2;
+% .*, ./, and .^ so variables can be vectors
+% Note that the MATLAB sinc function is sinc(x) = sinc(pi*x)/(pi*x)
+
+% using angles from above, make a vector of function values
+y_d = P_d(theta, d, D, lambda);
+
+% then plot
+clf; 
+plot(theta, y_d)
+xlabel('Angle, \lambda/d [rad]')
+ylabel('Normalized power')
+title('Double slit diffraction pattern')
+
+%% Double slit case with component parts
+clf;
+hold on
+plot(theta, y_d, 'b')
+plot(theta, y_s, 'rREPLACE_WITH_DASH_DASH')
+xlabel('Angle, \lambda/d [rad]')
+ylabel('Normalized power')
+title('Double slit diffraction pattern with single slit pattern overlay')
+hold off
+
+%% Compare the patterns from a single slit and two slits 
+% Make a single slit with width D and a pair of slits separated
+% by D with widths a few percent of the separation:
+
+% plot at previous scale
+y_s = P_s(theta, D, lambda);
+y_d = P_d(theta, D, 0.05*D, lambda);
+%
+clf; 
+plot(theta, y_s, theta, y_d)
+xlabel('Angle, \lambda/D [rad]')
+ylabel('Normalized power')
+title('Comparison')
+
+%% Question
+% Why is the single-slit pattern peak wider than the double-slit peak?
+
+
+
+
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
