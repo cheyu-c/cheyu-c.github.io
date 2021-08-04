@@ -1,0 +1,182 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Visualizing Data</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2011-09-19">
+      <meta name="m-file" content="2Dplot"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Visualizing Data</h1>
+         <introduction></introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#2">Plotting sequential functions</a></li>
+               <li><a href="#5">Plotting discrete data</a></li>
+               <li><a href="#8">Overplotting</a></li>
+               <li><a href="#11">Documenting plots</a></li>
+            </ul>
+         </div>
+         <p>Before you make any plot, remember to issue a "clear figure" command to erase whatever on the figure already:</p><pre class="codeinput">clf;
+</pre><h2>Plotting sequential functions<a name="2"></a></h2>
+         <p>Visualization allows us to put the data in terms that are more easily understandable to our senses. Assuming you are now familiar
+            with generating an array of numbers:
+         </p><pre class="codeinput">t=[0:0.01:10];
+</pre><p>We can now calculate a function <b><tt>f(t)</tt></b>, for example:
+         </p><pre class="codeinput">f=sin(2*pi*t)./exp(t/5);
+</pre><p>Note that pi is a MATLAB function that returns the number &sup1;.</p>
+         <p>To see how <b><tt>f(t)</tt></b> looks like, we can use the MATLAB function <b><tt>plot</tt></b>, which produces a plot of the second parameter against the first, or if only one parameter is given it will plot it against
+            the index number.
+         </p><pre class="codeinput">plot(t,f)
+</pre><img vspace="5" hspace="5" src="2Dplot_01.png"> <h2>Plotting discrete data<a name="5"></a></h2>
+         <p>The default setting of <b><tt>plot</tt></b> is continuous solid line. However, sometimes the data is not sequential, and we may want to show each data point individually.
+            The data set <b><tt>v</tt></b> is an example of this case:
+         </p><pre class="codeinput">u=1:50; v=rand(1,length(u));
+</pre><p>To see how the data distributes, we can add line specification in <b><tt>plot</tt></b>:
+         </p><pre class="codeinput">plot(u, v, <span class="string">'o'</span>);
+</pre><img vspace="5" hspace="5" src="2Dplot_02.png"> <p>Here, <b><tt>o</tt></b> is the marker specifier for "circle". Other options are <b><tt>+</tt></b> (plus sign), <b><tt>s</tt></b> (square), <b><tt>d</tt></b> (diamond), etc.
+         </p>
+         <h2>Overplotting<a name="8"></a></h2>
+         <p>If we want to compare two functions:</p><pre class="codeinput">f=sin(2*pi*t)./exp(t/5);
+u=t+cos(2*pi*t);
+</pre><p>Usually new plots erase the old plots. To change that behavior, issue <b><tt>hold on</tt></b>. To return to the old behavior, issue <b><tt>hold off</tt></b>.
+         </p><pre class="codeinput">clf
+plot(t,u)
+hold <span class="string">on</span>
+plot(t,f,<span class="string">'r--'</span>)
+</pre><img vspace="5" hspace="5" src="2Dplot_03.png"> <p>this will overplot f on u using a red dashed line. This is defined by the string <b><tt>'r--'</tt></b>; <b><tt>r</tt></b> stands for red, <b><tt>--</tt></b> means dashed line. Type <b><tt>help plot</tt></b> in the command line for more options.
+         </p>
+         <h2>Documenting plots<a name="11"></a></h2>
+         <p>You can annotate a plot using <b><tt>xlabel()</tt></b> and <b><tt>ylabel()</tt></b>. Another very handy command to annotate plots of this type is <b><tt>legend</tt></b>.
+         </p><pre class="codeinput">xlabel(<span class="string">'t'</span>);
+legend(<span class="string">'u'</span>,<span class="string">'f'</span>);
+</pre><img vspace="5" hspace="5" src="2Dplot_04.png"> <p>You can use <b><tt>help legend</tt></b> to see more options of the command.
+         </p>
+         <p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Visualizing Data
+%%
+% Before you make any plot, remember to issue a "clear figure" command to
+% erase whatever on the figure already:
+clf;
+%% Plotting sequential functions
+% Visualization allows us to put the data in terms that are more easily
+% understandable to our senses. Assuming you are now familiar with 
+% generating an array of numbers:
+t=[0:0.01:10];
+%%
+% We can now calculate a function *|f(t)|*, for example:
+f=sin(2*pi*t)./exp(t/5);
+%%
+% Note that pi is a MATLAB function that returns the number ¹.
+%
+% To see how *|f(t)|* looks like, we can use the MATLAB function *|plot|*,
+% which produces a plot of the second parameter against the first, or if
+% only one parameter is given it will plot it against the index number.
+plot(t,f)
+%% Plotting discrete data
+% The default setting of *|plot|* is continuous solid line. However,
+% sometimes the data is not sequential, and we may want to show each data
+% point individually. The data set *|v|* is an example of this case:
+u=1:50; v=rand(1,length(u));
+%%
+% To see how the data distributes, we can add line specification in
+% *|plot|*:
+plot(u, v, 'o');
+%%
+% Here, *|o|* is the marker specifier for "circle". Other options are *|+|*
+% (plus sign), *|s|* (square), *|d|* (diamond), etc. 
+%% Overplotting
+% If we want to compare two functions:
+f=sin(2*pi*t)./exp(t/5);
+u=t+cos(2*pi*t);
+%% 
+% Usually new plots erase the old plots. To change that behavior, issue
+% *|hold on|*. To return to the old behavior, issue *|hold off|*.
+clf 
+plot(t,u) 
+hold on 
+plot(t,f,'rREPLACE_WITH_DASH_DASH')
+%%
+% this will overplot f on u using a red dashed line. This is defined by the 
+% string *|'rREPLACE_WITH_DASH_DASH'|*; *|r|* stands for red, *|REPLACE_WITH_DASH_DASH|* means dashed line. Type
+% *|help plot|* in the command line for more options.
+%% Documenting plots
+% You can annotate a plot using *|xlabel()|* and *|ylabel()|*. Another very 
+% handy command to annotate plots of this type is *|legend|*.
+xlabel('t');
+legend('u','f');
+%%
+% You can use *|help legend|* to see more options of the command.
+##### SOURCE END #####
+-->
+   </body>
+</html>
